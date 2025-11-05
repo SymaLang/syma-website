@@ -1,0 +1,374 @@
+{Module Data/Docs/Effects
+  {Exports EffectsDoc}
+  {Defs
+    {EffectsDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "Symbolic Effects"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Handle I/O and side effects purely through symbolic terms — inspectable, testable, composable."
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "The Effects Model")
+            P(:class "text-gray-300 leading-relaxed"
+              "In Syma, all I/O is "
+              Span(:class "text-cyan-400 font-semibold" "symbolic")
+              ". Effects are just terms in the AST, not imperative commands. The runtime acts as a thin bridge between symbolic requests and actual I/O."
+            )
+
+            Div(:class "bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-6"
+              Div(:class "flex gap-3"
+                Div(:class "text-2xl" "💡")
+                Div(:class "space-y-2"
+                  P(:class "font-semibold text-cyan-400" "Key Benefits")
+                  Ul(:class "text-gray-300 space-y-1 ml-4"
+                    Li("Inspectable: See all effects in the AST")
+                    Li("Testable: Mock effects by manipulating the inbox")
+                    Li("Composable: Transform, retry, or cancel effects with rules")
+                    Li("Pure: Your code stays symbolic, no imperative I/O")
+                  )
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Effects Structure")
+            P(:class "text-gray-300 leading-relaxed"
+              "Effects live in the "
+              Span(:class "text-cyan-400 font-mono" "{Effects}")
+              " compound within your Program:"
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Program\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "App ...")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Effects\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Pending ...")
+                  Span(:class "text-cyan-500" "}  ")
+                  Span(:class "text-gray-500" "; Outbound effect requests\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Inbox ...")
+                  Span(:class "text-cyan-500" "}     ")
+                  Span(:class "text-gray-500" "; Inbound effect responses\n")
+                  Span(:class "text-cyan-500" "  }\n")
+                  Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Effect Flow")
+            Div(:class "space-y-3"
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "1")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Request")
+                  P(:class "text-gray-400 text-sm" "Your rules add effect terms to {Pending}")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "2")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Processing")
+                  P(:class "text-gray-400 text-sm" "Runtime performs actual I/O, removes from {Pending}")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "3")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Response")
+                  P(:class "text-gray-400 text-sm" "Results are added to {Inbox}")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "4")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Consumption")
+                  P(:class "text-gray-400 text-sm" "Your rules process inbox messages and update state")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Common Effect Types")
+
+            Div(:class "space-y-4"
+              Div(:class "p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Timer")
+                P(:class "text-gray-400 text-sm mb-2" "Execute code after a delay")
+                Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
+                  Code(:class "text-sm leading-relaxed"
+                    Span(:class "text-gray-500" "; Request\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Timer ")
+                    Span(:class "text-cyan-500" "id ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Delay ")
+                    Span(:class "text-green-500" "2000")
+                    Span(:class "text-cyan-500" "}}\n\n")
+                    Span(:class "text-gray-500" "; Response\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "TimerComplete ")
+                    Span(:class "text-cyan-500" "id ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Now ")
+                    Span(:class "text-cyan-500" "timestamp")
+                    Span(:class "text-cyan-500" "}}")
+                  )
+                )
+              )
+
+              Div(:class "p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                H3(:class "text-lg font-semibold text-cyan-400 mb-2" "HTTP Request")
+                P(:class "text-gray-400 text-sm mb-2" "Fetch data from APIs")
+                Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
+                  Code(:class "text-sm leading-relaxed"
+                    Span(:class "text-gray-500" "; Request\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "HttpReq ")
+                    Span(:class "text-cyan-500" "id\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Method ")
+                    Span(:class "text-yellow-600" "\"POST\"")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Url ")
+                    Span(:class "text-yellow-600" "\"/api/data\"")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Body ")
+                    Span(:class "text-cyan-500" "data")
+                    Span(:class "text-cyan-500" "}}\n\n")
+                    Span(:class "text-gray-500" "; Response\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "HttpRes ")
+                    Span(:class "text-cyan-500" "id\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Status ")
+                    Span(:class "text-green-500" "200")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Json ")
+                    Span(:class "text-cyan-500" "result")
+                    Span(:class "text-cyan-500" "}}")
+                  )
+                )
+              )
+
+              Div(:class "p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Storage")
+                P(:class "text-gray-400 text-sm mb-2" "Persist data to localStorage or sessionStorage")
+                Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
+                  Code(:class "text-sm leading-relaxed"
+                    Span(:class "text-gray-500" "; Set\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "StorageSet ")
+                    Span(:class "text-cyan-500" "id\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Store ")
+                    Span(:class "text-cyan-500" "Local")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Key ")
+                    Span(:class "text-yellow-600" "\"user\"")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Value ")
+                    Span(:class "text-cyan-500" "userData")
+                    Span(:class "text-cyan-500" "}}\n\n")
+                    Span(:class "text-gray-500" "; Get\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "StorageGet ")
+                    Span(:class "text-cyan-500" "id\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Store ")
+                    Span(:class "text-cyan-500" "Local")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Key ")
+                    Span(:class "text-yellow-600" "\"user\"")
+                    Span(:class "text-cyan-500" "}}\n\n")
+                    Span(:class "text-gray-500" "; Response\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "StorageGetComplete ")
+                    Span(:class "text-cyan-500" "id ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Found ")
+                    Span(:class "text-cyan-500" "userData")
+                    Span(:class "text-cyan-500" "}}")
+                  )
+                )
+              )
+
+              Div(:class "p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Console I/O (Node.js)")
+                P(:class "text-gray-400 text-sm mb-2" "Print output and read input")
+                Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
+                  Code(:class "text-sm leading-relaxed"
+                    Span(:class "text-gray-500" "; Print\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Print ")
+                    Span(:class "text-cyan-500" "id ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Message ")
+                    Span(:class "text-yellow-600" "\"Hello!\"")
+                    Span(:class "text-cyan-500" "}}\n\n")
+                    Span(:class "text-gray-500" "; Read line\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "ReadLine ")
+                    Span(:class "text-cyan-500" "id")
+                    Span(:class "text-cyan-500" "}\n\n")
+                    Span(:class "text-gray-500" "; Response\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "ReadLineComplete ")
+                    Span(:class "text-cyan-500" "id ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Text ")
+                    Span(:class "text-yellow-600" "\"input\"")
+                    Span(:class "text-cyan-500" "}}")
+                  )
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Example: Timer with State Update")
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; Enqueue a timer effect\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"StartTimer\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "StartTimer\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Program ")
+                  Span(:class "text-cyan-500" "app_\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "Effects ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Pending ")
+                  Span(:class "text-cyan-500" "p..")
+                  Span(:class "text-cyan-500" "} ")
+                  Span(:class "text-cyan-500" "inbox_")
+                  Span(:class "text-cyan-500" "}}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Program ")
+                  Span(:class "text-cyan-500" "app_\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Effects\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "Pending ")
+                  Span(:class "text-cyan-500" "p.. ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Timer ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "FreshId")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Delay ")
+                  Span(:class "text-green-500" "2000")
+                  Span(:class "text-cyan-500" "}}}\n")
+                  Span(:class "text-cyan-500" "      inbox_")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "  ")
+                  Span(:class "text-green-500" "10")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-gray-500" "; Process timer completion\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"TimerComplete\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Program ")
+                  Span(:class "text-cyan-500" "app_\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Effects ")
+                  Span(:class "text-cyan-500" "pending_\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "Inbox\n")
+                  Span(:class "text-cyan-500" "        {")
+                  Span(:class "text-cyan-500" "TimerComplete ")
+                  Span(:class "text-cyan-500" "id_ ")
+                  Span(:class "text-cyan-500" "now_")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "        rest..")
+                  Span(:class "text-cyan-500" "}}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Program\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "DoSomething ")
+                  Span(:class "text-cyan-500" "app_")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Effects ")
+                  Span(:class "text-cyan-500" "pending_ ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Inbox ")
+                  Span(:class "text-cyan-500" "rest..")
+                  Span(:class "text-cyan-500" "}}}\n")
+                  Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "More Effect Types")
+            P(:class "text-gray-300 leading-relaxed"
+              "Syma supports many more effect types including:"
+            )
+            Ul(:class "text-gray-300 space-y-2 ml-6"
+              Li(Span(:class "text-cyan-400 font-semibold" "WebSocket: ") "Real-time bidirectional communication")
+              Li(Span(:class "text-cyan-400 font-semibold" "Animation Frame: ") "Smooth 60fps animations")
+              Li(Span(:class "text-cyan-400 font-semibold" "Clipboard: ") "Read and write clipboard data")
+              Li(Span(:class "text-cyan-400 font-semibold" "Navigation: ") "Change browser URL")
+              Li(Span(:class "text-cyan-400 font-semibold" "File I/O: ") "Read and write files (Node.js)")
+              Li(Span(:class "text-cyan-400 font-semibold" "Random: ") "Generate random numbers")
+            )
+            P(:class "text-gray-300 leading-relaxed mt-4"
+              "See the "
+              A(:href "https://github.com/SymaLang/syma/blob/main/docs/LANGUAGE.md#11-symbolic-effects-system" :class "text-cyan-400 hover:text-cyan-300 underline"
+                "complete effects documentation"
+              )
+              " for all available effect types and their signatures."
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
+            Div(:class "grid md:grid-cols-2 gap-4"
+              A(:href "/docs/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "💡")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Examples")
+                P(:class "text-gray-400 text-sm" "See complete applications using effects")
+              )
+              A(:href "/docs/api" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "📚")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "API Reference")
+                P(:class "text-gray-400 text-sm" "Full documentation of all primitives")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

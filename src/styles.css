@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Custom Scrollbar Styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(55 65 81) rgb(17 24 39);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(17 24 39);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(55 65 81);
+  border-radius: 4px;
+  border: 2px solid rgb(17 24 39);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(75 85 99);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: rgb(34 211 238);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}

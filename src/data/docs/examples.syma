@@ -1,0 +1,299 @@
+{Module Data/Docs/Examples
+  {Exports ExamplesDoc}
+  {Defs
+    {ExamplesDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "Examples"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Practical examples demonstrating Syma's capabilities across different paradigms."
+            )
+          )
+
+          Div(:class "bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-6"
+            Div(:class "flex gap-3"
+              Div(:class "text-2xl" "📖")
+              Div(:class "space-y-2"
+                P(:class "font-semibold text-cyan-400" "Comprehensive Examples")
+                P(:class "text-gray-300 leading-relaxed"
+                  "For detailed, interactive examples with full explanations, see the "
+                  A(:href "/docs/overview-notebook" :class "text-cyan-400 hover:text-cyan-300 underline font-semibold" "Syma Overview Notebook")
+                  ". It includes:"
+                )
+                Ul(:class "text-gray-300 space-y-1 ml-6 mt-2"
+                  Li("Functional evaluation with map, filter, and fold")
+                  Li("Logic programming (Socrates example)")
+                  Li("Imperative DSL with static analysis")
+                  Li("OOP implementation with inheritance and dynamic dispatch")
+                  Li("And much more!")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Quick Examples")
+            P(:class "text-gray-300 leading-relaxed"
+              "Here are a few quick examples to get you started:"
+            )
+          )
+
+          Div(:class "space-y-6"
+            Div(:class "space-y-3"
+              H3(:class "text-2xl font-semibold text-cyan-400" "1. Functional Map")
+              P(:class "text-gray-300"
+                "Transform all elements in a list:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm leading-relaxed"
+                  Code(
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"Map\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" ".. ")
+                    Span(:class "text-cyan-500" "Map ")
+                    Span(:class "text-cyan-500" "fn_ ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "item_ ..")
+                    Span(:class "text-cyan-500" "}}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" ".. ")
+                    Span(:class "text-cyan-500" "fn_")
+                    Span(:class "text-cyan-500" "(")
+                    Span(:class "text-cyan-500" "item_")
+                    Span(:class "text-cyan-500" ") ")
+                    Span(:class "text-cyan-500" "Map ")
+                    Span(:class "text-cyan-500" "fn_ ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "..")
+                    Span(:class "text-cyan-500" "}}\n")
+                    Span(:class "text-cyan-500" "  ")
+                    Span(:class "text-yellow-400" ":innermost\n")
+                    Span(:class "text-cyan-500" "}\n\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"Map/End\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" ".. ")
+                    Span(:class "text-cyan-500" "Map ")
+                    Span(:class "text-cyan-500" "fn_ ")
+                    Span(:class "text-cyan-500" "{}}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "..")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "}\n\n")
+                    Span(:class "text-gray-500" "; Usage\n")
+                    Span(:class "text-cyan-500" "Map")
+                    Span(:class "text-cyan-500" "(")
+                    Span(:class "text-cyan-500" "Inc")
+                    Span(:class "text-cyan-500" ", {")
+                    Span(:class "text-green-500" "1 ")
+                    Span(:class "text-green-500" "2 ")
+                    Span(:class "text-green-500" "3")
+                    Span(:class "text-cyan-500" "})")
+                  )
+                )
+              )
+            )
+
+            Div(:class "space-y-3"
+              H3(:class "text-2xl font-semibold text-cyan-400" "2. Pattern-Based Todo Filter")
+              P(:class "text-gray-300"
+                "Filter todos by completion status:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm leading-relaxed"
+                  Code(
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"FilterCompleted\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Filter ")
+                    Span(:class "text-cyan-500" "Completed\n")
+                    Span(:class "text-cyan-500" "    {")
+                    Span(:class "text-cyan-500" "Todos\n")
+                    Span(:class "text-cyan-500" "      before..\n")
+                    Span(:class "text-cyan-500" "      {")
+                    Span(:class "text-cyan-500" "Todo ")
+                    Span(:class "text-cyan-500" "id_ ")
+                    Span(:class "text-cyan-500" "text_ ")
+                    Span(:class "text-cyan-500" "False")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "      after..")
+                    Span(:class "text-cyan-500" "}}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Filter ")
+                    Span(:class "text-cyan-500" "Completed\n")
+                    Span(:class "text-cyan-500" "    {")
+                    Span(:class "text-cyan-500" "Todos ")
+                    Span(:class "text-cyan-500" "before.. ")
+                    Span(:class "text-cyan-500" "after..")
+                    Span(:class "text-cyan-500" "}}\n")
+                    Span(:class "text-cyan-500" "}\n\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"FilterCompleted/End\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Filter ")
+                    Span(:class "text-cyan-500" "Completed ")
+                    Span(:class "text-cyan-500" "todos_")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  ")
+                    Span(:class "text-cyan-500" "todos_\n")
+                    Span(:class "text-cyan-500" "}")
+                  )
+                )
+              )
+            )
+
+            Div(:class "space-y-3"
+              H3(:class "text-2xl font-semibold text-cyan-400" "3. State Machine with Pattern Matching")
+              P(:class "text-gray-300"
+                "Implement a traffic light state machine:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm leading-relaxed"
+                  Code(
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"Red→Green\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Light ")
+                    Span(:class "text-cyan-500" "Red")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Light ")
+                    Span(:class "text-cyan-500" "Green")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "}\n\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"Green→Yellow\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Light ")
+                    Span(:class "text-cyan-500" "Green")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Light ")
+                    Span(:class "text-cyan-500" "Yellow")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "}\n\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"Yellow→Red\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Light ")
+                    Span(:class "text-cyan-500" "Yellow")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Light ")
+                    Span(:class "text-cyan-500" "Red")
+                    Span(:class "text-cyan-500" "}\n")
+                    Span(:class "text-cyan-500" "}")
+                  )
+                )
+              )
+            )
+
+            Div(:class "space-y-3"
+              H3(:class "text-2xl font-semibold text-cyan-400" "4. Recursive Tree Traversal")
+              P(:class "text-gray-300"
+                "Count all nodes in a tree:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm leading-relaxed"
+                  Code(
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"CountNodes/Leaf\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Count ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Leaf ")
+                    Span(:class "text-cyan-500" "_")
+                    Span(:class "text-cyan-500" "}}\n")
+                    Span(:class "text-cyan-500" "  ")
+                    Span(:class "text-green-500" "1\n")
+                    Span(:class "text-cyan-500" "}\n\n")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-yellow-600" "\"CountNodes/Branch\"\n")
+                    Span(:class "text-cyan-500" "  {")
+                    Span(:class "text-cyan-500" "Count ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Branch ")
+                    Span(:class "text-cyan-500" "_ ")
+                    Span(:class "text-cyan-500" "left_ ")
+                    Span(:class "text-cyan-500" "right_")
+                    Span(:class "text-cyan-500" "}}\n")
+                    Span(:class "text-cyan-500" "  ")
+                    Span(:class "text-cyan-500" "Add")
+                    Span(:class "text-cyan-500" "(")
+                    Span(:class "text-green-500" "1")
+                    Span(:class "text-cyan-500" ", ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Count ")
+                    Span(:class "text-cyan-500" "left_")
+                    Span(:class "text-cyan-500" "}, ")
+                    Span(:class "text-cyan-500" "{")
+                    Span(:class "text-cyan-500" "Count ")
+                    Span(:class "text-cyan-500" "right_")
+                    Span(:class "text-cyan-500" "})\n")
+                    Span(:class "text-cyan-500" "  ")
+                    Span(:class "text-yellow-400" ":innermost\n")
+                    Span(:class "text-cyan-500" "}")
+                  )
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Learn More")
+            P(:class "text-gray-300 leading-relaxed"
+              "These are just scratching the surface. For comprehensive examples including:"
+            )
+            Ul(:class "text-gray-300 space-y-2 ml-6"
+              Li("Unary arithmetic with multiplication implementation")
+              Li("Functional programming with higher-order functions")
+              Li("Logic programming and theorem proving")
+              Li("Building a complete imperative DSL with error checking")
+              Li("Implementing OOP with classes and inheritance")
+              Li("Homoiconicity and code-as-data patterns")
+            )
+            P(:class "text-gray-300 leading-relaxed mt-4"
+              "Visit the "
+              A(:href "/docs/overview-notebook" :class "text-cyan-400 hover:text-cyan-300 underline font-semibold"
+                "Syma Overview Notebook"
+              )
+              " for interactive, detailed examples with full explanations."
+            )
+          )
+
+          Div(:class "space-y-4 pt-8 border-t border-gray-800"
+            H2(:class "text-3xl font-bold text-gray-200" "Community Examples")
+            P(:class "text-gray-300 leading-relaxed"
+              "Check out what the community is building:"
+            )
+            Div(:class "grid md:grid-cols-2 gap-4"
+              A(:href "https://github.com/SymaLang/syma/tree/main/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "💻")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Official Examples")
+                P(:class "text-gray-400 text-sm" "Explore the examples directory in the GitHub repo")
+              )
+              A(:href "https://github.com/SymaLang/syma/discussions/categories/show-and-tell" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "🎨")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Community Showcase")
+                P(:class "text-gray-400 text-sm" "See what others are building with Syma")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

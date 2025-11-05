@@ -1,0 +1,347 @@
+{Module Data/Docs/UIBasics
+  {Exports UIBasicsDoc}
+  {Defs
+    {UIBasicsDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "UI Development"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Build reactive user interfaces with Syma's symbolic projection system."
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "The Big Picture")
+            P(:class "text-gray-300 leading-relaxed"
+              "UI in Syma is built through two normalization cycles:"
+            )
+            Div(:class "space-y-3"
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "1")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Data Layer")
+                  P(:class "text-gray-400 text-sm" "Your rules normalize the program state to a fixed point — this is your \"store\" or \"model\"")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "2")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "UI Layer")
+                  P(:class "text-gray-400 text-sm" "Projection rules normalize UI expressions, transforming symbolic data into DOM")
+                )
+              )
+            )
+
+            Div(:class "bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-6 mt-4"
+              Div(:class "flex gap-3"
+                Div(:class "text-2xl" "💡")
+                P(:class "text-gray-300 leading-relaxed"
+                  "Reactivity in Syma is just a "
+                  Span(:class "text-cyan-400 font-semibold" "second normalization cycle")
+                  ". After the main normalization stabilizes, the projector runs its own normalization with "
+                  Span(:class "text-cyan-400 font-mono" "{Project}")
+                  " rules, producing fresh DOM."
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Projection Rules")
+            P(:class "text-gray-300 leading-relaxed"
+              "Projection rules use the "
+              Span(:class "text-cyan-400 font-mono" ":project")
+              " marker to transform symbolic data into DOM elements. The "
+              Span(:class "text-cyan-400 font-mono" ":with")
+              " clause lets you bind data from the Program context."
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; Define a projection rule\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"CounterView\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-yellow-400" ":project ")
+                  Span(:class "text-cyan-500" "CounterView")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "  Div")
+                  Span(:class "text-cyan-500" "(:class ")
+                  Span(:class "text-yellow-600" "\"counter\"\n")
+                  Span(:class "text-cyan-500" "    ")
+                  Span(:class "text-yellow-600" "\"Count: \" ")
+                  Span(:class "text-cyan-500" "count_")
+                  Span(:class "text-cyan-500" ")\n")
+                  Span(:class "text-cyan-500" "  ")
+                  Span(:class "text-yellow-400" ":with ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Program .. {")
+                  Span(:class "text-cyan-500" "State .. {")
+                  Span(:class "text-cyan-500" "Counter ")
+                  Span(:class "text-cyan-500" "count_")
+                  Span(:class "text-cyan-500" "} ..} ..}\n")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-gray-500" "; Use it in your UI\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Div ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Project ")
+                  Span(:class "text-cyan-500" "CounterView")
+                  Span(:class "text-cyan-500" "}}")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "HTML Elements")
+            P(:class "text-gray-300 leading-relaxed"
+              "Syma provides symbolic representations of HTML elements. These are just symbols that the projector knows how to render:"
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-cyan-500" "Div")
+                  Span(:class "text-cyan-500" "(:class ")
+                  Span(:class "text-yellow-600" "\"container\"\n")
+                  Span(:class "text-cyan-500" "  H1")
+                  Span(:class "text-cyan-500" "(")
+                  Span(:class "text-yellow-600" "\"Title\"")
+                  Span(:class "text-cyan-500" ")\n")
+                  Span(:class "text-cyan-500" "  P")
+                  Span(:class "text-cyan-500" "(:class ")
+                  Span(:class "text-yellow-600" "\"text-gray-400\" ")
+                  Span(:class "text-yellow-600" "\"Content\"")
+                  Span(:class "text-cyan-500" ")\n")
+                  Span(:class "text-cyan-500" "  Button")
+                  Span(:class "text-cyan-500" "(\n")
+                  Span(:class "text-cyan-500" "    ")
+                  Span(:class "text-yellow-400" ":onClick ")
+                  Span(:class "text-cyan-500" "Increment\n")
+                  Span(:class "text-cyan-500" "    ")
+                  Span(:class "text-yellow-400" ":class ")
+                  Span(:class "text-yellow-600" "\"btn\"\n")
+                  Span(:class "text-cyan-500" "    ")
+                  Span(:class "text-yellow-600" "\"Click Me\"")
+                  Span(:class "text-cyan-500" ")\n")
+                  Span(:class "text-cyan-500" ")")
+                )
+              )
+            )
+
+            P(:class "text-gray-300 leading-relaxed mt-4"
+              "Attributes start with "
+              Span(:class "text-cyan-400 font-mono" ":")
+              ". Event handlers like "
+              Span(:class "text-cyan-400 font-mono" ":onClick")
+              " take a symbolic action that gets wrapped in "
+              Span(:class "text-cyan-400 font-mono" "{Apply}")
+              "."
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Event Handling")
+            P(:class "text-gray-300 leading-relaxed"
+              "When a user interacts with your UI, Syma wraps the current program in "
+              Span(:class "text-cyan-400 font-mono" "{Apply action state}")
+              " and normalizes it. Write rules to handle these actions:"
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; Handle increment action\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"Inc\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "Inc ")
+                  Span(:class "text-cyan-500" "State")
+                  Span(:class "text-cyan-500" "(.. {")
+                  Span(:class "text-cyan-500" "Counter ")
+                  Span(:class "text-cyan-500" "c_")
+                  Span(:class "text-cyan-500" "} ..)}\n")
+                  Span(:class "text-cyan-500" "  State")
+                  Span(:class "text-cyan-500" "(.. {")
+                  Span(:class "text-cyan-500" "Counter ")
+                  Span(:class "text-cyan-500" "Add")
+                  Span(:class "text-cyan-500" "(")
+                  Span(:class "text-cyan-500" "c_ ")
+                  Span(:class "text-green-500" "1")
+                  Span(:class "text-cyan-500" ")} ..)\n")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-gray-500" "; Lift Apply through nested structures\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"LiftApplyThroughApp\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "act_ ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "App ")
+                  Span(:class "text-cyan-500" "st_ ")
+                  Span(:class "text-cyan-500" "ui_")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "App ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "act_ ")
+                  Span(:class "text-cyan-500" "st_")
+                  Span(:class "text-cyan-500" "} ")
+                  Span(:class "text-cyan-500" "ui_")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "  ")
+                  Span(:class "text-green-500" "100  ")
+                  Span(:class "text-gray-500" "; High priority for lifters\n")
+                  Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Complete Example")
+            P(:class "text-gray-300 leading-relaxed"
+              "Here's a complete counter application showing all the pieces together:"
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Module ")
+                  Span(:class "text-cyan-500" "App/Counter\n\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Program\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "App\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "State {")
+                  Span(:class "text-cyan-500" "Counter ")
+                  Span(:class "text-green-500" "0")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "UI {")
+                  Span(:class "text-cyan-500" "Project ")
+                  Span(:class "text-cyan-500" "CounterView")
+                  Span(:class "text-cyan-500" "}}}\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Effects {")
+                  Span(:class "text-cyan-500" "Pending")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Inbox")
+                  Span(:class "text-cyan-500" "}}}\n\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Rules\n")
+                  Span(:class "text-cyan-500" "    ")
+                  Span(:class "text-gray-500" "; Projection\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"CounterView\"\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-yellow-400" ":project ")
+                  Span(:class "text-cyan-500" "CounterView")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "      Div")
+                  Span(:class "text-cyan-500" "(:class ")
+                  Span(:class "text-yellow-600" "\"space-y-4\"\n")
+                  Span(:class "text-cyan-500" "        H1")
+                  Span(:class "text-cyan-500" "(")
+                  Span(:class "text-yellow-600" "\"Counter: \" ")
+                  Span(:class "text-cyan-500" "count_")
+                  Span(:class "text-cyan-500" ")\n")
+                  Span(:class "text-cyan-500" "        Button")
+                  Span(:class "text-cyan-500" "(")
+                  Span(:class "text-yellow-400" ":onClick ")
+                  Span(:class "text-cyan-500" "Inc ")
+                  Span(:class "text-yellow-600" "\"+\"")
+                  Span(:class "text-cyan-500" "))\n")
+                  Span(:class "text-cyan-500" "      ")
+                  Span(:class "text-yellow-400" ":with ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Program .. {")
+                  Span(:class "text-cyan-500" "State .. {")
+                  Span(:class "text-cyan-500" "Counter ")
+                  Span(:class "text-cyan-500" "count_")
+                  Span(:class "text-cyan-500" "} ..} ..}}\n\n")
+                  Span(:class "text-cyan-500" "    ")
+                  Span(:class "text-gray-500" "; Action handler\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"Inc\"\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "Inc ")
+                  Span(:class "text-cyan-500" "State")
+                  Span(:class "text-cyan-500" "(.. {")
+                  Span(:class "text-cyan-500" "Counter ")
+                  Span(:class "text-cyan-500" "c_")
+                  Span(:class "text-cyan-500" "} ..)}\n")
+                  Span(:class "text-cyan-500" "      State")
+                  Span(:class "text-cyan-500" "(.. {")
+                  Span(:class "text-cyan-500" "Counter ")
+                  Span(:class "text-cyan-500" "Add")
+                  Span(:class "text-cyan-500" "(")
+                  Span(:class "text-cyan-500" "c_ ")
+                  Span(:class "text-green-500" "1")
+                  Span(:class "text-cyan-500" ")} ..)}\n\n")
+                  Span(:class "text-cyan-500" "    ")
+                  Span(:class "text-gray-500" "; Lifter\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"LiftApply\"\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "act_ ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "App ")
+                  Span(:class "text-cyan-500" "st_ ")
+                  Span(:class "text-cyan-500" "ui_")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "      {")
+                  Span(:class "text-cyan-500" "App ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Apply ")
+                  Span(:class "text-cyan-500" "act_ ")
+                  Span(:class "text-cyan-500" "st_")
+                  Span(:class "text-cyan-500" "} ")
+                  Span(:class "text-cyan-500" "ui_")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "      ")
+                  Span(:class "text-green-500" "100")
+                  Span(:class "text-cyan-500" "}}}\n")
+                  Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
+            Div(:class "grid md:grid-cols-2 gap-4"
+              A(:href "/docs/effects" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "🎭")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Effects System")
+                P(:class "text-gray-400 text-sm" "Handle I/O with symbolic effects")
+              )
+              A(:href "/docs/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "💡")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Examples")
+                P(:class "text-gray-400 text-sm" "See complete applications in action")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

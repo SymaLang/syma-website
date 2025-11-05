@@ -1,0 +1,8 @@
+{Package
+  {Name "syma-website"}
+  {Engine "^0.9.0"}
+  {Entry "src/main.syma"}
+  {Deps
+    {Dep "Syma/SimpleUIRouter" "fs:../syma-simple-router"}
+  }
+}

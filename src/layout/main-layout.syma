@@ -1,0 +1,26 @@
+{Module Layout/Main
+  {Import Syma/SimpleUIRouter as Router macro {Open Slot}}
+  {Import Layout/Header from "../components/header.syma" {Open HeaderComponent}}
+  {Import Layout/Footer from "../components/footer.syma" {Open FooterComponent}}
+  
+  {Exports MainLayout}
+
+  {Rules
+    {R MainLayout {MainLayout slot_}
+      {Div :class "min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-gray-100"
+        {Div :class "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          ; Header/Navigation
+          {HeaderComponent}
+
+          ; Main Content
+          {Main :class "py-16"
+            {Slot slot_}
+          }
+
+          ; Footer
+          {FooterComponent}
+        }
+      }
+    }
+  }
+}

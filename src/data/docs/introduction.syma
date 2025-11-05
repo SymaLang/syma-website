@@ -1,0 +1,163 @@
+{Module Data/Docs/Introduction
+  {Exports IntroductionDoc}
+  {Defs
+    {IntroductionDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          ; Hero Section
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "Introduction to Syma"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Welcome to Syma — a symbolic term-rewriting language that reimagines programming through pattern matching and normalization."
+            )
+          )
+
+          ; What is Syma
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "What is Syma?")
+            P(:class "text-gray-300 leading-relaxed"
+              "Syma is a symbolic programming language based on "
+              Span(:class "text-cyan-400 font-semibold" "term rewriting")
+              ". Unlike traditional languages where you write functions that execute, in Syma you write "
+              Span(:class "text-cyan-400 font-semibold" "rules")
+              " that "
+              Span(:class "text-cyan-400 font-semibold" "match patterns")
+              " and "
+              Span(:class "text-cyan-400 font-semibold" "rewrite terms")
+              ". The runtime repeatedly applies these rules until the program reaches a stable state — called a "
+              Span(:class "text-cyan-400 font-semibold" "normal form")
+              "."
+            )
+
+            Div(:class "bg-yellow-900/20 border border-yellow-700/50 rounded-lg p-6"
+              Div(:class "flex gap-3"
+                Div(:class "text-2xl" "⚠️")
+                Div(:class "space-y-2"
+                  P(:class "font-semibold text-yellow-400" "Important: Syma is NOT Lisp")
+                  P(:class "text-gray-300 leading-relaxed"
+                    "Syma may look superficially Lisp-like because of its minimal syntax, but it's fundamentally different. "
+                    "In Lisp, you evaluate functions. In Syma, you rewrite trees. "
+                    "There is no eval, no environment, no call stack, no macroexpansion — only pattern matching and normalization."
+                  )
+                  P(:class "text-gray-300 leading-relaxed"
+                    "In spirit, Syma is closer to Maude, ELAN, and Wolfram Mathematica, but built as a general-purpose programming language."
+                  )
+                )
+              )
+            )
+          )
+
+          ; Key Features
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Key Features")
+            Div(:class "grid md:grid-cols-2 gap-4"
+              Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-3xl mb-3" "🔄")
+                H3(:class "text-xl font-semibold text-cyan-400 mb-2" "Term Rewriting")
+                P(:class "text-gray-400 leading-relaxed"
+                  "Rules match patterns and rewrite terms. Computation is normalization until the structure stabilizes."
+                )
+              )
+              Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-3xl mb-3" "🎯")
+                H3(:class "text-xl font-semibold text-cyan-400 mb-2" "Pattern Matching")
+                P(:class "text-gray-400 leading-relaxed"
+                  "Powerful pattern matching with variables, rest patterns, regex, alternation, and greedy anchors."
+                )
+              )
+              Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-3xl mb-3" "🧩")
+                H3(:class "text-xl font-semibold text-cyan-400 mb-2" "Homoiconic")
+                P(:class "text-gray-400 leading-relaxed"
+                  "Code is data is runtime. Rules can rewrite other rules. Build DSLs, type systems, and paradigms as libraries."
+                )
+              )
+              Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-3xl mb-3" "🌐")
+                H3(:class "text-xl font-semibold text-cyan-400 mb-2" "Multiplatform")
+                P(:class "text-gray-400 leading-relaxed"
+                  "Runs in browsers, Node.js, and beyond. Same code everywhere with platform-agnostic effects."
+                )
+              )
+            )
+          )
+
+          ; Quick Example
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Your First Syma Program")
+            P(:class "text-gray-300 leading-relaxed"
+              "Here's a simple example showing Syma's term rewriting in action:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; Define a rule to add unary numbers\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"AddUnary\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Add ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "a..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "b..")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "a.. b..")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-gray-500" "; Use it\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Add ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Unary | | |")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary | |")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-gray-500" "; → {Unary | | | | |}")
+                )
+              )
+            )
+            P(:class "text-gray-300 leading-relaxed"
+              "This rule matches two unary numbers and combines them by concatenating their contents. "
+              "The "
+              Span(:class "text-cyan-400 font-mono" "a..")
+              " and "
+              Span(:class "text-cyan-400 font-mono" "b..")
+              " are "
+              Span(:class "text-cyan-400 font-semibold" "rest variables")
+              " that match zero or more elements."
+            )
+          )
+
+          ; Next Steps
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
+            Div(:class "grid md:grid-cols-3 gap-4"
+              A(:href "/docs/installation" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "📦")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Installation")
+                P(:class "text-gray-400 text-sm" "Get Syma installed on your system")
+              )
+              A(:href "/docs/term-rewriting" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "🔄")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Term Rewriting")
+                P(:class "text-gray-400 text-sm" "Learn the core concept behind Syma")
+              )
+              A(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-purple-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "📖")
+                H3(:class "text-xl font-semibold text-purple-400 group-hover:text-purple-300 mb-2" "Syntax Guide")
+                P(:class "text-gray-400 text-sm" "Master Syma's syntax and structure")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

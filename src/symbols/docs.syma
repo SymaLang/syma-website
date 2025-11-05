@@ -1,0 +1,3 @@
+{Module Symbols/Docs
+  {Exports InitialDocs Docs Category Doc Slug Title Content}
+}

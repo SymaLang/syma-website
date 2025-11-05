@@ -1,0 +1,219 @@
+{Module Data/Docs/Modules
+  {Exports ModulesDoc}
+  {Defs
+    {ModulesDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "Module System"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Organize and compose your Syma code with modules, imports, and exports."
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Module Structure")
+            P(:class "text-gray-300 leading-relaxed"
+              "A Syma module is a self-contained unit of code:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Module ")
+                  Span(:class "text-cyan-500" "My/Module\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Export ")
+                  Span(:class "text-cyan-500" "Symbol1 Symbol2")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Import ")
+                  Span(:class "text-cyan-500" "Other/Module ")
+                  Span(:class "text-yellow-400" "as ")
+                  Span(:class "text-cyan-500" "Other")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Defs\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "Constant ")
+                  Span(:class "text-green-500" "42")
+                  Span(:class "text-cyan-500" "}")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Rules\n")
+                  Span(:class "text-cyan-500" "    {")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"MyRule\" ")
+                  Span(:class "text-cyan-500" "pattern replacement")
+                  Span(:class "text-cyan-500" "}")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Imports")
+            P(:class "text-gray-300 leading-relaxed"
+              "Import symbols from other modules:"
+            )
+
+            Div(:class "space-y-4"
+              Div(:class "p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Standard Import")
+                Div(:class "bg-gray-950 border border-gray-800 rounded p-4"
+                  Pre(:class "font-mono text-sm"
+                    Code(
+                      Span(:class "text-cyan-500" "{")
+                      Span(:class "text-cyan-500" "Import ")
+                      Span(:class "text-cyan-500" "Core/KV ")
+                      Span(:class "text-yellow-400" "as ")
+                      Span(:class "text-cyan-500" "KV")
+                      Span(:class "text-cyan-500" "}\n")
+                      Span(:class "text-gray-500" "; Use as: KV/Get, KV/Set")
+                    )
+                  )
+                )
+              )
+
+              Div(:class "p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Open Import")
+                Div(:class "bg-gray-950 border border-gray-800 rounded p-4"
+                  Pre(:class "font-mono text-sm"
+                    Code(
+                      Span(:class "text-cyan-500" "{")
+                      Span(:class "text-cyan-500" "Import ")
+                      Span(:class "text-cyan-500" "Core/KV ")
+                      Span(:class "text-yellow-400" "open")
+                      Span(:class "text-cyan-500" "}\n")
+                      Span(:class "text-gray-500" "; Use unqualified: Get, Set\n")
+                      Span(:class "text-gray-500" "; (Compiled to fully qualified)")
+                    )
+                  )
+                )
+              )
+
+              Div(:class "p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Selective Import")
+                Div(:class "bg-gray-950 border border-gray-800 rounded p-4"
+                  Pre(:class "font-mono text-sm"
+                    Code(
+                      Span(:class "text-cyan-500" "{")
+                      Span(:class "text-cyan-500" "Import ")
+                      Span(:class "text-cyan-500" "Router ")
+                      Span(:class "text-cyan-500" "{")
+                      Span(:class "text-yellow-400" "Open ")
+                      Span(:class "text-cyan-500" "Navigate CurrentRoute")
+                      Span(:class "text-cyan-500" "}}\n")
+                      Span(:class "text-gray-500" "; Only these are unqualified")
+                    )
+                  )
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Symbol Qualification")
+
+            Div(:class "bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-6"
+              Div(:class "flex gap-3"
+                Div(:class "text-2xl" "💡")
+                Div(:class "space-y-2"
+                  P(:class "font-semibold text-cyan-400" "Two-Stage Process")
+                  P(:class "text-gray-300 leading-relaxed"
+                    Span(:class "text-cyan-400 font-semibold" "Source Code:")
+                    " Write unqualified symbols with "
+                    Span(:class "text-cyan-400 font-mono" "open")
+                    " imports for clean, readable code."
+                  )
+                  P(:class "text-gray-300 leading-relaxed"
+                    Span(:class "text-cyan-400 font-semibold" "Compiled Output:")
+                    " All symbols are "
+                    Span(:class "text-cyan-400 font-semibold" "fully qualified")
+                    " for runtime safety and no naming conflicts."
+                  )
+                )
+              )
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 mt-4"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; Source code (what you write)\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Import ")
+                  Span(:class "text-cyan-500" "Core/KV ")
+                  Span(:class "text-yellow-400" "open")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"GetValue\" ")
+                  Span(:class "text-cyan-500" "pattern ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Get ")
+                  Span(:class "text-cyan-500" "key_ ")
+                  Span(:class "text-cyan-500" "state_")
+                  Span(:class "text-cyan-500" "}}\n\n")
+                  Span(:class "text-gray-500" "; Compiled output (runtime)\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"MyModule/GetValue\" ")
+                  Span(:class "text-cyan-500" "pattern ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Core/KV/Get ")
+                  Span(:class "text-cyan-500" "key_ ")
+                  Span(:class "text-cyan-500" "state_")
+                  Span(:class "text-cyan-500" "}}")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "RuleRules (Macro Import)")
+            P(:class "text-gray-300 leading-relaxed"
+              "Import meta-rules that transform your rules at compile time:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Import ")
+                  Span(:class "text-cyan-500" "Sugar ")
+                  Span(:class "text-yellow-400" "macro")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-gray-500" "; Apply Sugar's RuleRules to this module's rules")
+                )
+              )
+            )
+            P(:class "text-gray-300 leading-relaxed mt-2"
+              "The "
+              Span(:class "text-cyan-400 font-mono" "macro")
+              " modifier enables using DSLs and syntactic sugar from imported modules."
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
+            Div(:class "grid md:grid-cols-2 gap-4"
+              A(:href "/docs/ui-basics" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "⚡")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "UI Development")
+                P(:class "text-gray-400 text-sm" "Build reactive user interfaces with Syma")
+              )
+              A(:href "/docs/effects" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "🎭")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Effects System")
+                P(:class "text-gray-400 text-sm" "Handle I/O with symbolic effects")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

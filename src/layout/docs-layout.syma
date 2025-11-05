@@ -1,0 +1,35 @@
+{Module Layout/Docs
+  {Import Syma/SimpleUIRouter as Router macro {Open Slot}}
+  {Import Layout/Header from "../components/header.syma" {Open HeaderComponent}}
+  {Import Layout/Footer from "../components/footer.syma" {Open FooterComponent}}
+  {Import Layout/DocsSidebar from "../components/docs-sidebar.syma" {Open DocsSidebarComponent}}
+
+  {Exports DocsLayout}
+
+  {Rules
+    {R DocsLayout {DocsLayout slot_}
+      {Div :class "min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-gray-100"
+        {Div :class "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          ; Header/Navigation
+          {HeaderComponent}
+
+          ; Docs Content with Sidebar
+          {Div :class "flex gap-8 py-8"
+            ; Sidebar
+            {DocsSidebarComponent}
+
+            ; Main Content Area
+            {Main :class "flex-1 min-w-0"
+              {Article :class "prose prose-invert prose-cyan max-w-none"
+                {Slot slot_}
+              }
+            }
+          }
+
+          ; Footer
+          {FooterComponent}
+        }
+      }
+    }
+  }
+}

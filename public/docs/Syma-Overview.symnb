@@ -1,0 +1,576 @@
+{
+  "metadata": {
+    "name": "Syma Overview",
+    "created": "2025-11-01T01:25:55.804Z",
+    "modified": "2025-11-03T16:04:25.348Z",
+    "kernelName": "syma",
+    "languageInfo": {
+      "name": "syma",
+      "version": "1.0.0",
+      "fileExtension": ".syma",
+      "mimeType": "text/x-syma"
+    }
+  },
+  "cells": [
+    {
+      "id": "Ge7ObuUeb4qLOcnNOSZTF",
+      "type": "markdown",
+      "content": "# Syma Overview\n\nSyma is a symbolic term-rewriting language based on pattern matching and outermost-first default evaluation order.\n\n> ### ⚠️ **Important before you start**\n> \n> Syma may look superficially Lisp-like because of its minimal syntax, but it's not a Lisp dialect.\n> In Lisp, you evaluate functions.\n> In Syma, you rewrite trees.\n> There is no eval, no environment, no call stack, no macroexpansion — only pattern matching and normalization until the entire structure stabilizes.\n> If at any point you think “it's just Lisp but outermost-first,” stop reading and start over — you've already built the wrong intuition.\n>\n> Syma is outermost-first by default, left-to-right, rule-priority-driven term rewriting system [Wikipedia:Term Rewriting Systems](https://en.wikipedia.org/wiki/Rewriting#Term_rewriting_systems). That alone makes Lisp an invalid mental model. Don't fall in the pattern recognition trap here.\n>\n> In spirit, Syma is much closer to Maude, ELAN, and Wolfram Mathematica, but built as a general programming language, not an academic one.\n>\n> However, you **could** implement a Lisp or Scheme on top of Syma in a bunch of rules.\n\nInstead of talking theory, let me show you a few examples right away, and then talk about what makes Syma special. I won't describe every language feature here, just show you **enough** to get some feel of it.\n\nTo execute a cell, just hover over it, and press a \"Run Cell\" button in the toolbar that appears.\n\nI have claws instead of hands, so it is not possible to use notebook commands (like :rule for defining rules) and `{Plain Compounds}` in the same cell, so for each code example you will need to execute two cells: the one with :rule definitions, and the other with Syma expression. Just know that outside of the notebook rules also are completely the same to any other Syma term.\n\nThe first cell also has a `:clear` command on the top of it. Due to Syma AST being an in-memory structure, some code in this notebook has some speciall effects on it which I actually use later in the code — you will see it, not right now though. But you may want to play with cells contents before you understand what happens in memory. So when you decide to edit a code cell content yourself, rerun not only this cell, but all the cells to start from a clear slate. You can do it by pressing a blue \"Play\" button in the top toolbar.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "eapYpJD8HMJpC75kgmE-G",
+      "type": "code",
+      "content": ":clear\n\n:rule multiline\nAddUnary                           \n    {Add {Unary a..} {Unary b..}}   ; Match this shape\n->  {Unary a.. b..}                 ; If the shape matches, replace it with this\n:end",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "Evxvj85MaegkZx8z630n0",
+      "type": "code",
+      "content": "{Add {Unary | | | } {Unary | | } }",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "NGEJrcT38ktrJSuhF2DM6",
+      "type": "markdown",
+      "content": "Let me unpack what just happened, and do some explanation.\n\n## Syma atoms and rules\n\nIs Syma, the code, the data, and the runtime representation are the same thing — the AST. `{Unary | | | | | }` is the tree representing a list of symbols: Unary, |, |, |, |, |.\n\nSyma has numbers `5`, strings `\"hello\"`, and symbols `LiterallyAnythingElse` as atoms (primitives), and `{}` compounds to represent lists of atoms. Numbers, strings, symbols, and compounds together are called \"terms\". The full AST itself is a term. The rule is a term. The 🤡 is a term.\n\n(Most) Symbols don't carry any special meaning. You determine the meaning of symbols in your program by writing rules — which are also terms composed from symbols. The engine just happens to know that some terms represent transformations.\n\n> ⚠️  Even if symbol looks like a familiar word — it still does not represent that thing until you authored a rule that brings the meaning to it. `Add` itself does not define addition — it just **is**. Like a hieroglyph that looks like something familiar to you.\n\nSo now let's talk about the rule.\n\n```syma\nAddUnary                           \n    {Add {Unary a..} {Unary b..}}\n->  {Unary a.. b..} \n```\n\n`AddUnary` is a symbol that represents this rule name. Runtime does not use rule names at all, but they are useful for you as a developer, and show up in various places like debugger, trace logs, and other tooling.\n\nLet me write what this rule does in a plain English, so you could see what is going on there.\n\n**Adding two unary numbers means combining them together into a single unary**\n\nOr a bit more detailed and precise:\n\nHere is the `AddUnary` rule. If there is a compound with an `Add` symbol in the first place, and two compounds with `Unary` symbol on the first place inside of it, take everything else from compounds with `Unary` symbol, remember it as `a_` and `b_` variables, and rewrite the whole thing with a new compound. The first symbol in that compound should be `Unary`, then everything that was in the first `Unary`, and then everything that was in the second `Unary`.\n\nAnd this term:\n\n```syma\n{Add {Unary | | | } {Unary | | } }\n```\n\nMatches by that rule, so it takes `| | |` and `| |` from it, and rewrites the whole term by a new one — `{Unary | | | | | }`\n\nAnd this is basically the whole language. Even with this knowledge you just got it is already Turing-complete.\n\nNow let me show you another example, which illustrates one more important distinction between Syma and all the stuff you are familiar with:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "sveGXh_C2SFxzd2tKKdEu",
+      "type": "code",
+      "content": ":rule multiline\nMultiplyUnary/Start\n    {Mul          {Unary a..} {Unary b..}} ; When there is a {Mul} with two unaries inside\n->  {Mul {Result} {Unary a..} {Unary b..}} ; Rewrite it to a {Mul} but with the {Result} compound before unaries\n:end\n\n:rule multiline\nMultiplyUnary/Step\n    {Mul {Result res..    } {Unary stick_ a..} {Unary b..}} ; When there is a {Mul} compound of this shape, take the stick_\n->  {Mul {Result res.. b..} {Unary        a..} {Unary b..}} ; Forget the stick, and put the whole b.. to what is already in {Result}\n:end\n\n:rule multiline\nMultiplyUnary/End\n    {Mul {Result res..} {Unary} {Unary ..}} ; When the {Unary} does not contain sticks anymore, take whatever is in the {Result} and shove it into {Unary}\n->  {Unary res..}\n:end\n\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "00yCl4rpW4cI_P0SPZ3ts",
+      "type": "code",
+      "content": "{Mul {Unary | |} {Unary | | | |}}\n\n; Comment the previous line and uncomment the next one to see the full rewriting journey.\n\n; :trace verbose {Mul {Unary | |} {Unary | | | |}}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "oMR6lDUic8YtTKk9kSnYK",
+      "type": "markdown",
+      "content": "Cool stuff? Cool stuff.\n\nNow let me talk about how Syma works. Just a bit.\n\n## Normalization Cycle\n\nAs opposed to the languages you are familiar with, Syma does not \"execute functions\" (yet it can). The evaluation happens in a so-called **normalization cycle**.\n\nThe engine traverses the AST in the outermost-first leftmost-first order. It then tries to match it with every rule (well, not literally every rule, it is optimized, but you get the point), starting from the rule that was defined first to the rule that was defined last. If it finds a rule that matches, it then replaces this whole AST subtree with the replacement from the rule, and starts the normalization again from the very beginning.\n\nWhen it traverses the whole tree and no more rules were matched for any tree branches, it considers the normalization complete, in terms of term-rewriting systems, it \"normalized the AST to the **fixed point**\".\n\nThe order of traversal for this term is:\n\n```syma\n{Mul {Unary | |} {Unary | | | |}}\n```\n\nIs the following:\n```syma\n{Mul {Unary | |} {Unary | | | |}}\nMul\n{Unary | |} \nUnary\n|\n|\n{Unary | | | |}\nUnary\n|\n|\n|\n|\n```\n\nSo it goes from outer to inner, from left to right.\n\n> ⚠️  Most languages use the innermost-first evaluation strategy. `add(mul(2, 3), 5)` would first compute `mul(2, 3)`, and then `add(6, 5)`. In Syma it will first try to match the whole thing, and only then, if it did not match, will descend to the children. It is similar to lazy evaluation in functional language, but there are no functions, and no evaluation in Syma — only traversal, matching, and rewriting.\n\nIf you still didn't run the example above with `:trace verbose`, now it's time.\n\nSo when the engine runs, it runs on the whole `{Mul {Unary | |} {Unary | | | |}}` term. It immediately sees that it matches the very first rule, the `MultiplyUnary/Start`. It rewrites the whole term with a new term that includes `{Result}` compound, and restarts the normalization from the beginning.\n\nThen it sees that the `MultiplyUnary/Step` rule matched. The  `MultiplyUnary/Start` does not match anymore — it does not know anything about the `{Result}` compound. The `MultiplyUnary/Step` rule rewrites the whole term to the new one, essentially adding sticks from the second unary to the result, and removing one stick from the first unary. Rewrite happened, so the normalization restarts again.\n\n`MultiplyUnary/Step` matches again (the `a..` syntax means \"zero or more anythings\"). It shoves the content of the second unary into result again, removes the last stick from the first unary, and normalization restarts again.\n\nNow, both the first and second rules don't match. The second one does not match, because it specifically says `{Unary stick_ a..}` — match the `{Unary}` which has a `stick_` (`stick_` syntax means \"exactly one anything\") — but this unary does not contain anything anymore. So the `MultiplyUnary/End` matches instead — it has the `{Unary}` at that place, which is exactly where we are now. It rewrites the compound with the final `{Unary res...}`, taking all the sticks from the `{Result}`. But normalization starts again.\n\nFinally, the engine traverses the whole tree in the order I described, sees that no rules applied, and considers the term to be in the normal form.\n\nIn three rules we have defined the whole arithmetic operation for the unary algebra, recursion without a recursion, and a state machine.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "gljSaGtOjWNx8IKiq-sX9",
+      "type": "code",
+      "content": "{Add\n    {Mul {Unary | |} {Unary  | | }} \n    {Unary | }\n}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "GVNf8-bpNN4dsj_Sxsvu4",
+      "type": "markdown",
+      "content": "Ok, this is cool and all, but let's make it cooler.\n\nYou have reached the point of no return.\n\nAs I said, in Syma the code is data is AST. And the syntax just happen to look like Lisp s-expr, minus semantics of a meaningful head.\n\nBut if we write not a code, but AST, then nothing stops us from using different syntax for creating a same tree.\n\n## Function-like syntax\n\nLet's just say that our familiar function call syntax actually would represent a flat list, with function name being a first list element, and arguments being second and next elements.\n\nThen we can look at `{Add 1 2}` and `Add(1, 2)` as two completely equivalent forms.\n\nThat is what Syma does — it allows you to write compounds with a **function-like** notation. It does not change semantics of the program — it is a dual syntax, just because `Add(1, 2)` looks better. And you can freely mix both:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "PwugQWnsIhxs5FpJsxNdq",
+      "type": "code",
+      "content": "Add(\n    Mul(\n        {Unary | |}, \n        {Unary | |}\n    ), \n    {Unary |}\n)",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "VL5sXHrzlZ0-5UCSQijqD",
+      "type": "markdown",
+      "content": "Ok, I don't know about you, but I am tired counting sticks. Let's make Syma count them for us.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "TTPSGkOkDnUSgxJCVIIjq",
+      "type": "code",
+      "content": ":rule multiline\nToNum/Start \n    ToNum(           {Unary sticks..}) ; Same trick, but now with ().\n->  ToNum({Result 0} {Unary sticks..}) \n:end\n\n:rule multiline\nToNum/Step  \n    ToNum({Result     res_    } {Unary stick_ sticks..}) \n->  ToNum({Result Add(res_, 1)} {Unary        sticks..}) ; Yep, I am using Add here.\n:end\n\n:rule ToNum/End ToNum({Result res_} {Unary}) -> res_",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "S3R5c7X-OYnoktnm6yW1O",
+      "type": "code",
+      "content": "ToNum(\n    Add(\n        Mul(\n            {Unary | |}, \n            {Unary | |}\n        ), \n        {Unary |}\n    )\n)",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "YIW4zpDpAi7oBo-R98pQQ",
+      "type": "markdown",
+      "content": "See how I used Add() there for adding numbers? Such wow.\n\nBeing in a purely symbolic world is cool, and as you can see we can even implement math using only sticks in there, but this is so not practical my teeth hurt.\n\nSo after each normalization step there is actually one more stage that happens: **primitives folding**.\n\n## Primitives folding\n\nEngine happens to recognize some compound shapes as \"primitives\", and folds them automatically during the normalization cycle. Primitives folder is implemented as a pluggable module, so technically you can stay purely symbolic, or create the whole Wolfram Mathematica on top of Syma.\n\nSince primitive folding happens AFTER rules replace their stuff, and only on the replacement node, nothing stops us from redefining them completely:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "kaOmnlZiOoM0qHC2Rrdqx",
+      "type": "code",
+      "content": ":rule FuckAdd Add(a_ b_) -> NoAdd(a_ b_) :guard And(IsNum(a_), IsNum(b_))",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "0Cl006oTShknrDC2cEuc4",
+      "type": "code",
+      "content": "Add(1, 2)",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "czPDP7ZAD9vXUi-lkyVf5",
+      "type": "markdown",
+      "content": "And we got to the perfect point to talk about \n\n## Rule Guards\n\n```syma\n:rule FuckAdd Add(a_ b_) -> NoAdd(a_ b_) :guard And(IsNum(a_), IsNum(b_))\n```\n\nYou can specify a `:guard And(IsNum(a_), IsNum(b_))` for the rule. As you remember, the `:guard` is just a symbol in the AST.\n\nWhen the engine has matched a `Add(a_ b_)`, and the rule contains a guard, it will run a separate normalization cycle only on the guard against the universe rules, and only in the case when the guard normalizes to `True` symbol, it will replace the term. Otherwise it will consider the rule as not matched.\n\nRead that again.\n\nGuard terms, which are considered a part of rule, are being normalized by the same engine, to the fixed point, inside the main normalization cycle.\n\nThe only distinction is that rules do not rewrite the guard inside the AST — they normalize the guard in a separate tiny normalization cycle just to determine if they match or not. That is already meta territory, but still without the mutation.\n\nSo we can define rules that will match the guard, and have our own guard clauses.\n\nFor example:\n\n```syma\n:rule IsDigit {IsDigit c_} -> Not(NormalEq({IndexOf \"0123456789\" c_}, -1))\n\n:rule Test {TestIsDigit c_} -> Passed :guard {IsDigit c_}\n:rule Test {TestIsDigit c_} -> Failed :guard Not({IsDigit c_})\n```",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "0PEwsb0XPN0GrqR13vMtl",
+      "type": "code",
+      "content": ":rule IsDigit {IsDigit c_} -> Not(NormalEq({IndexOf \"0123456789\" c_}, -1))\n\n:rule Test {TestIsDigit c_} -> Passed :guard {IsDigit c_}\n:rule Test {TestIsDigit c_} -> Failed :guard Not({IsDigit c_})",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "xRlfQQDGbGrB2Y4iEDCuz",
+      "type": "code",
+      "content": "{IsDigitTests\n    {TestIsDigit \"a\"}\n    {TestIsDigit \"1\"}\n}\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "bsIaDxHh2kV6du0rr8WTy",
+      "type": "markdown",
+      "content": "## Primitives\n\nHere is a list of some primitives for you to play with.\n\nJust know that (nearly) every single thing in this list could be implemented in pure Syma — but having these defined outside is **saner** thing.\n\n> However, I couldn't keep myself from defining these two as a part of Syma-written core library:\n> ```syma\n> :rule If/True  {If True  then_ else_} -> then_\n> :rule If/False {If False then_ else_} -> else_\n> ```\n\n---\n\n**Arithmetic Operations**\n\n---\n\n| Primitive | Aliases | Signature | Returns | Notes |\n|-----------|---------|-----------|---------|-------|\n| `Add` | `+` | `[Num, Num]` | `Num` | Sum of two numbers |\n| `Sub` | `-` | `[Num, Num]` | `Num` | Difference of two numbers |\n| `Mul` | `*` | `[Num, Num]` | `Num` | Product of two numbers |\n| `Div` | `/` | `[Num, Num]` | `Num` | Quotient  |\n| `Mod` | `%` | `[Num, Num]` | `Num` | Remainder |\n| `Pow` | `^` | `[Num, Num]` | `Num` | Exponentiation (a^b) |\n| `Sqrt` | - | `[Num]` | `Num` | Square root|\n| `Abs` | - | `[Num]` | `Num` | Absolute value |\n| `Min` | - | `[Num, Num, ...]` | `Num` | Minimum of all arguments |\n| `Max` | - | `[Num, Num, ...]` | `Num` | Maximum of all arguments |\n| `Floor` | - | `[Num]` | `Num` | Round down to nearest integer |\n| `Ceil` | - | `[Num]` | `Num` | Round up to nearest integer |\n| `Round` | - | `[Num]` | `Num` | Round to nearest integer |\n\n---\n\n**String Operations**\n\n---\n\n| Primitive | Signature | Returns | Description |\n|-----------|-----------|---------|-------------|\n| `Concat` | `[Str\\|Num, ...]` | `Str` | Concatenate strings/numbers |\n| `Trim` | `[Str]` | `Str` | Remove leading/trailing whitespace |\n| `StrLen` | `[Str]` | `Num` | String length |\n| `Substring` | `[Str, Num, Num?]` | `Str` | Extract substring (start, optional end) |\n| `IndexOf` | `[Str, Str]` | `Num` | Find index of substring (-1 if not found) |\n| `SplitToChars` | `[Str]` | `Chars[Str, ...]` | Split string into individual characters |\n| `SplitBy` | `[Str, Str]` | `Strings[Str, ...]` | Split string by separator (empty separator splits into chars) |\n| `Join` | `[Str, Str\\|Num, ...]` | `Str` | Join items with separator (works with rest args) |\n\n---\n\n**Comparison Operations**\n\n---\n\n| Primitive | Aliases | Signature | Returns | Description |\n|-----------|---------|-----------|---------|-------------|\n| `Is` | `==`, `Eq` | `[Any, Any]` | `True\\|False` | Structural equality check (compares as-is, deep for calls) |\n| `IsNot` | `!=`, `Neq` | `[Any, Any]` | `True\\|False` | Structural inequality check |\n| `NormalEq` | - | `[Any, Any]` | `True\\|False` | Normalized equality (normalizes both args first, then compares) |\n| `Are` | - | `[Any, Any, ...]` | `True\\|False` |  True if ALL items equal the first value |\n| `AreNot` | - | `[Any, Any, ...]` | `True\\|False` |  True if ALL items do NOT equal the first value |\n| `AreAny` | - | `[Any, Any, ...]` | `True\\|False` |  True if ANY item equals the first value |\n| `AreAnyNot` | - | `[Any, Any, ...]` | `True\\|False` |  True if ANY item does NOT equal the first value |\n| `IsAny` | - | `[Any, Any, ...]` | `True\\|False` |  True if exactly ONE item does NOT equal the first value |\n| `AreIn` | - | `[[Any, Any, Any...], Any, ...]` | `True\\|False` |  True if ALL remaining args are members of the set (first arg) |\n| `Lt` | `<` | `[Num, Num]` | `True\\|False` | Less than |\n| `Gt` | `>` | `[Num, Num]` | `True\\|False` | Greater than |\n| `Lte` | `<=` | `[Num, Num]` | `True\\|False` | Less than or equal |\n| `Gte` | `>=` | `[Num, Num]` | `True\\|False` | Greater than or equal |\n\n---\n\n**Boolean Operations**\n\n---\n\n| Primitive | Signature | Returns | Description |\n|-----------|-----------|---------|-------------|\n| `And` | `[Bool, Bool, ...]` | `True\\|False` | Logical AND (true if all are True) |\n| `Or` | `[Bool, Bool, ...]` | `True\\|False` | Logical OR (true if any is True) |\n| `Not` | `[Bool]` | `True\\|False` | Logical NOT |\n\n---\n\n**Type Checking**\n\n---\n\n| Primitive | Signature | Returns | Description |\n|-----------|-----------|---------|-------------|\n| `IsNum` | `[Any]` | `True\\|False` | Check if value is a number |\n| `IsStr` | `[Any]` | `True\\|False` | Check if value is a string |\n| `IsSym` | `[Any]` | `True\\|False` | Check if value is a symbol |\n| `IsTrue` | `[Any]` | `True\\|False` | Check if value is True symbol |\n| `IsFalse` | `[Any]` | `True\\|False` | Check if value is False symbol |\n| `AreNums` | `[Array\\|Splice\\|...args]` | `True\\|False` | Check if all elements are numbers |\n| `AreStrings` | `[Array\\|Splice\\|...args]` | `True\\|False` | Check if all elements are strings |\n| `AreSyms` | `[Array\\|Splice\\|...args]` | `True\\|False` | Check if all elements are symbols |\n\n---\n\n**Utilities**\n\n---\n\n| Primitive | Aliases | Signature | Returns | Description |\n|-----------|---------|-----------|---------|-------------|\n| `FreshId` | - | `[]` | `Str` | Generate unique identifier |\n| `ParseNum` | `ToNumber` | `[Str]` | `Num` | Parse string to number or leave it as string |\n| `CharFromCode` | - | `[Num]` | `Str` | Convert ASCII/Unicode code to character |\n| `Sym` | - | `[Str]` | `Sym` | Convert string to symbol |\n| `Str` | - | `[Sym\\|Num\\|Str]` | `Str` | Convert atom to string |\n| `Reverse` | - | `[...args]` | `Splice` | Reverse order of arguments (returns Splice) |\n\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "Ag3RD8eJmi1EXG3irbCSN",
+      "type": "markdown",
+      "content": "Here is one more example that will show you an additional pattern matching power:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "TPuCoi7DVG70NSnBeT-ZD",
+      "type": "code",
+      "content": ":rule multiline\nTransposeToneUp \n    {TransposeToneUp {Transposed ..            } {Notes note_ ..} {Chromatic .. note_ _ transposed_ ..}}\n->  {TransposeToneUp {Transposed .. transposed_} {Notes       ..} {Chromatic .. note_ _ transposed_ ..}}\n:end\n\n:rule multiline\nTransposeToneUp/End\n    {TransposeToneUp {Transposed notes..} {Notes} ..}\n->  {Notes notes..}\n:end",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "CXysCxd46LtVA_OWa9K6O",
+      "type": "code",
+      "content": "{TransposeToneUp \n    {Transposed} \n    {Notes A# C D A# C A# } \n    {Chromatic C C# D D# E F F# G G# A A# B C C# }\n}\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "KkO18IqsvmebaduptkHLw",
+      "type": "markdown",
+      "content": "## Additional matcher powers\n\nThe power of the previous example is linear vars constraint. In pattern:\n\n```syma\n... {Notes note_ ..} {Chromatic .. note_ _ transposed_ ..} ...\n```\n\n`note_` is defined twice. During matching it binds the `note_` from the notes compound, and then tries to match the rest of the term with already bound `note_`, essentially creating a linear constraint.\n\n> ⚠️  However! Do not fall into the trap of thinking that I perform some smart-ass unification algorithm there. Syma power comes not from super algorithms, but from an interplay of basic parts. Consider this:\n> ```syma\n> {BackSearch {BackSearch .. note_ ..} {Note note_}}\n> ```\n> In this case, the `{.. note_ ..}` part will always bind the `note_` to the very first thing in the `{BackSearch}` compound. When the rule tries to match, it matches left-to-right, so when it comes to the `{Note note_}`, it sees that the `note_` is already bound.\n\n---\n\nMatcher also supports quantifiers, just because I can. Technically, all of these could be implemented in Syma (and I implemented them to try the concept), but I have found them so useful, that included directly into the engine for speed.\n\n```syma\n{/| One Two Three} ; alteration, match one of possible values\n{/| matched_ One Two Three} ; same, but bind the matched thing to the matched_ variable\n\n{/+ things..} ; regular rest.. matches zero or more, this one matches one or more\n\n{/r/ r\"/^\\d+/\" num_ rest..} ; yes, match with regex if there is a string atom in that position, and bind the match. Put the unmatched rest into rest..\n{/r/ r\"/^(\\d+)\\.(\\d+)/\" full_ a_ b_ rest..} ; and even capture groups.\n```\n\nThe main thing here to grasp is that `/|`, `/+`, `/r/` are not special forms. There are just symbols that are recognized by a pattern matcher. Here is the emphasis: core Syma does not have any special forms, nothing is sacred.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "kdTYb_xrZKMMGVbNC9yyj",
+      "type": "markdown",
+      "content": "## Projection\n\nOk, so far we’ve only played in a REPL-like style. But hey, we are already in the browser, eh? Let's show some html.\n\nHTML in Syma is not a special form. I repeat, HTML in Syma is not a special form.\n\nIt is just terms and stuff:\n\n```syma\n{Div :class \"some-class\" \"Div Content here\"}\n```\n\n`Div`, `:class`, `\"some-class\"`, `\"Div Content here\"` are just atoms, same as everything else.\n\nWe can render some UI using the `:render` notebook command:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "P2p8xDXGihrkOZmQZpSYt",
+      "type": "code",
+      "content": ":render {Div :class \"some-class\" :style \"border: 1px solid white; padding: 4px 8px;\" \"Div Content here\"}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "FXYbh8fE34xEOkcMJljdm",
+      "type": "markdown",
+      "content": "Remember I told you that Primitives folder is just an optinal engine dependency? Same with projectors. Projectors are just engine plugins that happen to know how to bridge the gap between Syma and projection target. There is a DOM projector, string projector, terminal projector, etc. Projector is a thing that takes a term, and **projects** it to a selected plane — let's say, DOM, knowing about which terms it can project, and how. For example, DOM projector is aware that if it encounters a `:onClick SomeSymbol` term shape, it needs to set up event listeners and do other DOM bridge shenanigans.\n\n### Normalized projection\n\nImagine that we are working on a single page UI app. Core Syma engine does not know anything about \"DOM\", web, listeners, and all that other abstractions. What it does know, is how to take our terms, and how to rewrite terms. So if we have:\n\n```syma\n:rule SomeComponent {Project SomeComponent} -> {Div { H1 \"some-component\" }}\n\n{Div {Project SomeComponent}}\n```\n\nThen Syma would rewrite `{Project SomeComponent}` to `{Div { H1 \"some-component\" }}`. Once. And will never ever be able to replace it, unless we have a rule that matches on the full `{Div { H1 \"some-component\" }}` shape.\n\nThis is dumb, thought I. Obviously we want to keep the knowledge about \"there is a place where we render `SomeComponent`\" even after it was replaced by some rule.\n\nAnd with Syma the solution is so obvious, so simple, that once you get it, you will hurt inside.\n\nWe don't write the rule that matches on `{Project SomeComponent}`. We write a rule that matches on `{:project SomeComponent}`. Core Syma engine would ignore it during its normalization cycle completely.\n\nAfter the engine normalized our stuff, the projector then creates a temporary copy of our universe, and injects a tiny `{Project ..} -> {:project ..}` into them with the highest priority. Then it runs its own normalization cycle with this rule embedded on the universe copy. After it normalized, projector is able to do all the crazy virtual DOM-like diffing directly on the current and the next Syma ASTs and surgically update the real DOM.\n\n> ⚠️  Syma for UI is just two normalization cycles instead one. Core Syma is our \"data\" layer, think of it as a \"store\" in FLUX terms, and a separate normalization is our \"UI\" layer that runs after the \"data\" layer did normalize to a fixed point. **Reactivity in Syma is just a second normalization cycle.**",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "QxXd6lnNG40QYFMQ4GTXd",
+      "type": "code",
+      "content": ":rule multiline\n    SomeComponent\n    {:project SomeComponent(name_, num_)} \n->  Div(\n        H2(Concat(\"Hello, \" name_))\n        Div(\"You are \" num_ \" years old!\")\n    )\n:end",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "VTURsS3-mW_tQD1IQCrEr",
+      "type": "code",
+      "content": ":render Div({Project SomeComponent(\"Joseph\", 5)})",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "snIQuYIGICC_jolyW73bE",
+      "type": "markdown",
+      "content": "## Going meta\n\nNow, let me blow your mind a bit, if you still didn't deduce the following. Remember I said `The full AST itself is a term`? In Syma, you code the AST directly, and the engine just knows that some terms in this AST happen to be our rules.\n\nIn this notebook we have already defined a bunch of rules. Under the hood, notebook command `:rule` modifies the in-memory AST.\n\nLet's take a look at what we have there now.\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "0lmcvvk4QfAhG2o-U61Nz",
+      "type": "code",
+      "content": ":universe",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "Tq97i7OztZJKWHP97TV07",
+      "type": "markdown",
+      "content": "## Homoiconicity as it should be\n\nYes, this is valid Syma. You can copy this universe to the file, (or just use the `:save universe.syma` in a separate code cell), and have a fully working set of rules.\n\n> ⚠️  The core insight: **the code you write is the same thing that exists in the runtime**. There are only terms that normalize. Rules are just terms. Rules (with some special treatment) can rewrite other rules. There is no spoon. It's all turtles all the way down.\n\nThe notebook `:rule` command is just a shorthand to shove a new rule into the universe.\n\nThe universe has the following structure:\n\n```syma\n{Universe\n  {Program \n    {Effects {Pending} {Inbox}}\n  }\n  {Rules\n    {R RuleName Pattern Replacement}\n  }\n  {RuleRules\n    {R RuleOperatingOnRules Pattern Replacement}\n  }\n}\n```\n\nRules operate on the `{Program}` compound. RuleRules operate on the `{Rules}` compound and run only once during the app start or compile-time. I specifically made this layered to keep at least a tiny bit of meta-sanity.\n\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "hADItJQeB8W9Y5cyTC0WV",
+      "type": "markdown",
+      "content": "## From Syma scripts to Syma app\n\nWhen we wrote `{Add {Unary | | |} {Unary | | |}}`, we were using this term instead of the `{Program}` to match rules on as the AST root. But we can ask Syma to normalize not a single term, but the `{Program}` inside the universe. To do that, let's define a couple more rules, and then use the `:norm` notebook command to normalize the universe against our rules, and then use the `:program` command to see only the `{Program}` compound from the universe.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "l2pDCINYx9Rzp6EpcnpzT",
+      "type": "code",
+      "content": ":rule multiline\n\nEnrichProgramWithAppStateAndUI \n   {Program {App {State}        {UI}       } {Effects ..} ..} \n-> {Program {App {InitialState} {InitialUI}} {Effects ..} ..} ; Let's add the {App} compound to the universe\n\n:end\n\n:rule multiline\n\nAddInitialState\n   {InitialState}\n-> {State {Count 0}}   ; Let's put this compound in our {App}\n\n:end\n\n:rule multiline\n\nAddInitialUI\n   {InitialUI} ; And replace the {InitialUI} with the whole bunch of UI-looking terms. Should be pretty readable by now.\n-> {UI                \n\n   {Div\n      {Style r\"\n        .button {\n         padding: 8px 16px;\n         border-radius: 4px;\n         background-color: #0f0f2f;\n\n         margin-bottom: 4px;\n        }\n      \"}\n\n      {Button\n         :class \"button\"\n         :onClick Inc \n         \"Increment\"\n      }\n\n      {Div {Project CountComponent}}\n\n      {Div {Project UnaryCalculationComponent}} \n   }\n   \n} ; Remember projectors? We will project some stuff.\n\n:end\n\n:rule multiline\n\nApplyInc\n   {Apply Inc {Program .. {App .. {State .. Count(    c_    ) ..} ..} ..}}\n->            {Program .. {App .. {State .. Count(Add(c_, 1)) ..} ..} ..}\n\n; In the DOM part of the engine, when you press a button, it just wraps a program in {Apply} compound with a second element being whatever you defined after :onClick. So I match on this shape here, remove the {Apply Inc} wrapper, and rewrite the counter\n\n:end\n\n:rule multiline\n\nCountComponent\n   {:project CountComponent} ; This will be recognized by the Projector\n-> c_\n   :with {Program .. {App .. {State .. Count(c_) ..} ..} ..} ; And this is one more rule superpower in the base engine, which is used for multiple purposes. In projector it allows to define a secondary match, but on the whole {Program} node, and its bindings also can be used in the replacement.\n\n:end\n\n:rule multiline\nUnaryCalculationComponent\n   {:project UnaryCalculationComponent} ; Remember our unary math? Let's show it here as well, because why not\n-> Div(\n      \"Unary math: \"\n      ToString(Add({Unary | |} {Unary | | |})) \n      \" = \" \n      ToNum(Add({Unary | |} {Unary | | |}))\n   )\n:end\n\n:norm\n\n:program",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "kG_Gw6XqXnxZbRDqPFQIQ",
+      "type": "markdown",
+      "content": "And now we can render what we created.\n\nTo render the universe's `{App {State} {UI}}`, we can use the `:render-universe watch` notebook command.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "tXEZnQSH-KcBBdZG8pFut",
+      "type": "code",
+      "content": ":render-universe watch",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "FE4pU7iaJQDZRJp4RDeMf",
+      "type": "markdown",
+      "content": "Also, just because we can, let's render just the CountComponent in a separate cell, and render it with `watch` as well. `watch` in render commands makes them to automaticaly re-run projection if the `{App}` compound was changed. Press the Increment button above a few times, and see that separately rendered `CountComponent` also updates.\n\nNow we can say that our universe is projected twice to different places through a different lens.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "RLmGgDVU0yw-jaN4mIzq7",
+      "type": "code",
+      "content": ":render watch Div(\"Counter: \" {Project CountComponent})",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "V4neGTq8HIjZQC0BB4dBA",
+      "type": "markdown",
+      "content": "## Module system\n\nOf course, just coding in the notebook or REPL is not comfortable for anything larger than tiny demos. We need files! We need modules! Syma has those, but because of its purely symbolic nature, it also has a lot of unusual decisions.\n\nIn Syma, we can define a module like this:\n\n```syma\n{Module MyModule\n    {Rules\n        {R Increment\n            Inc(n_)\n            Add(n_, 1)\n            :guard IsNum({Frozen n_})\n        }\n    }\n}\n```\n\nAnd then import the module by writing\n\n```syma\n{Import MyModule from \"./path/to/module.syma\"}\n```\n\nIn the notebook environment, we can also define and import modules. To define a module, use the `:module` notebook command. To import it, use the `:bring-module-from-nothing-to-the-universe-right-now`. Just kidding. Use `:import ModuleName`.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "GkYg6l17H3OBBxyuEyiCU",
+      "type": "code",
+      "content": ":module multiline\n{Module MyModule\n    {Rules\n        {R Increment\n            Inc(n_)\n            Add(n_, 1)\n            :guard IsNum({Frozen n_})\n        }\n    }\n}\n:end\n\n:import MyModule",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "5iFkyc5qot4aQq0lWYJrS",
+      "type": "code",
+      "content": "{Inc 5}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "G-RKTGQUE1hB75BiAuquO",
+      "type": "markdown",
+      "content": "What happened? Why didn't it normalize as we wanted?\n\n### Symbol qualification\n\nWhen we import module, the module system renames all the symbols defined in that module, basically prepending the symbols name with a module name. This process is called **symbol qualification**. It is somewhat similar to namespacing in our familiar languages. So if we want our term to match, we need to use a **qualified name**:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "1JRxxr3lpfuJDRxmHuOlp",
+      "type": "code",
+      "content": "{MyModule/Inc 5}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "1jPSR9jafyNsSOZp6rJm1",
+      "type": "markdown",
+      "content": "Having fully qualified symbols prevents rules from third-party modules from matching on unqualified symbols.\n\nIf we have module A and module B that both have a rule that operates on symbol `S`, after qualification those symbols in module's rules would be rewritten as `A/S` and `B/S`. Yes, again, rewritten. Under the hood it is just yet another normalization pass in compile-time.\n\n> For convenience, we can actually import unqualified symbols from the module, and use them directly in our code if we don't want to type fully qualified names. For this, the module should have an `{Exports SymbolA SymbolB}` compound in it. If you import it like this:\n> ```syma\n> {Import SomeModule from \"./module.syma\" open}\n> ```\n> Syma will allow you to use `SymbolA` and `SymbolB` in your code unqualified. During the compilation though it will qualify all the symbols, to ensure that everything works together.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "LVQ9fgP4SAkJCDfbtqav6",
+      "type": "markdown",
+      "content": "## More meta\n\nSo now, we can create modules. But you have already seen — Syma code is verbose. Since you are always operating on structure, you need to sprinkle structural gaps `..`, and have some discipline with naming and indentation.\n\nHowever, as you already have seen, this gives Syma unprecedented flexibility. Let's take a look at this example:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "M6YVfYV-GGDXVDrzLrYJU",
+      "type": "code",
+      "content": ":module multiline\n\n{Module DSL\n  {Export function}\n  {Rules\n    { function MySum(a_, b_) => return Add(a_, b_) }\n  }\n\n  {RuleRules\n    {R RewriteFunctionDef\n      {function {FN_NAME_ args..} => return FN_REPLACEMENT_}\n      {R FN_NAME_\n        {FN_NAME_ args..}\n        FN_REPLACEMENT_\n      }\n    }\n  }\n}\n\n:end\n\n:import DSL macro",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "pCbZYXQZmCGeJFiiYA_SI",
+      "type": "code",
+      "content": "DSL/MySum(5, 5)",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "UEG8Cn2AJtXitKk_aOOkg",
+      "type": "markdown",
+      "content": "We have just created a DSL scoped to that module, which allows us to write rules in this manner:\n\n```syma\n{ function MySum(a_, b_) => return Add(a_, b_) }\n```\n\nLet's unpack how it happened.\n\nIn Syma, modules can have a `{RuleRules}` compound, which defines **rules that operate on things inside the ``{Rules}`` compound**:\n\n```syma\n{R RewriteFunctionDef\n    {function {FN_NAME_ args..} => return FN_REPLACEMENT_}\n    {R FN_NAME_\n        {FN_NAME_ args..}\n        FN_REPLACEMENT_\n    }\n}\n```\n\nSince you now already understand how Syma works, it should be easy for you to understand this rule. I want to highlight only one thing that may hurt a bit.\n\nWhat gets captured in the `args..` named rest variable?\n\nIn Syma, `_`, `var_`, `varrest..` and `..` are just a parser sugar. They desugar to `{Var \"_\"}`, `{Var \"var\"}`, `{VarRest \"varrest\"}`, and `{VarRest \"_\"}`. They are just terms under the hood. Pretty printer lies to you by showing you a sugared form:",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "3eZtA5i0w1UpKQSwMYcif",
+      "type": "code",
+      "content": "{\n    {Var \"_\"}\n    {Var \"hello\"}\n    {VarRest \"_\"}\n    {VarRest \"rest\"}\n}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "TfzzSQzpMBVH_DaZ65pzB",
+      "type": "markdown",
+      "content": "So `args..` in the RuleRule actually captures `{Var \"a\"} {Var \"b\"}`. Variables are just another terms. So you could match on them, replace them, rename them, and do whatever you want to.\n\n## RuleRules scoping\n\nWhen you import a module, module's RuleRules won't apply to your `{Rules}`. You can opt-in to use RuleRules from external modules by adding a `macro` symbol in the `{Import}` compound:\n\n```syma\n{Import DSL from \"./dsl.syma\" macro}\n```\n\nThis enables using different DSLs in different modules, and unprecedented macro hygiene. Syma avoids the mess of \"I have imported something, and its macro broke everything\"",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "47cs8yhHaT_015ntm2mEo",
+      "type": "markdown",
+      "content": "## Other features\n\nNow, let me just highlight a bunch of other things Syma enables, and other tooling I made.\n\n- Symbolic effects. `{Effects {Pending} {Inbox}}` compound you may have seen inside a `{Program}`. You can create timers, do http requests, print to terminal, request user input, and do other runtime-dependant things in a pure symbolic manner. Runtime handles effects, Syma stays pure.\n- Per-rule evaluation strategy. You can mark a rule with `:innermost` flag to force it to normalize in the depth-first traversal normalization pass. This enables Syma to host any functional language.\n- Rule scoping. You can use `:scope SomeTerm` inside your `{R}` rule definition, and it will match only if the node it tries to match on has an ancestor compound with `SomeTerm` symbol in head position. I won't show it here, but this actually enables message passing and event bubbling-like behaviors.\n- Web and Node.js runtimes\n- Full isomorphism. A single Syma app can run both in web an in terminal. You can even simulate button clicks in terminal or REPL, and use string projector to render your app to text. SSG, SSR, and other fancy abbreviations just by design.\n- Imperative, logic, functional, relational, declarative, object-oriented, any paradigm can be expressed.\n- Symbolic debugger. See the current state of the universe, time travel, put watches on the universe by specifying watch patterns, put breakpoints on rules, step through the normalization cycle rule-by-rule\n- VS Code extension. With inline refactoring — the ability to write a rule that will run against all your code as term, and show the diff in a separate window.\n- Vite plugin for writing UI apps in Syma, with live reloading and debug panel\n- REPL\n- CLI\n- Package manager with configuration and lockfile written in Syma code. Yes, Syma is a configuration language as well.\n- npm create syma@latest for bootstrapping Syma app (haven't published it to npm yet)\n- Syma core library with a bunch of QoL things. Like `{If}` if you ever need it.\n- Type systems as Syma modules. Import a module, have types in your rules.\n- Test harness for Syma written in Syma\n- Syma parser written in Syma\n\n**...and more.**\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "Y4ssNch-LbQFpA3tBhKY2",
+      "type": "markdown",
+      "content": "## Examples\n\nTo finish off strong, let me put here some examples, each showing something different. I won't comment the code in detail — can't steal the joy of figuring it out from you.\n\nRight now all these cells are disabled, because they use their own `:clear` command inside — and I didn't want them to interfere with all the previous code, and I wanted to be able to play with these in isolation. Enable a cell by hovering on it, and in the toolbar on the left press the orange \"pause\" button. Then execute the content of just this cell by pressing \"play\"",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "v_9iFbRiz3l_aeFdcqpNh",
+      "type": "markdown",
+      "content": "### {Example 0 \"Effects\"}\n\nIn Syma, effects are also symbolic, and are handled by yet enother engine plugin — the effects processor. With it we can ask the platform itself to do something — set up a timer, print something, readline, etc. Under the hood, all effect processors inherit from the same base class, so they can implement platform-dependant effects differently. For example, in the browser readline effect will actually call the browser's `prompt` method, but in the node platform it will actually call the native readline.\n\nIn the `{Program}` term there exists an `{Effects {Pending} {Inbox}}` term. When we want to execute an effect, we just need to add an effect term to the `{Pending}` term. A general shape of the effect is the `{EffectName id {SomeEffectData.....}}`, for example, for the print effect it is `{Print someId {Message \"text message\"}}`. Platform then notices it, removes it from the `Pending` term, executes the effect, and adds an execution result to the `{Inbox}`. For the print effect, the success shape is `{PrintComplete id Success}`. Then the engine runs a normalization cycle again, so you could process the effect result in your rules.\n\nTo work with effects more comfortably, I have added a `Core/Effect` module. It defines rules which allow us to specify an effect anywhere in the universe, and it will be automatically bubbled to the `{Program}` term, and shoved inside the `{Effects {Pending}}`, as well as defines some simpler terms to execute one-shot effects like `PrintEff` and clear up the inbox afterwards.\n\nRun the following cell to add a `{Flow}` term with a one-shot print effect to the universe, and in the cell after that run the universe normalization to see the message printed both in the notebook output and in the browser console.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "v3dDcNg10b-nFDHj3nPEa",
+      "type": "code",
+      "content": ":clear\n\n:import Notebook/UI\n:import Core/Effect\n\n:rule multiline\nEnrichWithFlowAndPrintEffect \n   {Program                                                  {Effects ..}} \n-> {Program {Flow {Core/Effect/PrintEff \"Hello from Syma!\"}} {Effects ..}}\n:end",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "2V58unPETutkeqHbWvJfZ",
+      "type": "code",
+      "content": ":norm",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "RGc6rfmulWoqjgwuO7Yyh",
+      "type": "markdown",
+      "content": "### {Example 1 \"Functional evaluation\"}\n\nTurning Syma into a traditional functional language with the :innermost evaluation strategy.\n\nRemember when I said Syma is outermost-first?\n\nI lied — sort of.\n\nSyma defaults to outermost-first evaluation, but you can tag specific rules with :innermost to make them normalize during the inner-to-outer pass, just like in traditional programming languages.\n\nIn fact, Syma runs two passes: the first one processes :innermost rules depth-first, and the second runs the standard outermost normalization.\n\nSo you can define evaluation strategy **per rule**, mixing both in a single app.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "x5F52ilHllvcPWTXOp4V5",
+      "type": "code",
+      "content": ":clear\n\n; Look mom, pure functions\n:rule Inc       Inc(c_) -> Add(c_, 1) :innermost\n:rule IsEven IsEven(c_) -> NormalEq(Mod(c_, 2), 0) :innermost\n\n; Constructor normalization, ADT without ADT\n:rule Option Option(None) -> None    :innermost\n:rule Option Option(_)    -> Some(_) :innermost\n\n; Ad-hoc functor behavior via pattern-directed dispatch\n; (same \"Map\", different structure => different rewrite)\n:rule MapOption/None {Map fn_ None}       -> None :innermost\n:rule MapOption/Some {Map fn_ Some(_)}    -> Some(fn_(_)) :innermost\n\n:rule Map     {.. Map fn_ {item_ ..}} -> {.. fn_(item_) Map fn_ {..}} :innermost\n:rule Map/End {.. Map fn_ {}}         -> {..} :innermost\n\n; Filtering via rule guards\n:rule Filter/Keep   {.. Filter fn_ {item_ ..}} -> {.. item_ Filter fn_ {..}} :guard fn_(item_) :innermost\n:rule Filter/Remove {.. Filter fn_ {item_ ..}} -> {..       Filter fn_ {..}} :guard Not(fn_(item_)) :innermost\n:rule Filter/End    {.. Filter fn_ {}}         -> {..} :innermost\n\n; Just a left fold, or reduce\n:rule Fold     {Fold fn_ acc_ {item_ ..}} -> {Fold fn_ fn_(acc_, item_) {..}} :innermost\n:rule Fold/End {Fold fn_ acc_ {}} -> acc_ :innermost\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "pwPLS5w16wpfQ_gLvcFqw",
+      "type": "code",
+      "content": "{Tests\n\n    Fold(Add, 0,\n        Filter(IsEven,\n            Map(Inc, {1 2 3 4})\n        )\n    )\n\n    Map(Inc, Option(2))\n\n    Map(Inc, Option(None))\n\n    Map(Inc, Some(2))\n\n    Map(Inc, None)\n}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "FvbYuskguJDFRQ7Anvp4L",
+      "type": "markdown",
+      "content": "### {Example 2 \"Logic and scoping\"}\n\nSuper basic logic programming. Socrates lives, dies, proves meta-contexts, and shows scope-based rule matching.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "fjXuppSobmMWylH5mKIGQ",
+      "type": "code",
+      "content": ":clear\n\n:rule Fact Human(Socrates) -> True\n\n:rule Humans→Mortals Human(x_) -> Mortal(x_)\n:rule Mortals→Humans Mortal(x_) -> Human(x_) :scope HumanDomain ; Match this rule only if there is an ancestor compound with HumanDomain in head position\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "V80B4VhED-3HZUlm71tDp",
+      "type": "code",
+      "content": "{HumanDomain\n    {Mortal Socrates}\n}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "AQ-aG5meTutTM18eysXOd",
+      "type": "markdown",
+      "content": "### {Example 3 \"Imperative DSL & static analysis\"}\n\nLet's make a small imperative DSL with variables, erroring on undefined variable, shadowing, addition, and subtraction.\n\nHere is what we want to run:\n\n```syma\n{Program\n    {Run\n        {Val a = 1}\n        {Val a = 5} ; variable shadowing\n        {Val b = 2}\n        {Val c = 20}\n        {Return 2 + a + b + 10 - c - 2}\n    }\n}\n```\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "c9ob3_Iit5KmqDL64utv3",
+      "type": "code",
+      "content": ":clear\n\n; Importing Core/Main to get If \n:import Core/Main open\n\n:rule multiline \nAddVariableContext \n   {Program {Run .. }                 } \n-> {Program {Run .. } {Context {Vars}}}\n:end\n\n; The last variable definition wins. Basically, an invariant expressed in Syma\n:rule multiline\nShadowing\n    {Vars .. {Val a_ _} .. {Val a_ last_} ..} \n->  {Vars ..            .. {Val a_ last_} ..} \n    :innermost\n:end\n\n:rule multiline \nVariable \n   {Program {Run {Val v_ = val_} .. } {Context {Vars ..             }}} \n-> {Program {Run ..                 } {Context {Vars .. {Val v_ val_}}}}\n:end\n\n; When we encounter return, let's do error checking. Static analysis stage during parsing. Sorry not sorry.\n:rule multiline\nReturn\n    {Program {Run {Return parts.. }}                              ..} \n->  {Program {Check {Errors} {CheckVars parts..}} {Parts parts..} ..}\n:end\n\n; This removes every plus and minus from any compound inside {Check}\n:rule Check/StripOps {.. {/| + -} ..} -> {.. ..} :scope Check :innermost\n\n; We are using linear variable constraint a_ .... a_ to check if it is present in the {Context}\n:rule multiline\nCheck/VarExists \n    {Program {Check .. {CheckVars a_ ..}} .. {Context {Vars .. {Val a_ val_} ..}}} \n->  {Program {Check .. {CheckVars    ..}} .. {Context {Vars .. {Val a_ val_} ..}}}\n:end\n\n; For numbers, we use :guard\n:rule multiline\nCheck/Number \n    {Program {Check {Errors ..} {CheckVars a_ ..}} ..} \n->  {Program {Check {Errors ..} {CheckVars    ..}} ..} :guard IsNum(a_)\n:end\n\n; If neither of the previous rules matched (term does not exist in the context, or is not a number), then error\n:rule multiline\nCheck/Error\n   {Program {Check {Errors ..   } {CheckVars p_ ..}} ..} \n-> {Program {Check {Errors .. p_} {CheckVars    ..}} ..}\n:end\n\n; If there is at least one error (e_), we collect all errors\n:rule Err/Collect {Program {Check {Errors e_ rest..} ..} ..} -> {Errors {E} e_ rest..}\n:rule Err/Map {Errors {E ..} e_ rest..} -> {Errors {E .. Concat(\"Undefined variable: \" ToString(e_))} rest..}\n:rule Err/End {Errors {E ..}} -> {Errors ..}\n\n; If there are no errors, we evaluate\n:rule Check/Success {Program {Check {Errors} {CheckVars}} {Parts ..} ..} -> {Eval 0 {Parts + ..} .. }\n\n:rule multiline\nEval/Plus/Num \n    {Eval                               acc_     {Parts {/| op_ + -} a_ parts..} ..} \n->  {Eval {If(NormalEq(op_, +) Add Sub) acc_ a_} {Parts                 parts..} ..} \n:guard IsNum(a_)\n:end\n\n:rule multiline\nEval/Plus/Var \n    {Eval                               acc_       {Parts {/| op_ + -} a_ parts..} {Context {Vars .. {Val a_ val_} ..}}} \n->  {Eval {If(NormalEq(op_, +) Add Sub) acc_ val_} {Parts                 parts..} {Context {Vars .. {Val a_ val_} ..}}}\n:end\n\n; When there are no parts left, we are done\n:rule Eval/End {Eval acc_ {Parts} {Context {Vars .. {Val a_ val_} ..}}} -> {Result acc_}",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "taEQzfqp0PifUueLikKJ1",
+      "type": "code",
+      "content": "\n{Tests\n    {Program\n        {Run\n            {Val a = 1}\n            {Val a = 5} ; variable shadowing\n            {Val b = 2}\n            {Val c = 20}\n            {Return 2 + a + b + 10 - c - 2}\n        }\n    }\n    \n    ; Error handling test, undefined variables\n    {Program\n        {Run\n            {Return 2 + a + b + 10 - c - 2}\n        }\n    }\n}\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "wo6kUDmcT-gW9SP9YHeBd",
+      "type": "markdown",
+      "content": "### {Example 4 \"Projection and Homoiconicity\"}\n\nUsing the same code both as HTML and as the data to render its source. Showcases the whole homoiconicity and the code = data = runtime.",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "Q3zD2W0E_8gkWOM8aGRxu",
+      "type": "code",
+      "content": ":clear\n:import Core/Main open\n\n:rule multiline\nProjectDisplay\n    {:project Display(mode_)}\n->  If(AreIn({HTML SYMA} mode_) \n        If(NormalEq(mode_, HTML) {Component} {Tokenize {UI {Component}}})\n        Concat(\"Error: Unknown mode: \" mode_ \". Supported modes: SYMA, HTML\")\n    )\n:end\n\n:rule multiline\nComponent\n    {Component}\n->  Div(\n        Style(\"\n            .text-yellow-500 {\n                color: #eab308;\n            }\n\n            .text-yellow-600 {\n                color: #ca8a04;\n            }\n\n            .text-green-500 {\n                color: #22c55e;\n            }\n\n            .text-cyan-500 {\n                color: #06b6d4;\n            }\n        \")\n        H1(\"Hey guys\" :style \"font-size: 1.4rem; margin-bottom: 8px;\")\n        Code(Pre(\"Fancy some code?\"))\n)\n    :innermost\n\n:end\n\n:rule multiline\nTokenize\n    {.. { .. thing_ .. } ..}\n->  {.. [ .. thing_ .. ] ..}\n    :scope Tokenize\n    :innermost\n:end\n\n:rule multiline\nPush\n    {Push indent_}\n->  {Splat :style Concat(\"margin-left: \", Mul(indent_, 20), \"px;\")}\n    :innermost\n:end\n\n:rule multiline\nTokenize\n    {Tokenize UI(..)}\n->  {Tokenizing {Indent 0} {Tokens} {Things ..}}\n    :innermost\n:end\n\n:rule multiline\nTokenize\n    {Tokenizing {Indent     indent_   } {Tokens ..                                                 } {Things thing_ ..}}\n->  {Tokenizing {Indent Add(indent_ 1)} {Tokens .. {Div Push(indent_) :class \"text-yellow-500\" \"{\"}} {Things        ..}}\n    :guard Is(thing_ [)\n:end\n\n:rule multiline\nTokenize\n    {Tokenizing {Indent     indent_   } {Tokens ..                                                 } {Things thing_ ..}}\n->  {Tokenizing {Indent Sub(indent_ 1)} {Tokens .. {Div Push(Sub(indent_ 1)) :class \"text-yellow-500\" \"}\"}} {Things ..}}\n    :guard Is(thing_ ])\n:end\n\n:rule multiline\nTokenize\n    {Tokenizing {Indent indent_} {Tokens ..} {Things thing_ ..}}\n->  {Tokenizing {Indent indent_} {Tokens .. {Div Push(indent_) :class \"text-yellow-600\" Concat(\"\\\"\", thing_,  \"\\\"\")}} {Things ..}}\n    :guard IsStr(thing_)\n:end\n\n:rule multiline\nTokenize\n    {Tokenizing {Indent indent_} {Tokens ..} {Things thing_ ..}}\n->  {Tokenizing {Indent indent_} {Tokens .. {Div Push(indent_) :class \"text-green-500\" thing_}} {Things ..}}\n    :guard IsNum(thing_)\n:end\n\n:rule multiline\nTokenize\n    {Tokenizing {Indent indent_} {Tokens ..} {Things thing_ ..}}\n->  {Tokenizing {Indent indent_} {Tokens .. {Div Push(indent_) :class \"text-cyan-500\" Str(thing_)}} {Things ..}}\n:end\n\n:rule multiline\nTokenize\n    {Tokenizing _ {Tokens toks..} _}\n->  Div(toks..)\n:end\n\n:render multiline\nDiv(:style \"display: flex; flex-direction: column; gap: 12px;\"\n  Div({Project Display(HTML)})\n  Div({Project Display(SYMA)})\n)\n:end",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "SPt3syXK98YI7G7qx7Gjy",
+      "type": "markdown",
+      "content": "### {Example 5 \"Object-oriented runtime construction\"}\n\nLet's make Syma an OOP language.\n\nSince we are in a notebook environment, I will need to use some nasty tricks to make everything work together, desktop Syma would not require this dance. But in the notebook I do some additional safety things, since we have a live universe in memory, so symbols in modules come to non-module `:rules` already qualified even if imported `open`.\n\nAaaaaanyway.\n\nLet's make this run:\n\n```syma\n; Class definitions\n:class Animal {\n    walks() => true\n}\n\n; Inheritance\n:class Dog :extends Animal {\n    bark() => \"woof\"\n}\n\n:class DogWithoutLegs :extends Dog {\n    walks() => false\n}\n\n; Inheritance and overriding parent methods\n:class Furry :extends Dog {\n    bark() => \"fuck\"\n    annoy() => true\n}\n\n; Inheritance chain\n:class DogWithoutLegsButWithWings :extends DogWithoutLegs {\n    flies() => true\n}\n\n:var a := :new Dog()\n\n:print(a.walks()) ; true\n:print(a.bark())  ; \"woof\"\n\n:print(a is Animal) ; true\n:print(a is Furry)  ; false\n\n:var b := :new DogWithoutLegs()\n\nb.walks ; Ignored\n\n:print(b.walks()) ; false\n:print(b.bark())  ; \"woof\"\n\n:var furry := :new Furry()\n\n:print(furry.bark()) ; \"fuck\"\n\n:var flyingDog := :new DogWithoutLegsButWithWings()\n\n:print(flyingDog.flies()) ; true\n```\n\nThis will be the most complex example. We will create two separate modules, and a tiny runtime VM.\n\nFirst module will be a desugarer, which will transform \"calls\" symbols like `furry.bark` to `{Call furry bark}` terms. Yes, symbols are atoms, but humanity already knows how to split atoms, same for Syma. Desugarer will do some surgery on the deeply nested terms, while preserving the overall outer terms shape.\n\nSecond module will be a parser-compiler, which will prepare the structure for the VM. It will analyze class definitions, build inheritance chains, and resolve variable types. This dude will actually transform the structure.\n\nFinally, the VM will walk through all commands that is left, do some ✨**dynamic dispatch**✨, and simulate printing for us by shoving the output to the `{Output}` term.\n\n> ⚠️ Just imagine if this code were written in the `{RuleRules}` section, and applied to your `{Rules}`, so you could `{Import OOP macro}` and write oop-style directly in your Syma rules.\n>\n> Process this.\n>\n> Programming paradigm as a library.\n>\n> And now imagine doing the same, but for type system.\n\nI will put just a bit more comments in this example for your sanity.\n\n> ⚠️ And trust me — once you understand Syma, writing this feels no harder than the Socrates example. It’s just more structure and more symbols. I even reread the RISC-like VM I built a month ago, and it was instantly clear — because in the end, every rule is just “if it matches, take that stuff and shove it here.”",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    },
+    {
+      "id": "LvlOb45dJD-34oKh152DH",
+      "type": "code",
+      "content": ":clear\n\n; First, let's create a desugar module.\n; let's desugar symbols that have dots in them to {Call variable method} terms.\n; Desugarer module is a fine example of mutating the insides of an existing structure.\n:module multiline\n{Module OOP/Desugar\n  {Rules\n    {R Desugar {Program ..} {Desugar ..}}\n\n    ; Let the party started. If there is a compound with only one symbol in it, it may be a call.\n    {R Desugar/Calls/Split\n        {.. { symbol_ } ..}\n        ; Splitting the symbol by pretending it is a string.\n        {.. {Desugaring SplitBy(\".\" ToString(symbol_))} ..} \n        :scope Desugar ; Scoping makes this run only when there is an ancestor with this symbol in head position\n        :guard IsSym(symbol_)\n        :innermost\n    }\n\n    ; If after SplitBy we got only one string, let's just say it is desugared, and transform it back to be a symbol\n    {R Desugar/Calls/Plain\n        {.. {Desugaring Strings(s_)} ..}\n        {.. {Desugared      Sym(s_)} ..}\n        :scope Desugar\n        :innermost\n    }\n\n    ; Otherwise, we desugar\n    {R Desugar/Calls/Call\n        {.. {Desugaring  Strings(var_      method_)} ..}\n        {.. {Desugared {Call Sym(var_) Sym(method_)}} ..}\n        :scope Desugar\n        :innermost\n    }\n\n    ; Because we used :innermost on the desugaring rules, we can be sure that this runs when all of them finished\n    {R Desugar/End {Desugar ..} {Desugar/Clean ..}}\n\n    ; And since we are sure everything is desugared, and we are not in the Desugar scope, we can safely clean up\n    {R Desugar/Clean\n        {.. {Desugared term_} ..}\n        {.. term_ ..}\n        :scope Desugar/Clean\n        :innermost\n    }\n\n    ; We gate the Desugarer output with an {Ok} compound, so the transformer will know desugarer finished.\n    {R Desugar/Clean/End {Desugar/Clean ..} {Ok ..}}\n  }\n}\n:end\n\n:module multiline\n{Module OOP/Transform\n  {Rules\n    {R Transform\n      ; Gated start — if we didn't use the Ok() sentinel, this rule would match from the very start, without waiting the desugarer to do its stuff in the program inner terms.\n      {Transform Ok(..)}\n      ; Transformer prepares a structure to hold knowledge about classes\n      {Parse Classes {InheritanceChains} {Bodies} ..}\n    }\n\n    ; We know there are to possible shapes that define classes.\n    ; If it is just a :class Animal {..}, we put it into the inheritance chain without specifying a parent class\n    {R Classes\n      {Parse Classes {InheritanceChains ..        } {Bodies                ..} .. :class name_ {body..} ..}\n      {Parse Classes {InheritanceChains .. {name_}} {Bodies {name_ body..} ..} ..                       ..}\n    }\n\n    ; But if it has the :extends clause, we put it into the inheritance chain together\n    {R Classes/Extends\n      {Parse Classes {InheritanceChains                 ..} {Bodies                ..} .. :class name_ :extends parent_ {body..} ..}\n      {Parse Classes {InheritanceChains {name_ parent_} ..} {Bodies {name_ body..} ..} ..                                   ..}\n    }\n\n    ; We now know, that because of the program structure, parent classes are always on the \"right\" of their children.\n    ; This allows us to recursively enrich children chains to hold the full inheritance chain.\n    ; Let me translate. \"If a child has a parent which also has a parent, put the grandparent into the child inheritance chain\"\n    {R ParseClass/NormalizeInheritanceChains\n      {Parse Classes {InheritanceChains .. {name_ .. parent_             } .. {parent_ grandparent_} ..} ..}\n      {Parse Classes {InheritanceChains .. {name_ .. parent_ grandparent_} .. {parent_ grandparent_} ..} ..}\n    }\n\n    ; And we are done with classes, let's now enrich our structure with {Instances} to hold the mapping\n    ; of variables to their classes. Type inference for the poor.\n    {R ParseClass/End\n      {Parse Classes                    ..}\n      {Parse Instantiations {Instances} ..}\n    }\n\n    ; Same trick — if something quacks like a duck — it is a duck.\n    {R ParseInstance\n      {Parse Instantiations {Instances ..                     } .. :var name_ := :new {class_} ..}\n      {Parse Instantiations {Instances .. {name_ class_ name_}} ..                             ..}\n    }\n\n    ; And now we treat everything that is left out as an imperative commands, and put them to the very \"left\".\n    ; You know why to the \"left\"? To do something like the inner join with our metadata in the VM, of course.\n    ; We also gate it with {Ok}, so our VM will know when it is ready to start.\n    {R ParseInstance/End\n      {Parse Instantiations {Instances ..} {InheritanceChains ..} {Bodies ..} rest..}\n      {Ok {Commands rest..} {Instances ..} {InheritanceChains ..} {Bodies ..}}\n    }\n  }\n}\n:end\n\n:import OOP/Desugar open\n:import OOP/Transform open\n\n; So this is a dance I do to dequalify symbols like OOP/Transform/Commands that we got after transformer worked.\n; I want to use not qualified names in the following rules, but the notebook always qualifies things from the imported module.\n:rule Run {Run Ok(..)} -> {Dequalify ..}\n\n:rule Dequalify/Commands {OOP/Transform/Commands ..} -> {Commands ..} :scope Dequalify :innermost\n:rule Dequalify/Instances {OOP/Transform/Instances ..} -> {Instances ..} :scope Dequalify :innermost\n:rule Dequalify/InheritanceChains {OOP/Transform/InheritanceChains ..} -> {InheritanceChains ..} :scope Dequalify :innermost\n:rule Dequalify/Bodies {OOP/Transform/Bodies ..} -> {Bodies ..} :scope Dequalify :innermost\n:rule Dequalify/Calls {OOP/Desugar/Call ..} -> {Call ..} :scope Dequalify :innermost\n\n; The {Running} compound will have the output accumulator, and a marked scratch space to reuse differently in different cases. In the perfect world I would make more specific symbols per each command, but we have only the :print with two cases.\n:rule Dequalify/End {Dequalify ..} -> {Running {Output} {Scratch} ..}\n\n; VM will bounce between {Running} and {Executing}. Running picks the next command, Executing executes it, and rewrites to the {Running} again.\n:rule Running/Pick {Running .. {Commands c_ ..} ..} -> {Executing {Current c_} .. {Commands ..} ..}\n\n; Here I will cheat and treat everything as print command, and work on the inners.\n; Now you can see why the structure I chose is commands on the \"left\", then instances, then inheritance chains.\n; var_ from the current command must have a corresponding term in {Instances}, from which we can bind a class_, which should have its corresponding term in {InheritanceChains}. SQL inner join, sort of, but with leftmost linear var constraint.\n; We fill the {Scratch} with a method and an inheritance chain, to be able to match them on each class bodies.\n:rule multiline\nExecuting/Print/Call\n   {Executing .. {Current {:print {Call var_ method_}}} .. {Scratch                                } .. {Instances .. {var_ class_ _} .. } .. {InheritanceChains .. {class_ classes..} ..} ..} \n-> {Executing .. {Current {:print {Call var_ method_}}} .. {Scratch method_ Chain(class_ classes..)} .. {Instances .. {var_ class_    _} .. } .. {InheritanceChains .. {class_ classes..} ..} ..} \n:end\n\n; And if the current class in the chain has the method, we put its \"return value\" to the output,\n; and flip the switch to {Running} state.\n:rule multiline\nExecuting/Print/Call/TraverseChain/Found\n   {Executing .. {Current {:print {Call var_ method_}}} {Output ..} {Scratch method_ Chain(class_ classes..)} .. {Bodies .. {class_ .. method_ => return_ ..} ..} ..}\n-> {Running .. {Output .. return_} {Scratch} .. {Bodies .. {class_ .. method_ => return_ ..} ..} ..}\n:end\n\n; But if it does not, we just remove the class from the chain in the scratch to check the next one.\n:rule multiline\nExecuting/Print/Call/TraverseChain/Next\n   {Executing .. {Current {:print {Call var_ method_}}} .. {Scratch method_ Chain(class_ classes..)} ..}\n-> {Executing .. {Current {:print {Call var_ method_}}} .. {Scratch method_ Chain(       classes..)} ..}\n:end\n\n; Same shenanigans for :print(some is SomeClass)\n; Since we already have the full inheritance chains, we can easily check them.\n; We put the corresponding chain to the scratch, and one of the following rules will fire.\n:rule multiline\nExecuting/Print/Call/Is\n   {Executing .. {Current {:print var_ is testclass_}} .. {Scratch} .. {Instances .. {var_ class_ _} .. } .. {InheritanceChains .. {class_ classes..} ..} ..}\n-> {Executing .. {Current {:print var_ is testclass_}} .. {Scratch Chain(class_ classes..)} .. {Instances .. {var_ class_ _} .. } .. {InheritanceChains .. {class_ classes..} ..}..} \n:end\n\n:rule multiline\nExecuting/Print/Call/Is/Found\n   {Executing .. {Current {:print var_ is testclass_}} {Output ..} {Scratch Chain(drop1.. testclass_ drop2..)} ..}\n-> {Running .. {Output .. true} {Scratch} ..}\n:end\n\n:rule multiline\nExecuting/Print/Call/Is/NotFound\n   {Executing .. {Current {:print var_ is testclass_}} {Output ..} ..}\n-> {Running .. {Output .. false} {Scratch} ..}\n:end\n\n; And if we have no clue what we are executing right now, we just ignore it.\n; Don't do this if you ever make a VM.\n:rule multiline\nExecuting/Drop\n   {Executing .. {Current _} ..}\n-> {Running .. ..}\n:end\n\n; When there are no commands left, we are done.\n:rule multiline\nRunning/End\n   {Running .. {Output out..} .. {Commands} ..}\n-> {Output out..}\n:end",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "sqIA07PM9G7IUECEPju2L",
+      "type": "code",
+      "content": "Run({OOP/Transform/Transform {OOP/Desugar/Desugar\n    :class Animal {\n        walks() => true\n    }\n\n    :class Dog :extends Animal {\n        bark() => \"woof\"\n    }\n\n    :class DogWithoutLegs :extends Dog {\n        walks() => false\n    }\n\n    :class Furry :extends Dog {\n        bark() => \"fuck\"\n        annoy() => true\n    }\n\n    :class DogWithoutLegsButWithWings :extends DogWithoutLegs {\n        flies() => true\n    }\n\n    :var a := :new Dog()\n\n    :print(a.walks()) ; true\n    :print(a.bark())  ; \"woof\"\n\n    :print(a is Animal) ; true\n    :print(a is Furry)  ; false\n\n    :var b := :new DogWithoutLegs()\n\n    b.walks ; Ignored\n\n    :print(b.walks()) ; false\n    :print(b.bark())  ; \"woof\"\n\n    :var furry := :new Furry()\n\n    :print(furry.bark()) ; \"fuck\"\n\n    :var flyingDog := :new DogWithoutLegsButWithWings()\n\n    :print(flyingDog.flies()) ; true\n    :print(flyingDog.bark())  ; \"woof\"\n}})\n",
+      "outputs": [],
+      "metadata": {},
+      "disabled": true
+    },
+    {
+      "id": "xf3l7l03b7QVRKwZ8PtKc",
+      "type": "markdown",
+      "content": "## Afterword\n\nBecause of its symbolic nature, an AST-based approach, and controlled execution strategy, Syma unifies functional, logic, declarative, reactive, imperative, relational, and actor-based paradigms inside a single symbolic rewrite core, with meta-programming and self-reflection as first-class citizens. Syma is to programming languages is what Mathematica to math. A single extensible core, with symbols that do not carry semantics, and the ability to define semantics for the symbols, with structure carrying the relations, and intent explicitly coded via rules.\n\nSyma does not host, but becomes other languages and runtimes — from simple DSLs to interpreters, virtual machines, UI frameworks, (slow) concurrent systems, parsers, compilers, theorem provers, anything that can be expressed by virtually any other language. In this notebook I just scratched a surface of what is possible to make in just a few rules, nearly without meta-level. For me, it is wild how such a tiny core can express so much, without dissolving into being a Turing tarpit.\n\nBecause of how different it is, my first two weeks of trying to write something in it were pretty hard. I even felt that I need to unlearn a few things — for example, traditional recursive algorithms don't work in outermost-first evaluation order, because there is no way to understand if the deeply nested things were already normalized. And, of course, I didn't have any ability to just look up answers on StackOverflow 😂\n\nBut once it clicked, it was a surprise after a surprise each time I tried to do something in Syma. A maze solver using 3×3 convolution-like kernels to match on all the dead ends and rewriting them as walls. Optimizing brainfuck compiler with constant folding, peephole optimizations, and marked loop targets. Test module. UI Todo app. Console dialog-like flows. Theorem proving by stating axioms and the goal. Prolog-mini with Prolog syntax to do queries like \"who is a parent of Joseph\". Every experiment I do with Syma, uncovers more and more hidden layers, that don't feel bolted on — they always were there, just hidden because of the paradigm fragmentation, traditional compiler pipelines, and chasing the performance instead of expressivity.\n\nI encourage you to play with it a bit. Not to do something complex — but rather remember the joy of being a completely novice programmer again, who tinkers and does not understand why something does not work as expected.\n\n---\n\nThanks, my dudes!",
+      "outputs": [],
+      "metadata": {},
+      "disabled": false
+    }
+  ]
+}

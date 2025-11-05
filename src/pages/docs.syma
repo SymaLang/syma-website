@@ -1,0 +1,197 @@
+{Module Page/Docs
+  {Exports DocsPage}
+  {Import Symbols/Docs from "../symbols/docs.syma" {Open Docs Category Doc Slug Title Content}}
+  {Import Syma/SimpleUIRouter as Router {Open RouterLink}}
+  {Rules
+    {R DocsPage
+      {DocsPage}
+      Div(:class "space-y-12"
+        ; Docs Hero
+        Div(:class "space-y-4 pb-8 border-b border-gray-800"
+          H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+            "Documentation"
+          )
+          P(:class "text-xl text-gray-400 leading-relaxed"
+            "Learn how to build with Syma — from basic concepts to advanced patterns."
+          )
+        )
+
+        ; Quick Links Grid
+        Div(:class "grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          ; Getting Started Card
+          RouterLink(:href "/docs/introduction" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-xl transition-all hover:shadow-lg hover:shadow-cyan-500/10"
+            Div(:class "space-y-3"
+              Div(:class "flex items-center justify-between"
+                Div(:class "text-3xl" "🚀")
+                Svg(:class "w-5 h-5 text-gray-500 group-hover:text-cyan-400 transition-colors" :fill "none" :stroke "currentColor" :viewBox "0 0 24 24"
+                  Path(:stroke-linecap "round" :stroke-linejoin "round" :stroke-width "2" :d "M13 7l5 5m0 0l-5 5m5-5H6")
+                )
+              )
+              H3(:class "text-xl font-semibold text-gray-200 group-hover:text-cyan-400 transition-colors"
+                "Getting Started"
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed"
+                "New to Syma? Start here to learn the basics and get your first program running."
+              )
+            )
+          )
+
+          ; Core Concepts Card
+          RouterLink(:href "/docs/term-rewriting" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/10"
+            Div(:class "space-y-3"
+              Div(:class "flex items-center justify-between"
+                Div(:class "text-3xl" "🔄")
+                Svg(:class "w-5 h-5 text-gray-500 group-hover:text-blue-400 transition-colors" :fill "none" :stroke "currentColor" :viewBox "0 0 24 24"
+                  Path(:stroke-linecap "round" :stroke-linejoin "round" :stroke-width "2" :d "M13 7l5 5m0 0l-5 5m5-5H6")
+                )
+              )
+              H3(:class "text-xl font-semibold text-gray-200 group-hover:text-blue-400 transition-colors"
+                "Core Concepts"
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed"
+                "Understand term rewriting, pattern matching, and the foundational ideas behind Syma."
+              )
+            )
+          )
+
+          ; Language Guide Card
+          RouterLink(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-purple-700 rounded-xl transition-all hover:shadow-lg hover:shadow-purple-500/10"
+            Div(:class "space-y-3"
+              Div(:class "flex items-center justify-between"
+                Div(:class "text-3xl" "📖")
+                Svg(:class "w-5 h-5 text-gray-500 group-hover:text-purple-400 transition-colors" :fill "none" :stroke "currentColor" :viewBox "0 0 24 24"
+                  Path(:stroke-linecap "round" :stroke-linejoin "round" :stroke-width "2" :d "M13 7l5 5m0 0l-5 5m5-5H6")
+                )
+              )
+              H3(:class "text-xl font-semibold text-gray-200 group-hover:text-purple-400 transition-colors"
+                "Language Guide"
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed"
+                "Dive deep into Syma's syntax, modules, projections, and language features."
+              )
+            )
+          )
+
+          ; UI Development Card
+          RouterLink(:href "/docs/ui-basics" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-green-700 rounded-xl transition-all hover:shadow-lg hover:shadow-green-500/10"
+            Div(:class "space-y-3"
+              Div(:class "flex items-center justify-between"
+                Div(:class "text-3xl" "⚡")
+                Svg(:class "w-5 h-5 text-gray-500 group-hover:text-green-400 transition-colors" :fill "none" :stroke "currentColor" :viewBox "0 0 24 24"
+                  Path(:stroke-linecap "round" :stroke-linejoin "round" :stroke-width "2" :d "M13 7l5 5m0 0l-5 5m5-5H6")
+                )
+              )
+              H3(:class "text-xl font-semibold text-gray-200 group-hover:text-green-400 transition-colors"
+                "UI Development"
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed"
+                "Learn how to build reactive user interfaces with Syma's UI projection system."
+              )
+            )
+          )
+
+          ; Examples Card
+          RouterLink(:href "/docs/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-yellow-700 rounded-xl transition-all hover:shadow-lg hover:shadow-yellow-500/10"
+            Div(:class "space-y-3"
+              Div(:class "flex items-center justify-between"
+                Div(:class "text-3xl" "💡")
+                Svg(:class "w-5 h-5 text-gray-500 group-hover:text-yellow-400 transition-colors" :fill "none" :stroke "currentColor" :viewBox "0 0 24 24"
+                  Path(:stroke-linecap "round" :stroke-linejoin "round" :stroke-width "2" :d "M13 7l5 5m0 0l-5 5m5-5H6")
+                )
+              )
+              H3(:class "text-xl font-semibold text-gray-200 group-hover:text-yellow-400 transition-colors"
+                "Examples"
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed"
+                "Explore practical examples and tutorials to see Syma in action."
+              )
+            )
+          )
+
+          ; API Reference Card
+          RouterLink(:href "/docs/api" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-red-700 rounded-xl transition-all hover:shadow-lg hover:shadow-red-500/10"
+            Div(:class "space-y-3"
+              Div(:class "flex items-center justify-between"
+                Div(:class "text-3xl" "📚")
+                Svg(:class "w-5 h-5 text-gray-500 group-hover:text-red-400 transition-colors" :fill "none" :stroke "currentColor" :viewBox "0 0 24 24"
+                  Path(:stroke-linecap "round" :stroke-linejoin "round" :stroke-width "2" :d "M13 7l5 5m0 0l-5 5m5-5H6")
+                )
+              )
+              H3(:class "text-xl font-semibold text-gray-200 group-hover:text-red-400 transition-colors"
+                "API Reference"
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed"
+                "Complete reference documentation for Syma's built-in functions and modules."
+              )
+            )
+          )
+        )
+
+        ; Quick Code Example
+        Div(:class "space-y-4"
+          H2(:class "text-3xl font-bold text-gray-200" "Quick Example")
+          P(:class "text-gray-400"
+            "Here's a simple Syma program to get you started:"
+          )
+          Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
+            Pre(:class "font-mono text-sm leading-relaxed"
+              Code(
+                Span(:class "text-gray-500" "; Define a simple counter\n")
+                Span(:class "text-cyan-500" "{")
+                Span(:class "text-cyan-500" "R ")
+                Span(:class "text-yellow-600" "\"Increment\"\n")
+                Span(:class "text-cyan-500" "  {")
+                Span(:class "text-cyan-500" "Counter ")
+                Span(:class "text-cyan-500" "n_")
+                Span(:class "text-cyan-500" "}\n")
+                Span(:class "text-cyan-500" "  {")
+                Span(:class "text-cyan-500" "Counter ")
+                Span(:class "text-cyan-500" "Incremented ")
+                Span(:class "text-cyan-500" "Add")
+                Span(:class "text-cyan-500" "(")
+                Span(:class "text-cyan-500" "n_")
+                Span(:class "text-cyan-500" ", ")
+                Span(:class "text-green-500" "1")
+                Span(:class "text-cyan-500" ")")
+                Span(:class "text-cyan-500" "}\n")
+                Span(:class "text-cyan-500" "}\n\n")
+                Span(:class "text-gray-500" "; Use it\n")
+                Span(:class "text-cyan-500" "{")
+                Span(:class "text-cyan-500" "Counter ")
+                Span(:class "text-green-500" "0")
+                Span(:class "text-cyan-500" "}\n")
+                Span(:class "text-gray-500" "; → ")
+                Span(:class "text-cyan-500" "{")
+                Span(:class "text-cyan-500" "Counter ")
+                Span(:class "text-cyan-500" "Incremented ")
+                Span(:class "text-green-500" "1")
+                Span(:class "text-cyan-500" "}")
+              )
+            )
+          )
+        )
+
+        ; Helpful Resources
+        Div(:class "pt-8 border-t border-gray-800 space-y-4"
+          H2(:class "text-2xl font-bold text-gray-200" "Need Help?")
+          Div(:class "grid md:grid-cols-2 gap-4"
+            RouterLink(:href "https://github.com/SymaLang/syma/discussions" :class "flex items-start gap-4 p-4 bg-gray-900/30 border border-gray-800 hover:border-gray-700 rounded-lg transition-colors"
+              Div(:class "text-2xl" "💬")
+              Div(:class "space-y-1"
+                Div(:class "font-semibold text-gray-200" "Join Discussions")
+                Div(:class "text-sm text-gray-400" "Ask questions and share ideas with the community")
+              )
+            )
+            RouterLink(:href "https://github.com/SymaLang/syma/issues" :class "flex items-start gap-4 p-4 bg-gray-900/30 border border-gray-800 hover:border-gray-700 rounded-lg transition-colors"
+              Div(:class "text-2xl" "🐛")
+              Div(:class "space-y-1"
+                Div(:class "font-semibold text-gray-200" "Report Issues")
+                Div(:class "text-sm text-gray-400" "Found a bug? Let us know on GitHub")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

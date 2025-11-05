@@ -1,0 +1,197 @@
+{Module Data/Docs/Installation
+  {Exports InstallationDoc}
+  {Defs
+    {InstallationDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          ; Hero Section
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "Installation"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Get Syma up and running on your system in just a few steps."
+            )
+          )
+
+          ; Prerequisites
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Prerequisites")
+            P(:class "text-gray-300 leading-relaxed"
+              "Syma requires Node.js 18 or higher. Make sure you have Node.js installed before proceeding."
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm text-cyan-400"
+                Code("# Check your Node.js version\nnode --version")
+              )
+            )
+          )
+
+          ; Installation via npm
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Install via npm")
+            P(:class "text-gray-300 leading-relaxed"
+              "The easiest way to get started is to install Syma globally via npm:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm text-cyan-400"
+                Code("npm install -g syma")
+              )
+            )
+            P(:class "text-gray-300 leading-relaxed"
+              "Verify the installation:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm text-cyan-400"
+                Code("syma --version")
+              )
+            )
+          )
+
+          ; Create New Project
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Create a New Project")
+            P(:class "text-gray-300 leading-relaxed"
+              "Use the project scaffolding tool to create a new Syma project:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm text-cyan-400"
+                Code("npm create syma@latest my-project")
+              )
+            )
+            P(:class "text-gray-300 leading-relaxed"
+              "This will create a new directory with a basic Syma project structure:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-cyan-500" "my-project/\n")
+                  Span(:class "text-cyan-500" "├── ")
+                  Span(:class "text-green-500" "src/\n")
+                  Span(:class "text-cyan-500" "│   ├── ")
+                  Span(:class "text-yellow-600" "main.syma")
+                  Span(:class "text-gray-500" "       # Entry point\n")
+                  Span(:class "text-cyan-500" "│   └── ")
+                  Span(:class "text-green-500" "modules/")
+                  Span(:class "text-gray-500" "       # Your modules\n")
+                  Span(:class "text-cyan-500" "├── ")
+                  Span(:class "text-yellow-600" "package.json\n")
+                  Span(:class "text-cyan-500" "└── ")
+                  Span(:class "text-yellow-600" "README.md")
+                )
+              )
+            )
+          )
+
+          ; Running Programs
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Running Syma Programs")
+            P(:class "text-gray-300 leading-relaxed"
+              "You can run Syma programs in several ways:"
+            )
+
+            ; Direct Execution
+            Div(:class "space-y-3"
+              H3(:class "text-xl font-semibold text-cyan-400" "Direct Execution")
+              P(:class "text-gray-300 leading-relaxed"
+                "Run a Syma file directly:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm text-cyan-400"
+                  Code("syma src/main.syma")
+                )
+              )
+            )
+
+            ; REPL
+            Div(:class "space-y-3"
+              H3(:class "text-xl font-semibold text-cyan-400" "Interactive REPL")
+              P(:class "text-gray-300 leading-relaxed"
+                "Start an interactive session:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm text-cyan-400"
+                  Code("syma")
+                )
+              )
+            )
+
+            ; Evaluate Expression
+            Div(:class "space-y-3"
+              H3(:class "text-xl font-semibold text-cyan-400" "Evaluate Expression")
+              P(:class "text-gray-300 leading-relaxed"
+                "Evaluate a single expression:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm text-cyan-400"
+                  Code("syma -e '{Add 2 3}'")
+                )
+              )
+            )
+          )
+
+          ; Web Development
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Web Development Setup")
+            P(:class "text-gray-300 leading-relaxed"
+              "For web applications, use the Vite plugin:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm text-cyan-400"
+                Code("npm install -D vite vite-plugin-syma")
+              )
+            )
+            P(:class "text-gray-300 leading-relaxed"
+              "Create a "
+              Span(:class "text-cyan-400 font-mono" "vite.config.js")
+              ":"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-yellow-400" "import ")
+                  Span(:class "text-cyan-500" "{ defineConfig } ")
+                  Span(:class "text-yellow-400" "from ")
+                  Span(:class "text-yellow-600" "'vite'")
+                  Span(:class "text-cyan-500" ";\n")
+                  Span(:class "text-yellow-400" "import ")
+                  Span(:class "text-cyan-500" "syma ")
+                  Span(:class "text-yellow-400" "from ")
+                  Span(:class "text-yellow-600" "'vite-plugin-syma'")
+                  Span(:class "text-cyan-500" ";\n\n")
+                  Span(:class "text-yellow-400" "export default ")
+                  Span(:class "text-cyan-500" "defineConfig")
+                  Span(:class "text-cyan-500" "({\n")
+                  Span(:class "text-cyan-500" "  plugins: [")
+                  Span(:class "text-cyan-500" "syma")
+                  Span(:class "text-cyan-500" "()],\n")
+                  Span(:class "text-cyan-500" "});")
+                )
+              )
+            )
+          )
+
+          ; Next Steps
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "What's Next?")
+            P(:class "text-gray-300 leading-relaxed"
+              "Now that you have Syma installed, you're ready to start building:"
+            )
+            Div(:class "grid md:grid-cols-2 gap-4"
+              A(:href "/docs/term-rewriting" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "🔄")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Learn Term Rewriting")
+                P(:class "text-gray-400 text-sm" "Understand how Syma programs work")
+              )
+              A(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "📖")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Explore the Syntax")
+                P(:class "text-gray-400 text-sm" "Master Syma's syntax and structure")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

@@ -1,0 +1,147 @@
+{Module
+  Layout/Footer
+  {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Exports FooterComponent}
+  {Defs
+    {FooterComponent
+      {Footer
+        :class "border-t border-gray-800 py-12 mt-16"
+        {Div
+          :class "grid md:grid-cols-4 gap-8"
+          {Div
+            :class "space-y-4"
+            {Div
+              :class "flex items-center space-x-3"
+              {Img
+                :src "/logo.svg"
+                :class "w-8 h-8"
+              }
+              {Span
+                :class "text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+                "Syma"
+              }
+            }
+            {P
+              :class "text-gray-400 text-sm leading-relaxed"
+              "A symbolic term-rewriting language for building the future of programming."
+            }
+          }
+          {Div
+            :class "space-y-4"
+            {H4
+              :class "text-gray-200 font-semibold"
+              "Documentation"
+            }
+            {Div
+              :class "flex flex-col space-y-2"
+              {RouterLink
+                :href "/docs"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Getting Started"
+              }
+              {RouterLink
+                :href "/docs/language"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Language Guide"
+              }
+              {RouterLink
+                :href "/docs/tutorial"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Tutorial"
+              }
+              {RouterLink
+                :href "/docs/examples"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Examples"
+              }
+            }
+          }
+          {Div
+            :class "space-y-4"
+            {H4
+              :class "text-gray-200 font-semibold"
+              "Community"
+            }
+            {Div
+              :class "flex flex-col space-y-2"
+              {A
+                :href "https://github.com/SymaLang/syma"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "GitHub"
+              }
+            }
+          }
+          {Div
+            :class "space-y-4"
+            {H4
+              :class "text-gray-200 font-semibold"
+              "Resources"
+            }
+            {Div
+              :class "flex flex-col space-y-2"
+              {RouterLink
+                :href "/playground"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Playground"
+              }
+              {RouterLink
+                :href "/docs/api"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "API Reference"
+              }
+              {RouterLink
+                :href "/changelog"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Changelog"
+              }
+              {RouterLink
+                :href "/roadmap"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Roadmap"
+              }
+            }
+          }
+        }
+        {Div
+          :class "mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
+          {Div
+            :class "flex flex-col md:flex-row items-center gap-4"
+            {P
+              :class "text-gray-500 text-sm"
+              "© 2025 Syma. Released under the MIT License."
+            }
+            {Div
+              :class "flex items-center gap-2 px-3 py-1 bg-gray-800/50 border border-cyan-500/20 rounded-full"
+              {Span
+                :class "text-xs text-gray-400"
+                "Built with"
+              }
+              {Span
+                :class "text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+                "Syma"
+              }
+            }
+          }
+          {Div
+            :class "flex space-x-6"
+            {A
+              :href "https://github.com/SymaLang/syma/blob/main/LICENSE.txt"
+              :class "text-gray-500 hover:text-cyan-400 transition-colors text-sm"
+              "MIT License"
+            }
+            {A
+              :href "https://github.com/SymaLang/syma/issues"
+              :class "text-gray-500 hover:text-cyan-400 transition-colors text-sm"
+              "Issues"
+            }
+            {A
+              :href "https://github.com/SymaLang/syma/blob/main/CONTRIBUTING.md"
+              :class "text-gray-500 hover:text-cyan-400 transition-colors text-sm"
+              "Contribute"
+            }
+          }
+        }
+      }
+    }
+  }
+}

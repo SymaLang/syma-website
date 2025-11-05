@@ -1,0 +1,84 @@
+{Module Data/Docs
+  {Import Symbols/Docs from "../symbols/docs.syma" {Open InitialDocs Docs Category Doc Slug Title Content}}
+
+  {Import Data/Docs/Introduction from "./docs/introduction.syma" {Open IntroductionDoc}}
+  {Import Data/Docs/Installation from "./docs/installation.syma" {Open InstallationDoc}}
+  {Import Data/Docs/TermRewriting from "./docs/term-rewriting.syma" {Open TermRewritingDoc}}
+  {Import Data/Docs/Syntax from "./docs/syntax.syma" {Open SyntaxDoc}}
+  {Import Data/Docs/PatternMatching from "./docs/pattern-matching.syma" {Open PatternMatchingDoc}}
+  {Import Data/Docs/Modules from "./docs/modules.syma" {Open ModulesDoc}}
+  {Import Data/Docs/UIBasics from "./docs/ui-basics.syma" {Open UIBasicsDoc}}
+  {Import Data/Docs/Effects from "./docs/effects.syma" {Open EffectsDoc}}
+  {Import Data/Docs/Examples from "./docs/examples.syma" {Open ExamplesDoc}}
+  {Import Data/Docs/API from "./docs/api.syma" {Open APIDoc}}
+
+  {Defs
+    {InitialDocs
+      Frozen(
+        {Docs
+          {Category "Getting Started"
+            {Doc
+              {Slug "introduction"}
+              {Title "Introduction"}
+              {Content Frozen({IntroductionDoc})}
+            }
+            {Doc
+              {Slug "installation"}
+              {Title "Installation"}
+              {Content Frozen({InstallationDoc})}
+            }
+            {Doc
+              {Slug "term-rewriting"}
+              {Title "Term Rewriting"}
+              {Content Frozen({TermRewritingDoc})}
+            }
+          }
+
+          {Category "Core Concepts"
+            {Doc
+              {Slug "syntax"}
+              {Title "Syntax Guide"}
+              {Content Frozen({SyntaxDoc})}
+            }
+            {Doc
+              {Slug "pattern-matching"}
+              {Title "Pattern Matching"}
+              {Content Frozen({PatternMatchingDoc})}
+            }
+            {Doc
+              {Slug "modules"}
+              {Title "Module System"}
+              {Content Frozen({ModulesDoc})}
+            }
+          }
+
+          {Category "Advanced Topics"
+            {Doc
+              {Slug "ui-basics"}
+              {Title "UI Development"}
+              {Content Frozen({UIBasicsDoc})}
+            }
+            {Doc
+              {Slug "effects"}
+              {Title "Effects System"}
+              {Content Frozen({EffectsDoc})}
+            }
+          }
+
+          {Category "Examples & Reference"
+            {Doc
+              {Slug "examples"}
+              {Title "Examples"}
+              {Content Frozen({ExamplesDoc})}
+            }
+            {Doc
+              {Slug "api"}
+              {Title "API Reference"}
+              {Content Frozen({APIDoc})}
+            }
+          }
+        }
+      )
+    }
+  }
+}

@@ -1,0 +1,288 @@
+{Module Data/Docs/TermRewriting
+  {Exports TermRewritingDoc}
+  {Defs
+    {TermRewritingDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          ; Hero Section
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "Term Rewriting"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Understanding the fundamental concept behind Syma: how programs are transformed through pattern matching and rewriting."
+            )
+          )
+
+          ; What is Term Rewriting
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "What is Term Rewriting?")
+            P(:class "text-gray-300 leading-relaxed"
+              "In traditional languages, you write functions that execute. In Syma, you write "
+              Span(:class "text-cyan-400 font-semibold" "rules")
+              " that match patterns and rewrite terms. "
+              "The runtime repeatedly finds patterns in your program and replaces them with new structures until nothing more can be rewritten — this is called "
+              Span(:class "text-cyan-400 font-semibold" "normalizing to a fixed point")
+              "."
+            )
+
+            Div(:class "bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-6"
+              Div(:class "flex gap-3"
+                Div(:class "text-2xl" "💡")
+                Div(:class "space-y-2"
+                  P(:class "font-semibold text-cyan-400" "Key Insight")
+                  P(:class "text-gray-300 leading-relaxed"
+                    "There is no eval, no environment, no call stack — only "
+                    Span(:class "text-cyan-400 font-semibold" "traversal, matching, and rewriting")
+                    ". Computation emerges from repeatedly applying pattern-based transformations."
+                  )
+                )
+              )
+            )
+          )
+
+          ; Simple Example
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "A Simple Example")
+            P(:class "text-gray-300 leading-relaxed"
+              "Let's define a rule that adds unary numbers (numbers represented as sequences of sticks):"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; The rule\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"AddUnary\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Add ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "a..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "b..")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "a.. b..")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-gray-500" "; The term\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Add ")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Unary | | |")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary | |")
+                  Span(:class "text-cyan-500" "}}\n\n")
+                  Span(:class "text-gray-500" "; After rewriting\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "Unary | | | | |")
+                  Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+            P(:class "text-gray-300 leading-relaxed"
+              "The rule says: \"If you find an "
+              Span(:class "text-cyan-400 font-mono" "Add")
+              " with two "
+              Span(:class "text-cyan-400 font-mono" "Unary")
+              " compounds inside, take everything from both unaries (captured as "
+              Span(:class "text-cyan-400 font-mono" "a..")
+              " and "
+              Span(:class "text-cyan-400 font-mono" "b..")
+              ") and combine them into a single "
+              Span(:class "text-cyan-400 font-mono" "Unary")
+              ".\""
+            )
+          )
+
+          ; Normalization Cycle
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "The Normalization Cycle")
+            P(:class "text-gray-300 leading-relaxed"
+              "The Syma runtime follows this process:"
+            )
+            Div(:class "space-y-3"
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "1")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Traverse")
+                  P(:class "text-gray-400 text-sm" "Walk through the AST in outermost-first, leftmost-first order")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "2")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Match")
+                  P(:class "text-gray-400 text-sm" "Try to match each node with all rules, from highest to lowest priority")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "3")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Rewrite")
+                  P(:class "text-gray-400 text-sm" "If a match is found, replace the node with the replacement term")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "4")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Restart")
+                  P(:class "text-gray-400 text-sm" "After any rewrite, start from step 1 again")
+                )
+              )
+              Div(:class "flex gap-4 items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg"
+                Div(:class "text-2xl font-bold text-cyan-400" "5")
+                Div(:class "flex-1"
+                  P(:class "font-semibold text-gray-200 mb-1" "Fixed Point")
+                  P(:class "text-gray-400 text-sm" "When no more rules match anywhere in the tree, the term is in normal form")
+                )
+              )
+            )
+          )
+
+          ; Complex Example
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "A More Complex Example")
+            P(:class "text-gray-300 leading-relaxed"
+              "Let's implement multiplication for unary numbers. This demonstrates how multiple rules work together:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; Step 1: Add a {Result} accumulator\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"MultiplyUnary/Start\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Mul {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "a..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "b..")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Mul {")
+                  Span(:class "text-cyan-500" "Result")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "a..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "b..")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-gray-500" "; Step 2: For each stick, add b.. to result\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"MultiplyUnary/Step\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Mul {")
+                  Span(:class "text-cyan-500" "Result ")
+                  Span(:class "text-cyan-500" "res..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "stick_ ")
+                  Span(:class "text-cyan-500" "a..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "b..")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Mul {")
+                  Span(:class "text-cyan-500" "Result ")
+                  Span(:class "text-cyan-500" "res.. b..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "a..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "b..")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "}\n\n")
+                  Span(:class "text-gray-500" "; Step 3: When no sticks left, return result\n")
+                  Span(:class "text-cyan-500" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-yellow-600" "\"MultiplyUnary/End\"\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Mul {")
+                  Span(:class "text-cyan-500" "Result ")
+                  Span(:class "text-cyan-500" "res..")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary")
+                  Span(:class "text-cyan-500" "} {")
+                  Span(:class "text-cyan-500" "Unary ..")
+                  Span(:class "text-cyan-500" "}}\n")
+                  Span(:class "text-cyan-500" "  {")
+                  Span(:class "text-cyan-500" "Unary ")
+                  Span(:class "text-cyan-500" "res..")
+                  Span(:class "text-cyan-500" "}\n")
+                  Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+            P(:class "text-gray-300 leading-relaxed"
+              "This implements multiplication through repeated addition — a state machine expressed purely through pattern matching and rewriting!"
+            )
+          )
+
+          ; Evaluation Order
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Evaluation Order: Outermost-First")
+
+            Div(:class "bg-yellow-900/20 border border-yellow-700/50 rounded-lg p-6"
+              Div(:class "flex gap-3"
+                Div(:class "text-2xl" "⚠️")
+                Div(:class "space-y-2"
+                  P(:class "font-semibold text-yellow-400" "Critical Difference from Other Languages")
+                  P(:class "text-gray-300 leading-relaxed"
+                    "Most languages use "
+                    Span(:class "text-yellow-400 font-semibold" "innermost-first")
+                    " (inside-out) evaluation. For example, in "
+                    Span(:class "text-cyan-400 font-mono" "add(mul(2, 3), 5)")
+                    ", they evaluate "
+                    Span(:class "text-cyan-400 font-mono" "mul(2, 3)")
+                    " first, then "
+                    Span(:class "text-cyan-400 font-mono" "add(6, 5)")
+                    "."
+                  )
+                  P(:class "text-gray-300 leading-relaxed"
+                    "Syma uses "
+                    Span(:class "text-yellow-400 font-semibold" "outermost-first")
+                    " (outside-in) by default. It tries to match rules at the outermost level first, only descending into children if no outer match is found. This enables lazy evaluation and makes pattern-based control flow natural."
+                  )
+                )
+              )
+            )
+
+            P(:class "text-gray-300 leading-relaxed mt-4"
+              "You can mark specific rules with "
+              Span(:class "text-cyan-400 font-mono" ":innermost")
+              " to use inside-out evaluation for those rules, giving you control over evaluation strategy on a per-rule basis."
+            )
+          )
+
+          ; Next Steps
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
+            Div(:class "grid md:grid-cols-2 gap-4"
+              A(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "📖")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Learn the Syntax")
+                P(:class "text-gray-400 text-sm" "Master atoms, compounds, and dual syntax")
+              )
+              A(:href "/docs/pattern-matching" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "🎯")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Pattern Matching")
+                P(:class "text-gray-400 text-sm" "Explore Syma's powerful pattern matching features")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{Module
+  Layout/DocsSidebar
+  {Import Symbols/Docs from "../symbols/docs.syma" {Open Docs Category Doc Slug Title Content}}
+  {Import Syma/SimpleUIRouter as Router {Open RouterLink}}
+
+  {Exports DocsSidebarComponent}
+  {Rules
+    {R DocsSidebarComponent
+      {DocsSidebarComponent}
+      {Aside :class "hidden lg:block w-64 flex-shrink-0"
+        {Nav :class "sticky top-8 space-y-6 max-h-[calc(100vh-12rem)] overflow-y-auto pr-2"
+          {Project Categories(categories..)}
+        }
+      }
+      :with {Program .. {App .. {State .. Frozen({Docs categories..}) ..} ..} ..}
+    }
+
+    {R Categories
+      {:project {Categories {Category title_ docs..} rest..}}
+      {Splat
+        {H3 title_}
+        {Ul :class "space-y-2"
+          {Project Docs(docs..)}
+        }
+        {Project Categories(rest..)}
+      }
+    }
+
+    {R Categories
+      {:project {Categories}}
+      Empty
+    }
+
+    {R Docs
+      {:project {Docs {Doc {Slug slug_} {Title title_} ..} rest..}}
+      {Li
+        {RouterLink :href Concat("/docs/" slug_) :class "block px-3 py-2 rounded-md text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-colors"
+          title_
+        }
+        {Project Docs(rest..)}
+      }
+    }
+
+    {R Docs
+      {:project {Docs}}
+      Empty
+    }
+  }
+}
+

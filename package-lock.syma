@@ -1,0 +1,15 @@
+{Lock
+  {Engine "0.0.0"}
+
+  {Package "Syma/SimpleUIRouter@fs:../syma-simple-router"
+    {Resolved "/Users/ahineya/projects/syma-simple-router"}
+    {Integrity "sha512-4f24f4521e7427e668be018517443799909e3891972de3eccffcf42c66a59a45b83106c59bfd38b8b0a86a054d199073080ddba2b42f3116f70fb2607f877bb5"}
+    {Mode "link"}
+    {Files
+      {"README.md" "sha512-886ea2656a6d6c970d90fcd44989ee6532314c8433d2f0f9ed31817eb405b2142ec9280400d2b60d58b9b0bd29e5831aa5f1f4a8fe7d8b8c4561e3822c23eaea"}
+      {"package.syma" "sha512-c8271c5e15f813d0e48bd72e85843a4a61cb6d5833c02e552f3d8c03406316bedd9da02ad11a69e408103dc56af7929919c94407825be0e2395ac230fc57f1df"}
+      {"src/main.syma" "sha512-886d8d220d31f1b4182e74792ee8f74c05af11c6c7ccdb4e208d03e29e4846344e221110d27157d181638fbae4d41ee90ffb4b6969b8c1db943e196f4ff3736f"}
+    }
+  }
+
+}

@@ -1,0 +1,59 @@
+{Module Page/NotFound
+  {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Exports NotFoundPage}
+  {Defs
+    {NotFoundPage
+      Div(:class "flex flex-col items-center justify-center min-h-[60vh] space-y-8 text-center"
+        ; Large 404 with gradient
+        Div(:class "space-y-4"
+          H1(:class "text-9xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
+            "404"
+          )
+          H2(:class "text-4xl font-bold text-gray-200"
+            "Page Not Found"
+          )
+        )
+
+        ; Description
+        P(:class "text-xl text-gray-400 max-w-2xl"
+          "The page you're looking for doesn't exist. It might have been moved, deleted, or perhaps it never existed in this reality."
+        )
+
+        ; Symbolic representation
+        Div(:class "py-8"
+          Div(:class "bg-gray-900/50 border border-gray-800 rounded-xl p-6 inline-block"
+            Pre(:class "text-cyan-400 font-mono text-sm"
+              Code(
+                "{Match {Path path..}}\n"
+                "->  {NotFound}\n"
+                "; No rules matched your path"
+              )
+            )
+          )
+        )
+
+        ; Action buttons
+        Div(:class "flex flex-wrap gap-4 justify-center pt-4"
+          RouterLink(:href "/" :class "px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/50 transition-all transform hover:scale-105"
+            "Go Home"
+          )
+          RouterLink(:href "/docs" :class "px-8 py-4 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-lg border border-gray-700 transition-all"
+            "Read Docs"
+          )
+        )
+
+        ; Helpful links
+        Div(:class "pt-8 space-y-3"
+          P(:class "text-sm text-gray-500" "Looking for something specific?")
+          Div(:class "flex flex-wrap gap-4 justify-center text-sm"
+            RouterLink(:href "/playground" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "Try the Playground")
+            Span(:class "text-gray-700" "•")
+            RouterLink(:href "https://github.com/SymaLang/syma" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "View on GitHub")
+            Span(:class "text-gray-700" "•")
+            RouterLink(:href "/docs/examples" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "See Examples")
+          )
+        )
+      )
+    }
+  }
+}

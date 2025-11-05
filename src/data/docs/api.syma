@@ -1,0 +1,254 @@
+{Module Data/Docs/API
+  {Exports APIDoc}
+  {Defs
+    {APIDoc
+      Div(:class "prose prose-invert max-w-none"
+        Div(:class "space-y-8"
+          Div(:class "space-y-4"
+            H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+              "API Reference"
+            )
+            P(:class "text-xl text-gray-400 leading-relaxed"
+              "Complete reference for Syma's built-in primitives and functions."
+            )
+          )
+
+          Div(:class "bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-6"
+            Div(:class "flex gap-3"
+              Div(:class "text-2xl" "📚")
+              Div(:class "space-y-2"
+                P(:class "font-semibold text-cyan-400" "Complete Documentation")
+                P(:class "text-gray-300 leading-relaxed"
+                  "For the complete, detailed API reference including all primitives, their signatures, and examples, please refer to the official "
+                  A(:href "https://github.com/SymaLang/syma/blob/main/docs/LANGUAGE.md" :class "text-cyan-400 hover:text-cyan-300 underline font-semibold"
+                    "Language Documentation"
+                  )
+                  "."
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Primitive Categories")
+            P(:class "text-gray-300 leading-relaxed"
+              "Syma provides a comprehensive standard library of primitive operations:"
+            )
+          )
+
+          Div(:class "grid md:grid-cols-2 gap-4"
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Arithmetic")
+              P(:class "text-gray-400 text-sm mb-3" "Mathematical operations on numbers")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "Add, Sub, Mul, Div, Mod")
+                Br()
+                Code(:class "text-cyan-500" "Pow, Sqrt, Abs")
+                Br()
+                Code(:class "text-cyan-500" "Min, Max, Floor, Ceil, Round")
+              )
+            )
+
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "String Operations")
+              P(:class "text-gray-400 text-sm mb-3" "Text manipulation and transformation")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "Concat, Trim, ToUpper, ToLower")
+                Br()
+                Code(:class "text-cyan-500" "StrLen, Substring, IndexOf")
+                Br()
+                Code(:class "text-cyan-500" "Replace, SplitBy, Join")
+              )
+            )
+
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Comparisons")
+              P(:class "text-gray-400 text-sm mb-3" "Equality and ordering checks")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "Eq (==, Is) - structural")
+                Br()
+                Code(:class "text-cyan-500" "NormalEq - normalized")
+                Br()
+                Code(:class "text-cyan-500" "Lt, Gt, Lte, Gte - numeric")
+              )
+            )
+
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Boolean Logic")
+              P(:class "text-gray-400 text-sm mb-3" "Logical operations")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "And, Or, Not")
+                Br()
+                Code(:class "text-cyan-500" "True, False")
+              )
+            )
+
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Type Checking")
+              P(:class "text-gray-400 text-sm mb-3" "Runtime type inspection")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "IsNum, IsStr, IsSym")
+                Br()
+                Code(:class "text-cyan-500" "IsTrue, IsFalse")
+                Br()
+                Code(:class "text-cyan-500" "AreNums, AreStrings, AreSyms")
+              )
+            )
+
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Utilities")
+              P(:class "text-gray-400 text-sm mb-3" "Helper functions and tools")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "FreshId, Random, ParseNum")
+                Br()
+                Code(:class "text-cyan-500" "Debug, Splat (...!)")
+                Br()
+                Code(:class "text-cyan-500" "Serialize, Deserialize")
+              )
+            )
+
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Bitwise")
+              P(:class "text-gray-400 text-sm mb-3" "Binary operations on integers")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "BitAnd (&), BitOr (|), BitXor")
+                Br()
+                Code(:class "text-cyan-500" "BitNot (~)")
+                Br()
+                Code(:class "text-cyan-500" "<<, >>, >>> (shifts)")
+              )
+            )
+
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Projection")
+              P(:class "text-gray-400 text-sm mb-3" "UI rendering utilities")
+              Div(:class "space-y-1 text-sm"
+                Code(:class "text-cyan-500" "ProjectToString")
+                Br()
+                Span(:class "text-gray-500 text-xs" "Server-side HTML rendering")
+              )
+            )
+          )
+
+          Div(:class "space-y-4"
+            H2(:class "text-3xl font-bold text-gray-200" "Quick Reference")
+            P(:class "text-gray-300 leading-relaxed"
+              "Here are some commonly used primitives:"
+            )
+          )
+
+          Div(:class "space-y-4"
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "Structural vs Value Comparison")
+              Div(:class "space-y-2 text-sm"
+                Div(
+                  Code(:class "text-cyan-500" "Eq(Add(1, 2), 3)")
+                  Span(:class "text-gray-400" " → ")
+                  Code(:class "text-red-400" "False")
+                  Span(:class "text-gray-500" " (different structures)")
+                )
+                Div(
+                  Code(:class "text-cyan-500" "NormalEq(Add(1, 2), 3)")
+                  Span(:class "text-gray-400" " → ")
+                  Code(:class "text-green-400" "True")
+                  Span(:class "text-gray-500" " (both normalize to 3)")
+                )
+              )
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "Serialization")
+              Div(:class "space-y-2 text-sm"
+                P(:class "text-gray-400" "Convert any Syma expression to/from JSON:")
+                Div(
+                  Code(:class "text-cyan-500" "Serialize({Add 1 2})")
+                  Span(:class "text-gray-400" " → JSON string")
+                )
+                Div(
+                  Code(:class "text-cyan-500" "Deserialize(jsonString)")
+                  Span(:class "text-gray-400" " → Original expression")
+                )
+              )
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "String Operations")
+              Div(:class "space-y-2 text-sm"
+                Div(
+                  Code(:class "text-cyan-500" "Concat(\"Hello\", \" \", \"World\")")
+                  Span(:class "text-gray-400" " → ")
+                  Code(:class "text-yellow-600" "\"Hello World\"")
+                )
+                Div(
+                  Code(:class "text-cyan-500" "SplitBy(\"a,b,c\", \",\")")
+                  Span(:class "text-gray-400" " → ")
+                  Code(:class "text-cyan-500" "Strings(\"a\", \"b\", \"c\")")
+                )
+                Div(
+                  Code(:class "text-cyan-500" "Join(\"-\", \"a\", \"b\", \"c\")")
+                  Span(:class "text-gray-400" " → ")
+                  Code(:class "text-yellow-600" "\"a-b-c\"")
+                )
+              )
+            )
+
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "Utilities")
+              Div(:class "space-y-2 text-sm"
+                Div(
+                  Code(:class "text-cyan-500" "FreshId()")
+                  Span(:class "text-gray-400" " → Unique identifier string")
+                )
+                Div(
+                  Code(:class "text-cyan-500" "Debug(\"label\", value)")
+                  Span(:class "text-gray-400" " → Logs and returns value")
+                )
+                Div(
+                  Code(:class "text-cyan-500" "Splat(a, b, c)")
+                  Span(:class "text-gray-400" " → Expands in context")
+                )
+              )
+            )
+          )
+
+          Div(:class "space-y-4 pt-8 border-t border-gray-800"
+            H2(:class "text-3xl font-bold text-gray-200" "Learn More")
+            P(:class "text-gray-300 leading-relaxed"
+              "This is a high-level overview. For complete documentation including:"
+            )
+            Ul(:class "text-gray-300 space-y-2 ml-6"
+              Li("Detailed signatures for every primitive")
+              Li("Comprehensive examples")
+              Li("Edge cases and behavior notes")
+              Li("Meta-safe vs non-meta-safe primitives")
+              Li("Effect types and their request/response formats")
+            )
+            P(:class "text-gray-300 leading-relaxed mt-4"
+              "Please refer to the "
+              A(:href "https://github.com/SymaLang/syma/blob/main/docs/LANGUAGE.md" :class "text-cyan-400 hover:text-cyan-300 underline font-semibold"
+                "official Language Documentation"
+              )
+              "."
+            )
+          )
+
+          Div(:class "space-y-4 pt-8 border-t border-gray-800"
+            H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
+            Div(:class "grid md:grid-cols-2 gap-4"
+              A(:href "/docs/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "💡")
+                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "See Examples")
+                P(:class "text-gray-400 text-sm" "Learn by seeing these primitives in action")
+              )
+              A(:href "https://github.com/SymaLang/syma/blob/main/docs/LANGUAGE.md" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+                Div(:class "text-3xl mb-3" "📖")
+                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Full Documentation")
+                P(:class "text-gray-400 text-sm" "Complete reference with all details")
+              )
+            )
+          )
+        )
+      )
+    }
+  }
+}

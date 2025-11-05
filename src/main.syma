@@ -1,0 +1,55 @@
+{Module App/Main
+  {Import Core/Lift as Lift open}
+  {Import Syma/SimpleUIRouter as Router macro {Open CurrentRoute Router Route Slot Navigate}}
+
+  {Import Data/Docs from "./data/docs.syma" {Open InitialDocs}}
+  {Import Symbols/Docs from "./symbols/docs.syma" {Open Docs Category Doc Slug Title Content}}
+
+  {Import Layout/Main from "./layout/main-layout.syma" {Open MainLayout}}
+  {Import Layout/Docs from "./layout/docs-layout.syma" {Open DocsLayout}}
+  {Import Page/Index from "./pages/index.syma" {Open IndexPage HTML SYMA DisplayMode UiDemoCard Counter Inc}}
+  {Import Page/Docs from "./pages/docs.syma" {Open DocsPage}}
+  {Import Page/NotFound from "./pages/404.syma" {Open NotFoundPage}}
+
+  {Program
+    {App
+      {State 
+        {InitialDocs}
+        {DisplayMode HTML}
+        {Counter 0}
+      }
+      {UI {Div {Project CurrentRoute}}}
+      {Router}
+    }
+    {Effects {Pending} {Inbox}}
+  }
+
+  {Rules
+    ; Home Page Route
+    {Route main {Path} {MainLayout main} {IndexPage}}
+
+    ; Docs Routes
+    {Route docs {Path / "docs"} {DocsLayout docs} {DocsPage}}
+    {Route doc  {Path / "docs" / doc_} {DocsLayout doc} {Project CurrentDoc}
+      :select
+      :guard IsDocExists
+    }
+
+    // {Route docNotFound {Path / "docs" / notfound_} Div({Slot docNotFound}) Div("Document not found.")}
+    {Route 404 {Path p..} {MainLayout 404} {NotFoundPage}}
+
+    {R IsDocExists {IsDocExists {Path / "docs" / doc_} {State .. Frozen({Docs .. {Category _ .. {Doc {Slug doc_} ..} ..} ..}) ..}} True}
+
+    {R ProjectCurrentDoc
+      {:project CurrentDoc}
+      {Project {Doc doc_}}
+      :with {Program .. {App .. {Router {Location {Path / "docs" / doc_}}} ..} ..}
+    }
+
+    {R ProjectDoc
+      {:project {Doc doc_}}
+      Div(content_)
+      :with {Program .. {App .. {State .. Frozen({Docs .. {Category _ .. {Doc {Slug doc_} {Title title_} {Content Frozen(content_)} .. } ..} ..}) ..} ..} ..}
+    }
+  }
+}

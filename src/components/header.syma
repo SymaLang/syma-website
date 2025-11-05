@@ -1,0 +1,56 @@
+{Module
+  Layout/Header
+  {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Exports HeaderComponent}
+  {Defs
+    {HeaderComponent
+      {Header
+        :class "py-6 border-b border-gray-800"
+        {Div
+          :class "flex items-center justify-between"
+          {Div
+            :class "flex items-center space-x-3"
+            {Img
+              :src "/logo.svg"
+              :class "w-36 border border-2 border-white rounded-md"
+            }
+            {Div
+              :class "flex flex-col"
+              {Span
+                :class "text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
+                "Syma"
+              }
+              {Span
+                :class "text-xs text-gray-500"
+                "This site is built with Syma"
+              }
+            }
+          }
+          {Nav
+            :class "hidden md:flex space-x-8"
+            {RouterLink
+              :href "/"
+              :class "text-gray-300 hover:text-cyan-400 transition-colors"
+              "Home"
+            }
+            {RouterLink
+              :href "/docs"
+              :class "text-gray-300 hover:text-cyan-400 transition-colors"
+              "Docs"
+            }
+            {RouterLink
+              :href "/playground"
+              :class "text-gray-300 hover:text-cyan-400 transition-colors"
+              "Playground"
+            }
+            {RouterLink
+              :href "https://github.com/SymaLang/syma"
+              :class "text-gray-300 hover:text-cyan-400 transition-colors"
+              "GitHub"
+            }
+          }
+        }
+      }
+    }
+  }
+}
