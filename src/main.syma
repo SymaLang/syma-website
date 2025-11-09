@@ -11,6 +11,9 @@
   {Import Page/Docs from "./pages/docs.syma" {Open DocsPage}}
   {Import Page/NotFound from "./pages/404.syma" {Open NotFoundPage}}
 
+  {Import Core/Effect as Eff open}
+  {Import CustomEffects from "./symbols/custom-effects.syma" {Open PageTitle}}
+
   {Program
     {App
       {State 
@@ -38,7 +41,7 @@
     // {Route docNotFound {Path / "docs" / notfound_} Div({Slot docNotFound}) Div("Document not found.")}
     {Route 404 {Path p..} {MainLayout 404} {NotFoundPage}}
 
-    {R IsDocExists {IsDocExists {Path / "docs" / doc_} {State .. Frozen({Docs .. {Category _ .. {Doc {Slug doc_} ..} ..} ..}) ..}} True}
+    {R IsDocExists {IsDocExists {Path / "docs" / doc_} {State .. Inert({Docs .. {Category _ .. {Doc {Slug doc_} ..} ..} ..}) ..}} True}
 
     {R ProjectCurrentDoc
       {:project CurrentDoc}
@@ -48,8 +51,8 @@
 
     {R ProjectDoc
       {:project {Doc doc_}}
-      Div(content_)
-      :with {Program .. {App .. {State .. Frozen({Docs .. {Category _ .. {Doc {Slug doc_} {Title title_} {Content Frozen(content_)} .. } ..} ..}) ..} ..} ..}
+      Div(Eff({PageTitle id Concat(title_ " - Syma Documentation")}) content_)
+      :with {Program .. {App .. {State .. Inert({Docs .. {Category _ .. {Doc {Slug doc_} {Title title_} {Content Inert(content_)} .. } ..} ..}) ..} ..} ..}
     }
   }
 }

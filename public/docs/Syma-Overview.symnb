@@ -319,7 +319,7 @@
     {
       "id": "V4neGTq8HIjZQC0BB4dBA",
       "type": "markdown",
-      "content": "## Module system\n\nOf course, just coding in the notebook or REPL is not comfortable for anything larger than tiny demos. We need files! We need modules! Syma has those, but because of its purely symbolic nature, it also has a lot of unusual decisions.\n\nIn Syma, we can define a module like this:\n\n```syma\n{Module MyModule\n    {Rules\n        {R Increment\n            Inc(n_)\n            Add(n_, 1)\n            :guard IsNum({Frozen n_})\n        }\n    }\n}\n```\n\nAnd then import the module by writing\n\n```syma\n{Import MyModule from \"./path/to/module.syma\"}\n```\n\nIn the notebook environment, we can also define and import modules. To define a module, use the `:module` notebook command. To import it, use the `:bring-module-from-nothing-to-the-universe-right-now`. Just kidding. Use `:import ModuleName`.",
+      "content": "## Module system\n\nOf course, just coding in the notebook or REPL is not comfortable for anything larger than tiny demos. We need files! We need modules! Syma has those, but because of its purely symbolic nature, it also has a lot of unusual decisions.\n\nIn Syma, we can define a module like this:\n\n```syma\n{Module MyModule\n    {Rules\n        {R Increment\n            Inc(n_)\n            Add(n_, 1)\n            :guard IsNum({Inert n_})\n        }\n    }\n}\n```\n\nAnd then import the module by writing\n\n```syma\n{Import MyModule from \"./path/to/module.syma\"}\n```\n\nIn the notebook environment, we can also define and import modules. To define a module, use the `:module` notebook command. To import it, use the `:bring-module-from-nothing-to-the-universe-right-now`. Just kidding. Use `:import ModuleName`.",
       "outputs": [],
       "metadata": {},
       "disabled": false
@@ -327,7 +327,7 @@
     {
       "id": "GkYg6l17H3OBBxyuEyiCU",
       "type": "code",
-      "content": ":module multiline\n{Module MyModule\n    {Rules\n        {R Increment\n            Inc(n_)\n            Add(n_, 1)\n            :guard IsNum({Frozen n_})\n        }\n    }\n}\n:end\n\n:import MyModule",
+      "content": ":module multiline\n{Module MyModule\n    {Rules\n        {R Increment\n            Inc(n_)\n            Add(n_, 1)\n            :guard IsNum({Inert n_})\n        }\n    }\n}\n:end\n\n:import MyModule",
       "outputs": [],
       "metadata": {},
       "disabled": false

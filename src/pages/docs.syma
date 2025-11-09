@@ -2,10 +2,14 @@
   {Exports DocsPage}
   {Import Symbols/Docs from "../symbols/docs.syma" {Open Docs Category Doc Slug Title Content}}
   {Import Syma/SimpleUIRouter as Router {Open RouterLink}}
+  {Import Core/Effect as Eff open}
+  {Import CustomEffects from "../symbols/custom-effects.syma" {Open PageTitle}}
+
   {Rules
     {R DocsPage
       {DocsPage}
       Div(:class "space-y-12"
+        Eff({PageTitle id "Documentation - Syma Programming Language"})
         ; Docs Hero
         Div(:class "space-y-4 pb-8 border-b border-gray-800"
           H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"

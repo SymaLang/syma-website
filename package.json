@@ -6,16 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "@syma/platform-browser": "file:../syma-fe/packages/platform-browser"
   },
   "devDependencies": {
-    "@syma/vite-plugin": "file:../syma-fe/packages/vite-plugin",
     "@syma/cli": "file:../syma-fe/packages/cli",
-    "vite": "^7.1.2",
+    "@syma/vite-plugin": "file:../syma-fe/packages/vite-plugin",
+    "@tailwindcss/vite": "^4.1.15",
+    "sharp": "^0.34.4",
     "tailwindcss": "^4.1.15",
-    "@tailwindcss/vite": "^4.1.15"
+    "vite": "^7.1.2",
+    "vite-imagetools": "^9.0.0"
   }
 }

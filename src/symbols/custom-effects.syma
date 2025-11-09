@@ -1,0 +1,3 @@
+{Module CustomEffects
+  {Export PageTitle}
+}

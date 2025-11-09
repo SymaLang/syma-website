@@ -10,51 +10,52 @@
 
     {R Tokenize/All
       {Tokenize UI(..)}
-      {Tokenizing {Indent 0} {AfterOpen False} {Tokens} {Things ..}}
+      {Tokenizing {Indent 0} {AfterOpen False} {Inert} {Inert ..}}
       :innermost
     }
 
     {R Tokenize/Open
-      {Tokenizing {Indent indent_} {AfterOpen after_} {Tokens ..} {Things [ ..}}
-      {Tokenizing {Indent Add(indent_ 1)} {AfterOpen True} {Tokens .. {If after_ "" Br()} {Div :style Concat("margin-left: ", Mul(indent_, 20), "px;") :class "inline-block text-cyan-500" "{"}} {Things ..}}
+      {Tokenizing {Indent indent_} {AfterOpen after_} {Inert ..} {Inert [ ..}}
+      {Tokenizing {Indent Add(indent_ 1)} {AfterOpen True} {Inert .. {If after_ "" Br()} {Div :style Concat("margin-left: ", Mul(indent_, 20), "px;") :class "inline-block text-cyan-500" "{"}} {Inert ..}}
       :innermost
     }
 
     {R Tokenize/Close
-      {Tokenizing {Indent indent_} {AfterOpen after_} {Tokens ..} {Things ] ..}}
-      {Tokenizing {Indent Sub(indent_ 1)} {AfterOpen False} {Tokens .. {If after_ "" Br()} {Div :style Concat("margin-left: ", Mul(Sub(indent_ 1), 20), "px;") :class "inline-block text-cyan-500" "}"}} {Things ..}}
+      {Tokenizing {Indent indent_} {AfterOpen after_} {Inert ..} {Inert ] ..}}
+      {Tokenizing {Indent Sub(indent_ 1)} {AfterOpen False} {Inert .. {If after_ "" Br()} {Div :style Concat("margin-left: ", Mul(Sub(indent_ 1), 20), "px;") :class "inline-block text-cyan-500" "}"}} {Inert ..}}
       :innermost
     }
 
     {R Tokenize/String
-      {Tokenizing {Indent indent_} {AfterOpen after_} {Tokens ..} {Things thing_ ..}}
-      {Tokenizing {Indent indent_} {AfterOpen False} {Tokens .. {If after_ " " Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-yellow-600" Concat("\"", thing_,  "\"")}} {Things ..}}
+      {Tokenizing {Indent indent_} {AfterOpen after_} {Inert ..} {Inert thing_ ..}}
+      {Tokenizing {Indent indent_} {AfterOpen False} {Inert .. {If after_ " " Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-yellow-600" Concat("\"", thing_,  "\"")}} {Inert ..}}
       :guard IsStr(thing_)
       :innermost
     }
 
     {R Tokenize/Number
-      {Tokenizing {Indent indent_} {AfterOpen after_} {Tokens ..} {Things thing_ ..}}
-      {Tokenizing {Indent indent_} {AfterOpen False} {Tokens .. {If after_ "" Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-green-500" thing_}} {Things ..}}
+      {Tokenizing {Indent indent_} {AfterOpen after_} {Inert ..} {Inert thing_ ..}}
+      {Tokenizing {Indent indent_} {AfterOpen False} {Inert .. {If after_ "" Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-green-500" thing_}} {Inert ..}}
       :guard IsNum(thing_)
       :innermost
     }
 
     {R Tokenize/Keyword
-      {Tokenizing {Indent indent_} {AfterOpen after_} {Tokens ..} {Things {/| keyword_ :class :onClick} ..}}
-      {Tokenizing {Indent indent_} {AfterOpen True} {Tokens .. {If after_ "" Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-yellow-400 pr-1" Concat(ToNormalString(keyword_) " ")}} {Things ..}}
+      {Tokenizing {Indent indent_} {AfterOpen after_} {Inert ..} {Inert {/| keyword_ :class :onClick} ..}}
+      {Tokenizing {Indent indent_} {AfterOpen True} {Inert .. {If after_ "" Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-yellow-400 pr-1" Concat(ToNormalString(keyword_) " ")}} {Inert ..}}
       :innermost
     }
 
     {R Tokenize/Other
-      {Tokenizing {Indent indent_} {AfterOpen after_} {Tokens ..} {Things thing_ ..}}
-      {Tokenizing {Indent indent_} {AfterOpen False} {Tokens .. {If after_ "" Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-cyan-500" Str(thing_)} {If after_ {Span :class "text-cyan-500"} ""}} {Things ..}}
+      {Tokenizing {Indent indent_} {AfterOpen after_} {Inert ..} {Inert thing_ ..}}
+      {Tokenizing {Indent indent_} {AfterOpen False} {Inert .. {If after_ "" Br()} {Div :style {If after_ "" Concat("margin-left: ", Mul(indent_, 20), "px;")} :class "inline-block text-cyan-500" Str(thing_)} {If after_ {Span :class "text-cyan-500"} ""}} {Inert ..}}
       :innermost
     }
 
     {R Tokenize/Done
-      {Tokenizing .. {Tokens toks..} _}
+      {Tokenizing .. {Inert toks..} {Inert}} 
       Div(toks..)
     }
   }
 }
+

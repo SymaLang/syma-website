@@ -35,19 +35,19 @@
             {Div
               :class "flex flex-col space-y-2"
               {RouterLink
-                :href "/docs"
+                :href "/docs/introduction"
                 :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
-                "Getting Started"
+                "Introduction"
               }
               {RouterLink
-                :href "/docs/language"
+                :href "/docs/installation"
                 :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
-                "Language Guide"
+                "Installation"
               }
               {RouterLink
-                :href "/docs/tutorial"
+                :href "/docs/syntax"
                 :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
-                "Tutorial"
+                "Syntax Guide"
               }
               {RouterLink
                 :href "/docs/examples"
@@ -80,24 +80,24 @@
             {Div
               :class "flex flex-col space-y-2"
               {RouterLink
-                :href "/playground"
-                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
-                "Playground"
-              }
-              {RouterLink
                 :href "/docs/api"
                 :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
                 "API Reference"
               }
               {RouterLink
-                :href "/changelog"
+                :href "/docs/pattern-matching"
                 :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
-                "Changelog"
+                "Pattern Matching"
               }
               {RouterLink
-                :href "/roadmap"
+                :href "/docs/ui-basics"
                 :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
-                "Roadmap"
+                "UI Development"
+              }
+              {RouterLink
+                :href "/docs/effects"
+                :class "text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+                "Effects System"
               }
             }
           }

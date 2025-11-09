@@ -8,11 +8,11 @@
 
   {Rules
     {R DocsLayout {DocsLayout slot_}
-      {Div :class "min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-gray-100"
-        {Div :class "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-          ; Header/Navigation
-          {HeaderComponent}
+      {Div :class "min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-gray-100 noise-texture"
+        ; Header/Navigation
+        {HeaderComponent}
 
+        {Div :class "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
           ; Docs Content with Sidebar
           {Div :class "flex gap-8 py-8"
             ; Sidebar

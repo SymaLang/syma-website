@@ -5,14 +5,16 @@
   {Defs
     {HeaderComponent
       {Header
-        :class "py-6 border-b border-gray-800"
+        :class "sticky top-0 z-50 backdrop-blur-md bg-gray-950/80"
         {Div
-          :class "flex items-center justify-between"
+          :class "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+          {Div
+            :class "flex items-center justify-between"
           {Div
             :class "flex items-center space-x-3"
             {Img
               :src "/logo.svg"
-              :class "w-36 border border-2 border-white rounded-md"
+              :class "w-18 border border-2 border-white rounded-md"
             }
             {Div
               :class "flex flex-col"
@@ -48,6 +50,7 @@
               :class "text-gray-300 hover:text-cyan-400 transition-colors"
               "GitHub"
             }
+          }
           }
         }
       }

@@ -191,24 +191,59 @@
             )
 
             H3(:class "text-xl font-semibold text-cyan-400 mt-6" "Complete Rule Syntax")
+            P(:class "text-gray-300 leading-relaxed mb-4"
+              "Rules support multiple optional modifiers for control flow, priority, and context:"
+            )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
                 Code(
+                  Span(:class "text-gray-500" "; Basic rule\n")
                   Span(:class "text-cyan-500" "{")
                   Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"RuleName\" ")
+                  Span(:class "text-yellow-600" "\"Name\" ")
                   Span(:class "text-cyan-500" "pattern replacement")
                   Span(:class "text-cyan-500" "}\n\n")
-                  Span(:class "text-gray-500" "; With optional guard and priority\n")
+
+                  Span(:class "text-gray-500" "; With optional modifiers (any order)\n")
                   Span(:class "text-cyan-500" "{")
                   Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"RuleName\" ")
-                  Span(:class "text-cyan-500" "pattern replacement ")
+                  Span(:class "text-yellow-600" "\"Name\" ")
+                  Span(:class "text-cyan-500" "pattern replacement\n  ")
                   Span(:class "text-yellow-400" ":guard ")
-                  Span(:class "text-cyan-500" "condition ")
-                  Span(:class "text-yellow-400" ":prio ")
-                  Span(:class "text-green-500" "100")
+                  Span(:class "text-cyan-500" "condition\n  ")
+                  Span(:class "text-yellow-400" ":scope ")
+                  Span(:class "text-cyan-500" "Parent\n  ")
+                  Span(:class "text-yellow-400" ":with ")
+                  Span(:class "text-cyan-500" "contextPattern\n  ")
+                  Span(:class "text-yellow-400" ":innermost")
                   Span(:class "text-cyan-500" "}")
+                )
+              )
+            )
+
+            Div(:class "mt-4 space-y-3"
+              Div(:class "p-3 bg-gray-900/50 border border-gray-800 rounded"
+                P(:class "text-sm text-gray-300"
+                  Span(:class "text-cyan-400 font-semibold" ":guard")
+                  " — Condition that must be True for rule to match"
+                )
+              )
+              Div(:class "p-3 bg-gray-900/50 border border-gray-800 rounded"
+                P(:class "text-sm text-gray-300"
+                  Span(:class "text-cyan-400 font-semibold" ":scope")
+                  " — Only match inside specified parent compound"
+                )
+              )
+              Div(:class "p-3 bg-gray-900/50 border border-gray-800 rounded"
+                P(:class "text-sm text-gray-300"
+                  Span(:class "text-cyan-400 font-semibold" ":with")
+                  " — Bind additional variables from context"
+                )
+              )
+              Div(:class "p-3 bg-gray-900/50 border border-gray-800 rounded"
+                P(:class "text-sm text-gray-300"
+                  Span(:class "text-cyan-400 font-semibold" ":innermost")
+                  " — Use bottom-up evaluation (process children first)"
                 )
               )
             )

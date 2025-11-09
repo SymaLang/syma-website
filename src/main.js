@@ -1,9 +1,13 @@
 import { boot } from '@syma/platform-browser/runtime';
 import universe from 'virtual:syma-universe';
 import './styles.css';
+import { customEffects } from './effects.js';
 
 // Boot the Syma application
-boot(universe, '#app', 'dom', { debug: import.meta.env.DEV })
+boot(universe, '#app', 'dom', { 
+  debug: import.meta.env.DEV,
+  effects: customEffects
+})
   .then((app) => {
     console.log('Syma app initialized');
     if (import.meta.hot) {

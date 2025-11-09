@@ -1,35 +1,542 @@
 {Module Page/Index
   {Import Syma/SimpleUIRouter as Router {Open RouterLink}}
   {Import Tokenize from "../tokenize.syma" {Open Tokenize}}
+  {Import Core/Effect as Eff open}
+  {Import CustomEffects from "../symbols/custom-effects.syma" {Open PageTitle}}
 
   {Export DisplayMode HTML SYMA UiDemoCard Inc}
   {Defs
     {IndexPage
       Div(:class "space-y-16"
+         Eff({PageTitle id "Syma - Symbolic Term-Rewriting Programming Language"})
         ; Hero Section
         Div(:class "text-center space-y-8 py-16"
           H1(:class "text-6xl md:text-7xl font-bold tracking-tight"
             Span(:class "bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
-              "Symbolic Programming")
-            Br()
-            Span(:class "text-gray-200" "Reimagined")
+              "Rewrite, don't evaluate.")
           )
           P(:class "text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
-            "Syma is a symbolic term-rewriting language based on pattern matching and outermost-first evaluation. "
-            "Write code that rewrites itself, build DSLs with ease, and express any paradigm."
+            "Syma is a rewriting runtime and a general-purpose programming language. It rewrites trees outside-in by default, uses flat compounds (no distinguished head), and lets you freeze subtrees without hiding them. Build UI, effects, and metaprograms on the same substrate."
           )
           Div(:class "flex flex-wrap gap-4 justify-center"
-            RouterLink(:href "/docs/introduction" :class "px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/50 transition-all transform hover:scale-105"
-              "Get Started"
+            RouterLink(:href "/playground" :class "px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/50 transition-all transform hover:scale-105"
+              "Try in Browser"
             )
-            RouterLink(:href "/playground" :class "px-8 py-4 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-lg border border-gray-700 transition-all"
-              "Try Online"
+            A(:href "#mental-model" :class "px-8 py-4 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-lg border border-gray-700 transition-all"
+              "Read the Mental Model (30s)"
+            )
+          )
+        )
+
+        ; Mental Model Section
+        Div(:id "mental-model" :class "max-w-4xl mx-auto py-12"
+          Div(:class "text-center mb-8"
+            Div(:class "text-4xl mb-3" "🧠")
+            H2(:class "text-3xl font-bold text-gray-200 mb-2" "30-second mental model")
+          )
+          Div(:class "grid md:grid-cols-2 gap-6"
+            ; Point 1
+            Div(:class "p-6 bg-gradient-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-800/50 rounded-xl"
+              Div(:class "flex items-start gap-3 mb-3"
+                Span(:class "text-2xl font-bold text-cyan-400" "1")
+                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "Everything is just structure")
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed ml-8"
+                Code(:class "text-cyan-400" "{Add 1 2}")
+                " (or "
+                Code(:class "text-cyan-400" "Add(1, 2)")
+                ") isn't a call to a function — it's a little tree made of symbols and numbers."
+              )
+            )
+
+            ; Point 2
+            Div(:class "p-6 bg-gradient-to-br from-blue-900/20 to-purple-900/20 border border-blue-800/50 rounded-xl"
+              Div(:class "flex items-start gap-3 mb-3"
+                Span(:class "text-2xl font-bold text-blue-400" "2")
+                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "Programs are rewrite rules")
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed ml-8"
+                "A rule says, \"Whenever you see this kind of tree, turn it into that kind of tree.\" The system keeps rewriting until nothing fits anymore — that's when it's \"done.\""
+              )
+            )
+
+            ; Point 3
+            Div(:class "p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border border-purple-800/50 rounded-xl"
+              Div(:class "flex items-start gap-3 mb-3"
+                Span(:class "text-2xl font-bold text-purple-400" "3")
+                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "Order is automatic, but you can steer it")
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed ml-8"
+                "By default Syma rewrites from the outside-in, but you can tag a rule with "
+                Code(:class "text-purple-400" ":innermost")
+                " to make it run inside-out first."
+              )
+            )
+
+            ; Point 4
+            Div(:class "p-6 bg-gradient-to-br from-pink-900/20 to-red-900/20 border border-pink-800/50 rounded-xl"
+              Div(:class "flex items-start gap-3 mb-3"
+                Span(:class "text-2xl font-bold text-pink-400" "4")
+                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "Even the rules are data")
+              )
+              P(:class "text-gray-400 text-sm leading-relaxed ml-8"
+                "You can build, store, and reuse patterns as regular values. Some rules (RuleRules) can generate new rules."
+              )
+            )
+          )
+        )
+
+        ; Purely Symbolic Section
+        Div(:class "max-w-4xl mx-auto py-12"
+          Div(:class "text-center mb-8"
+            Div(:class "text-4xl mb-3" "✨")
+            H2(:class "text-3xl font-bold text-gray-200 mb-2" "Purely Symbolic")
+            P(:class "text-gray-400" "Symbols can be anything you want")
+          )
+          Div(:class "space-y-6"
+            P(:class "text-gray-300 leading-relaxed text-center"
+              "In Syma, symbols have "
+              Span(:class "text-cyan-400 font-semibold" "no inherent meaning")
+              ". They're just names waiting for you to define their behavior through rules. This means you can use emojis, Unicode, operators, or any characters as symbols."
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-cyan-500" "Add  Multiply  True  False\n")
+                  Span(:class "text-cyan-500" "🎯  🔄  ✨\n")
+                  Span(:class "text-cyan-500" "+  -  λ  α  β\n")
+                  Span(:class "text-cyan-500" "%^&*   G#   Cdim7/Eb    This/Is/One/Symbol   :symbol:\n")
+                  Span(:class "text-cyan-500" "<hello>    *thing*   #FF0000   ")
+                )
+              )
+            )
+            Div(:class "bg-blue-900/20 border border-blue-700/50 rounded-lg p-6"
+              Div(:class "flex gap-3"
+                Div(:class "text-2xl" "💡")
+                P(:class "text-gray-300 leading-relaxed"
+                  "The symbol "
+                  Code(:class "text-cyan-400" "Add")
+                  " is no different from "
+                  Code(:class "text-cyan-400" "+")
+                  " or "
+                  Code(:class "text-cyan-400" "🎯")
+                  " — they're all just symbols until you write a rule that gives them meaning!"
+                )
+              )
+            )
+          )
+        )
+
+        ; Code Example Section
+        Div(:class "py-8 space-y-6"
+          H2(:class "text-4xl font-bold text-center text-gray-200" "No calls. Just a tree becoming a different tree.")
+          Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-8 overflow-x-auto max-w-4xl mx-auto"
+            Pre(:class "font-mono text-sm leading-relaxed"
+              Code(
+                Span(:class "text-gray-500" "; Define a rule for unary addition\n")
+                Span(:class "text-yellow-400" "{")
+                Span(:class "text-cyan-500" "R ")
+                Span(:class "text-yellow-600" "\"AddUnary\"\n")
+                Span(:class "text-yellow-400" "  {")
+                Span(:class "text-cyan-500" "Add ")
+                Span(:class "text-yellow-400" "{")
+                Span(:class "text-cyan-500" "Unary ")
+                Span(:class "text-purple-400" "a..")
+                Span(:class "text-yellow-400" "} {")
+                Span(:class "text-cyan-500" "Unary ")
+                Span(:class "text-purple-400" "b..")
+                Span(:class "text-yellow-400" "}}\n")
+                Span(:class "text-yellow-400" "  {")
+                Span(:class "text-cyan-500" "Unary ")
+                Span(:class "text-purple-400" "a.. b..")
+                Span(:class "text-yellow-400" "}\n")
+                Span(:class "text-yellow-400" "}\n\n")
+                Span(:class "text-gray-500" "; With this rule, the term:\n")
+                Span(:class "text-yellow-400" "{")
+                Span(:class "text-cyan-500" "Add ")
+                Span(:class "text-yellow-400" "{")
+                Span(:class "text-cyan-500" "Unary ")
+                Span(:class "text-white" "| | |")
+                Span(:class "text-yellow-400" "} {")
+                Span(:class "text-cyan-500" "Unary ")
+                Span(:class "text-white" "| |")
+                Span(:class "text-yellow-400" "}}\n\n")
+                Span(:class "text-gray-500" "; Rewrites to this:\n")
+                Span(:class "text-yellow-400" "{")
+                Span(:class "text-cyan-500" "Unary ")
+                Span(:class "text-white" "| | | | |")
+                Span(:class "text-yellow-400" "}")
+              )
+            )
+          )
+          P(:class "text-center text-gray-400"
+            "One rule implements addition for unary algebra — combining two lists into one through pattern matching and rewriting."
+          )
+        )
+
+        ; Comparison Section
+        Div(:class "max-w-5xl mx-auto py-12"
+          Div(:class "text-center mb-8"
+            H2(:class "text-3xl font-bold text-gray-200 mb-2" "Why this isn't...")
+            P(:class "text-gray-400" "Familiar systems, fundamental differences")
+          )
+          Div(:class "space-y-4"
+            ; Lisp comparison
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-xl"
+              Div(:class "flex items-start gap-6"
+                Div(:class "flex-shrink-0 w-32"
+                  Span(:class "text-xl font-bold text-gray-200" "Lisp")
+                )
+                Div(:class "flex-1"
+                  P(:class "text-gray-400 leading-relaxed"
+                    "Has head/operator semantics → Syma uses "
+                    Span(:class "text-cyan-400 font-semibold" "flat compounds")
+                    " with no distinguished head; no eval, only rewrite."
+                  )
+                )
+              )
+            )
+
+            ; FP comparison
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-xl"
+              Div(:class "flex items-start gap-6"
+                Div(:class "flex-shrink-0 w-32"
+                  Div(
+                    Span(:class "text-xl font-bold text-gray-200" "FP")
+                    Span(:class "text-xs text-gray-500 block mt-1" "Haskell/ML")
+                  )
+                )
+                Div(:class "flex-1"
+                  P(:class "text-gray-400 leading-relaxed"
+                    "Has pattern matching, but evaluation uses functions → In Syma, "
+                    Span(:class "text-cyan-400 font-semibold" "evaluation is rewriting")
+                    "."
+                  )
+                )
+              )
+            )
+
+            ; Mathematica comparison
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-xl"
+              Div(:class "flex items-start gap-6"
+                Div(:class "flex-shrink-0 w-32"
+                  Span(:class "text-xl font-bold text-gray-200" "Mathematica")
+                )
+                Div(:class "flex-1"
+                  P(:class "text-gray-400 leading-relaxed"
+                    "Has a pattern system with many special cases → Syma has a "
+                    Span(:class "text-cyan-400 font-semibold" "tiny, orthogonal core")
+                  )
+                )
+              )
+            )
+
+            ; Maude comparison
+            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-xl"
+              Div(:class "flex items-start gap-6"
+                Div(:class "flex-shrink-0 w-32"
+                  Span(:class "text-xl font-bold text-gray-200" "Maude")
+                )
+                Div(:class "flex-1"
+                  P(:class "text-gray-400 leading-relaxed"
+                    "Uses reflective rewriting with a strategy language → Syma "
+                    Span(:class "text-cyan-400 font-semibold" "folds strategy and meta into the same substrate")
+                    "."
+                  )
+                )
+              )
+            )
+          )
+        )
+
+        ; What is possible in Syma Section
+        Div(:class "max-w-5xl mx-auto py-12"
+          Div(:class "text-center mb-12"
+            H2(:class "text-4xl font-bold text-gray-200 mb-2" "What is possible in Syma")
+            P(:class "text-gray-400" "One substrate, infinite paradigms")
+          )
+          Div(:class "grid md:grid-cols-2 gap-6"
+            ; Functional Programming
+            Div(:class "p-6 bg-gradient-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-800/50 rounded-xl"
+              Div(:class "text-3xl mb-3" "λ")
+              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Functional Programming")
+              P(:class "text-gray-400 text-sm leading-relaxed mb-3"
+                "Map, Filter, Fold, Option types — all through pattern matching and "
+                Code(:class "text-cyan-400" ":innermost")
+                " evaluation."
+              )
+              Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
+                Pre(:class "font-mono text-xs leading-relaxed"
+                  Code(
+                    Span(:class "text-cyan-500" "Fold")
+                    Span(:class "text-white" "(")
+                    Span(:class "text-cyan-500" "Add")
+                    Span(:class "text-white" ", ")
+                    Span(:class "text-green-500" "0")
+                    Span(:class "text-white" ",\n  ")
+                    Span(:class "text-cyan-500" "Filter")
+                    Span(:class "text-white" "(")
+                    Span(:class "text-cyan-500" "IsEven")
+                    Span(:class "text-white" ",\n    ")
+                    Span(:class "text-cyan-500" "Map")
+                    Span(:class "text-white" "(")
+                    Span(:class "text-cyan-500" "Inc")
+                    Span(:class "text-white" ", ")
+                    Span(:class "text-yellow-400" "{")
+                    Span(:class "text-green-500" "1 2 3 4")
+                    Span(:class "text-yellow-400" "}")
+                    Span(:class "text-white" ")\n  )\n)")
+                  )
+                )
+              )
+            )
+
+            ; Logic Programming
+            Div(:class "p-6 bg-gradient-to-br from-blue-900/20 to-purple-900/20 border border-blue-800/50 rounded-xl"
+              Div(:class "text-3xl mb-3" "⚖️")
+              H3(:class "text-xl font-semibold text-blue-400 mb-3" "Logic Programming")
+              P(:class "text-gray-400 text-sm leading-relaxed mb-3"
+                "Define facts and inference rules with scoped matching. Socrates approves."
+              )
+              Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
+                Pre(:class "font-mono text-xs leading-relaxed"
+                  Code(
+                    Span(:class "text-gray-500" "; Facts\n")
+                    Span(:class "text-cyan-500" "Human")
+                    Span(:class "text-white" "(")
+                    Span(:class "text-cyan-500" "Socrates")
+                    Span(:class "text-white" ")\n\n")
+                    Span(:class "text-gray-500" "; Inference\n")
+                    Span(:class "text-cyan-500" "Human")
+                    Span(:class "text-white" "(")
+                    Span(:class "text-purple-400" "x_")
+                    Span(:class "text-white" ") → ")
+                    Span(:class "text-cyan-500" "Mortal")
+                    Span(:class "text-white" "(")
+                    Span(:class "text-purple-400" "x_")
+                    Span(:class "text-white" ")")
+                  )
+                )
+              )
+            )
+
+            ; Imperative DSLs
+            Div(:class "p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border border-purple-800/50 rounded-xl"
+              Div(:class "text-3xl mb-3" "📝")
+              H3(:class "text-xl font-semibold text-purple-400 mb-3" "Imperative DSLs")
+              P(:class "text-gray-400 text-sm leading-relaxed mb-3"
+                "Variables, assignments, static analysis — all through rewrite rules."
+              )
+              Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
+                Pre(:class "font-mono text-xs leading-relaxed"
+                  Code(
+                    Span(:class "text-yellow-400" "{")
+                    Span(:class "text-cyan-500" "Val ")
+                    Span(:class "text-white" "a ")
+                    Span(:class "text-cyan-500" "= ")
+                    Span(:class "text-green-500" "5")
+                    Span(:class "text-yellow-400" "}\n{")
+                    Span(:class "text-cyan-500" "Val ")
+                    Span(:class "text-white" "b ")
+                    Span(:class "text-cyan-500" "= ")
+                    Span(:class "text-green-500" "2")
+                    Span(:class "text-yellow-400" "}\n{")
+                    Span(:class "text-cyan-500" "Return ")
+                    Span(:class "text-white" "a ")
+                    Span(:class "text-cyan-500" "+ ")
+                    Span(:class "text-white" "b")
+                    Span(:class "text-yellow-400" "}")
+                  )
+                )
+              )
+            )
+
+            ; Object-Oriented
+            Div(:class "p-6 bg-gradient-to-br from-pink-900/20 to-red-900/20 border border-pink-800/50 rounded-xl"
+              Div(:class "text-3xl mb-3" "🏛️")
+              H3(:class "text-xl font-semibold text-pink-400 mb-3" "Object-Oriented")
+              P(:class "text-gray-400 text-sm leading-relaxed mb-3"
+                "Classes, inheritance, method dispatch — a complete OOP runtime in pure Syma rules."
+              )
+              Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
+                Pre(:class "font-mono text-xs leading-relaxed"
+                  Code(
+                    Span(:class "text-yellow-400" ":class ")
+                    Span(:class "text-cyan-500" "Dog ")
+                    Span(:class "text-yellow-400" ":extends ")
+                    Span(:class "text-cyan-500" "Animal ")
+                    Span(:class "text-yellow-400" "{\n  ")
+                    Span(:class "text-cyan-500" "bark")
+                    Span(:class "text-white" "() ")
+                    Span(:class "text-cyan-500" "=> ")
+                    Span(:class "text-yellow-600" "\"woof\"")
+                    Span(:class "text-yellow-400" "\n}")
+                  )
+                )
+              )
+            )
+
+            ; Reactive UI
+            Div(:class "p-6 bg-gradient-to-br from-red-900/20 to-orange-900/20 border border-red-800/50 rounded-xl"
+              Div(:class "text-3xl mb-3" "⚛️")
+              H3(:class "text-xl font-semibold text-red-400 mb-3" "Reactive UI")
+              P(:class "text-gray-400 text-sm leading-relaxed mb-3"
+                "Reactivity through a second normalization cycle. Virtual DOM diffing on AST terms."
+              )
+              Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
+                Pre(:class "font-mono text-xs leading-relaxed"
+                  Code(
+                    Span(:class "text-yellow-400" "{")
+                    Span(:class "text-cyan-500" "R ")
+                    Span(:class "text-cyan-500" "Counter\n  ")
+                    Span(:class "text-yellow-400" "{")
+                    Span(:class "text-yellow-400" ":project ")
+                    Span(:class "text-cyan-500" "Counter")
+                    Span(:class "text-yellow-400" "}\n  ")
+                    Span(:class "text-cyan-500" "Div")
+                    Span(:class "text-white" "(")
+                    Span(:class "text-purple-400" "c_")
+                    Span(:class "text-white" ")\n  ")
+                    Span(:class "text-yellow-400" ":with ")
+                    Span(:class "text-yellow-400" "{")
+                    Span(:class "text-cyan-500" "State ")
+                    Span(:class "text-purple-400" "c_")
+                    Span(:class "text-yellow-400" "}\n}")
+                  )
+                )
+              )
+            )
+
+            ; Symbolic Effects
+            Div(:class "p-6 bg-gradient-to-br from-orange-900/20 to-yellow-900/20 border border-orange-800/50 rounded-xl"
+              Div(:class "text-3xl mb-3" "🎭")
+              H3(:class "text-xl font-semibold text-orange-400 mb-3" "Symbolic Effects")
+              P(:class "text-gray-400 text-sm leading-relaxed mb-3"
+                "Pure I/O through symbolic effects. HTTP, timers, file I/O — all inspectable terms."
+              )
+              Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
+                Pre(:class "font-mono text-xs leading-relaxed"
+                  Code(
+                    Span(:class "text-yellow-400" "{")
+                    Span(:class "text-cyan-500" "Print ")
+                    Span(:class "text-white" "id ")
+                    Span(:class "text-yellow-400" "{\n  ")
+                    Span(:class "text-cyan-500" "Message ")
+                    Span(:class "text-yellow-600" "\"Hello!\"")
+                    Span(:class "text-yellow-400" "\n}}")
+                  )
+                )
+              )
+            )
+          )
+          Div(:class "mt-8 p-6 bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-purple-900/20 border border-cyan-700/50 rounded-xl"
+            Div(:class "flex gap-4"
+              Div(:class "text-3xl" "💡")
+              Div(
+                H3(:class "text-xl font-semibold text-gray-200 mb-2" "Programming paradigms as libraries")
+                P(:class "text-gray-400 leading-relaxed"
+                  "Each paradigm is just a set of rewrite rules. Import what you need, define your own, or mix them all. Syma doesn't enforce a paradigm — it "
+                  Span(:class "text-cyan-400 font-semibold" "becomes")
+                  " the paradigm you choose."
+                )
+              )
+            )
+          )
+        )
+
+        ; Interactive Demo Section
+        Div(:class "py-8 space-y-6 max-w-screen-md mx-auto"
+          H2(:class "text-4xl font-bold text-center text-gray-200" "Interactive Demo")
+          P(:class "text-center text-gray-400 mb-8"
+            "Press Increment a few times, then switch to SYMA — you'll see the same state rendered as tokens of the program. Two projections, one AST."
+          )
+          Div(:class "flex justify-center mb-6"
+            {Project ToggleButton}
+          )
+          Div(:class "flex justify-center"
+            {Project UiDemoCard}
+          )
+
+          ; Show the code
+          Div(:class "space-y-4 pt-8"
+            H3(:class "text-3xl font-bold text-center text-gray-200" "Under the Hood")
+            P(:class "text-center text-gray-400"
+              "Here's the actual Syma code that powers this interactive demo:"
+            )
+            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
+              Pre(:class "font-mono text-sm leading-relaxed"
+                Code(
+                  Span(:class "text-gray-500" "; The rule that renders the demo card\n")
+                  Span(:class "text-yellow-400" "{")
+                  Span(:class "text-cyan-500" "R ")
+                  Span(:class "text-cyan-500" "UiDemoCard\n")
+                  Span(:class "text-yellow-400" "  :project")
+                  Span(:class "text-yellow-400" "(")
+                  Span(:class "text-cyan-500" "UiDemoCard")
+                  Span(:class "text-yellow-400" ")\n")
+                  Span(:class "text-cyan-500" "  If")
+                  Span(:class "text-yellow-400" "(")
+                  Span(:class "text-cyan-500" "Is")
+                  Span(:class "text-yellow-400" "(")
+                  Span(:class "text-purple-400" "d_ ")
+                  Span(:class "text-cyan-500" "HTML")
+                  Span(:class "text-yellow-400" ")\n")
+                  Span(:class "text-gray-500" "    ; then\n")
+                  Span(:class "text-yellow-400" "    {")
+                  Span(:class "text-cyan-500" "CodeDisplay")
+                  Span(:class "text-yellow-400" "}\n")
+                  Span(:class "text-gray-500" "    ; else\n")
+                  Span(:class "text-cyan-500" "    Div")
+                  Span(:class "text-yellow-400" "(\n")
+                  Span(:class "text-yellow-400" "      :class ")
+                  Span(:class "text-yellow-600" "\"bg-gray-950 rounded-xl .....\"\n")
+                  Span(:class "text-cyan-500" "      Tokenize")
+                  Span(:class "text-yellow-400" "(")
+                  Span(:class "text-yellow-400" "{")
+                  Span(:class "text-cyan-500" "UI ")
+                  Span(:class "text-yellow-400" "{")
+                  Span(:class "text-cyan-500" "CodeDisplay")
+                  Span(:class "text-yellow-400" "}}")
+                  Span(:class "text-yellow-400" ")\n")
+                  Span(:class "text-yellow-400" "    )\n")
+                  Span(:class "text-yellow-400" "  )\n")
+                  Span(:class "text-yellow-400" "  :with ")
+                  Span(:class "text-cyan-500" "Program")
+                  Span(:class "text-yellow-400" "(")
+                  Span(:class "text-purple-400" ".. ")
+                  Span(:class "text-cyan-500" "App")
+                  Span(:class "text-yellow-400" "(")
+                  Span(:class "text-purple-400" ".. ")
+                  Span(:class "text-cyan-500" "State")
+                  Span(:class "text-yellow-400" "(")
+                  Span(:class "text-purple-400" ".. ")
+                  Span(:class "text-yellow-400" "{")
+                  Span(:class "text-cyan-500" "DisplayMode ")
+                  Span(:class "text-purple-400" "d_")
+                  Span(:class "text-yellow-400" "} ")
+                  Span(:class "text-purple-400" "..")
+                  Span(:class "text-yellow-400" ") ")
+                  Span(:class "text-purple-400" "..")
+                  Span(:class "text-yellow-400" ") ")
+                  Span(:class "text-purple-400" "..")
+                  Span(:class "text-yellow-400" ")\n")
+                  Span(:class "text-yellow-400" "}")
+                )
+              )
+            )
+            P(:class "text-center text-gray-400 text-sm"
+              "This single rule reads the display mode from the universe state, then either renders the UI directly or shows its tokenized source code. Code is data, data is code, both of them are the AST in the runtime!"
             )
           )
         )
 
         ; Features Grid
-        Div(:class "grid md:grid-cols-3 gap-8"
+        Div(:class "max-w-5xl mx-auto py-12"
+          Div(:class "text-center mb-12"
+            H2(:class "text-4xl font-bold text-gray-200 mb-2" "Core Capabilities")
+            P(:class "text-gray-400" "What makes Syma unique")
+          )
+          Div(:class "grid md:grid-cols-3 gap-8"
           ; Feature 1
           Div(:class "p-8 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-cyan-700 transition-colors"
             Div(:class "text-4xl mb-4" "🔄")
@@ -84,191 +591,165 @@
             )
           )
         )
-
-        ; Code Example Section
-        Div(:class "py-8 space-y-6"
-          H2(:class "text-4xl font-bold text-center text-gray-200" "See It In Action")
-          Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-8 overflow-x-auto"
-            Pre(:class "font-mono text-sm leading-relaxed"
-              Code(
-                Span(:class "text-gray-500" "; Define rules for unary multiplication\n")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "R ")
-                Span(:class "text-yellow-600" "\"MultiplyUnary/Start\"\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Mul ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "a..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "b..")
-                Span(:class "text-yellow-400" "}}\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Mul ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Result")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "a..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "b..")
-                Span(:class "text-yellow-400" "}}\n")
-                Span(:class "text-yellow-400" "}\n\n")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "R ")
-                Span(:class "text-yellow-600" "\"MultiplyUnary/Step\"\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Mul ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Result ")
-                Span(:class "text-purple-400" "res..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "stick_ ")
-                Span(:class "text-purple-400" "a..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "b..")
-                Span(:class "text-yellow-400" "}}\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Mul ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Result ")
-                Span(:class "text-purple-400" "res.. ")
-                Span(:class "text-purple-400" "b..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "a..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "b..")
-                Span(:class "text-yellow-400" "}}\n")
-                Span(:class "text-yellow-400" "}\n\n")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "R ")
-                Span(:class "text-yellow-600" "\"MultiplyUnary/End\"\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Mul ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Result ")
-                Span(:class "text-purple-400" "res..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "..")
-                Span(:class "text-yellow-400" "}}\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "res..")
-                Span(:class "text-yellow-400" "}\n")
-                Span(:class "text-yellow-400" "}\n\n")
-                Span(:class "text-gray-500" "; Use it\n")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Mul ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-white" "| |")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-white" "| | | |")
-                Span(:class "text-yellow-400" "}}\n")
-                Span(:class "text-gray-500" "; → ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-white" "| | | | | | | |")
-                Span(:class "text-yellow-400" "}")
-              )
-            )
-          )
-          P(:class "text-center text-gray-400"
-            "Three rules implement multiplication for unary algebra — recursion without recursion, state machines without state."
-          )
         )
 
-        ; Interactive Demo Section
-        Div(:class "py-8 space-y-6 max-w-screen-md mx-auto"
-          H2(:class "text-4xl font-bold text-center text-gray-200" "Interactive Demo")
-          P(:class "text-center text-gray-400 mb-8"
-            "Press the Increment button a few times, then switch to SYMA view. "
-            "The code you see is rendered on the fly from the universe state, from the same symbols that you see projected in the HTML view!"
+        ; Tooling Section
+        Div(:class "max-w-6xl mx-auto py-20"
+          Div(:class "text-center mb-16"
+            H2(:class "text-4xl font-bold text-gray-200 mb-2" "Developer Tooling")
+            P(:class "text-gray-400" "Built for exploration and understanding")
           )
-          Div(:class "flex justify-center mb-6"
-            {Project ToggleButton}
-          )
-          Div(:class "flex justify-center"
-            {Project UiDemoCard}
-          )
-
-          ; Show the code
-          Div(:class "space-y-4 pt-8"
-            H3(:class "text-3xl font-bold text-center text-gray-200" "Under the Hood")
-            P(:class "text-center text-gray-400"
-              "Here's the actual Syma code that powers this interactive demo:"
-            )
-            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
-              Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; The rule that renders the demo card\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-cyan-500" "UiDemoCard\n")
-                  Span(:class "text-yellow-400" "  :project")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-cyan-500" "UiDemoCard")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-cyan-500" "  If")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-cyan-500" "Is")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" "d_ ")
-                  Span(:class "text-cyan-500" "HTML")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "CodeDisplay")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-cyan-500" "    Div")
-                  Span(:class "text-yellow-400" "(\n")
-                  Span(:class "text-yellow-400" "      :class ")
-                  Span(:class "text-yellow-600" "\"bg-gray-950 rounded-xl .....\"\n")
-                  Span(:class "text-cyan-500" "      Tokenize")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "UI ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "CodeDisplay")
-                  Span(:class "text-yellow-400" "}}")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-yellow-400" "    )\n")
-                  Span(:class "text-yellow-400" "  )\n")
-                  Span(:class "text-yellow-400" "  :with ")
-                  Span(:class "text-cyan-500" "Program")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-cyan-500" "App")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-cyan-500" "State")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "DisplayMode ")
-                  Span(:class "text-purple-400" "d_")
-                  Span(:class "text-yellow-400" "} ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-yellow-400" ") ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-yellow-400" ") ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-yellow-400" "}")
+          Div(:class "space-y-24"
+            ; Debugger
+            Div(:class "grid md:grid-cols-2 gap-12 items-center"
+              Div(:class "order-2 md:order-1"
+                Div(:class "rounded-xl overflow-hidden border border-gray-800 shadow-2xl shadow-cyan-500/10"
+                  Picture(
+                    Source(:type "image/avif" :srcset "/optimized/debugger-800.avif 800w, /optimized/debugger-1200.avif 1200w, /optimized/debugger-1600.avif 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Source(:type "image/webp" :srcset "/optimized/debugger-800.webp 800w, /optimized/debugger-1200.webp 1200w, /optimized/debugger-1600.webp 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Img(:src "/optimized/debugger.png" :alt "Syma Debugger" :class "w-full h-auto" :loading "lazy")
+                  )
+                )
+              )
+              Div(:class "order-1 md:order-2"
+                Div(:class "text-3xl mb-4" "🐛")
+                H3(:class "text-3xl font-bold text-gray-200 mb-4" "Step-by-Step Debugger")
+                P(:class "text-gray-400 leading-relaxed mb-4"
+                  "Watch your program normalize step by step. See which rules fire, inspect the AST at each stage, and understand exactly how your code rewrites."
+                )
+                Ul(:class "space-y-2 text-gray-400"
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Breakpoints on specific rules")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Time-travel through normalization")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Pattern testing and matching")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Universe state inspection")
+                  )
                 )
               )
             )
-            P(:class "text-center text-gray-400 text-sm"
-              "This single rule reads the display mode from the universe state, then either renders the UI directly or shows its tokenized source code. Code is data, data is code, both of them are the AST in the runtime!"
+
+            ; REPL
+            Div(:class "grid md:grid-cols-2 gap-12 items-center"
+              Div(:class "order-1"
+                Div(:class "text-3xl mb-4" "⌨️")
+                H3(:class "text-3xl font-bold text-gray-200 mb-4" "Interactive REPL")
+                P(:class "text-gray-400 leading-relaxed mb-4"
+                  "Experiment with rules, test patterns, and explore ideas in an interactive environment. Load modules, define rules on the fly, and see results instantly."
+                )
+                Ul(:class "space-y-2 text-gray-400"
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Live universe management")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Module import and bundling")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Rule definition and editing")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Trace and verbose modes")
+                  )
+                )
+              )
+              Div(:class "order-2"
+                Div(:class "rounded-xl overflow-hidden border border-gray-800 shadow-2xl shadow-cyan-500/10"
+                  Picture(
+                    Source(:type "image/avif" :srcset "/optimized/repl-800.avif 800w, /optimized/repl-1200.avif 1200w, /optimized/repl-1600.avif 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Source(:type "image/webp" :srcset "/optimized/repl-800.webp 800w, /optimized/repl-1200.webp 1200w, /optimized/repl-1600.webp 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Img(:src "/optimized/repl.png" :alt "Syma REPL" :class "w-full h-auto" :loading "lazy")
+                  )
+                )
+              )
+            )
+
+            ; Notebook
+            Div(:class "grid md:grid-cols-2 gap-12 items-center"
+              Div(:class "order-2 md:order-1"
+                Div(:class "rounded-xl overflow-hidden border border-gray-800 shadow-2xl shadow-cyan-500/10"
+                  Picture(
+                    Source(:type "image/avif" :srcset "/optimized/notebook-800.avif 800w, /optimized/notebook-1200.avif 1200w, /optimized/notebook-1600.avif 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Source(:type "image/webp" :srcset "/optimized/notebook-800.webp 800w, /optimized/notebook-1200.webp 1200w, /optimized/notebook-1600.webp 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Img(:src "/optimized/notebook.png" :alt "Syma Notebook" :class "w-full h-auto" :loading "lazy")
+                  )
+                )
+              )
+              Div(:class "order-1 md:order-2"
+                Div(:class "text-3xl mb-4" "📓")
+                H3(:class "text-3xl font-bold text-gray-200 mb-4" "Literate Notebooks")
+                P(:class "text-gray-400 leading-relaxed mb-4"
+                  "Combine code, visualization, and prose. Perfect for tutorials, experiments, and documenting your rewrite rules with live examples."
+                )
+                Ul(:class "space-y-2 text-gray-400"
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Mix code and markdown cells")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Live UI rendering")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Export to .symnb format")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Share and collaborate")
+                  )
+                )
+              )
+            )
+
+            ; Browser Debug Panel
+            Div(:class "grid md:grid-cols-2 gap-12 items-center"
+              Div(:class "order-1"
+                Div(:class "text-3xl mb-4" "🔧")
+                H3(:class "text-3xl font-bold text-gray-200 mb-4" "Browser Debug Panel")
+                P(:class "text-gray-400 leading-relaxed mb-4"
+                  "Debug your Syma apps directly in the browser. Inspect rules, watch state changes, and explore the universe — all while your app runs."
+                )
+                Ul(:class "space-y-2 text-gray-400"
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Live universe inspection")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Rule browser with search")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Symbol and module navigation")
+                  )
+                  Li(:class "flex gap-2"
+                    Span(:class "text-cyan-400" "→")
+                    Span("Hot reload integration")
+                  )
+                )
+              )
+              Div(:class "order-2"
+                Div(:class "rounded-xl overflow-hidden border border-gray-800 shadow-2xl shadow-cyan-500/10"
+                  Picture(
+                    Source(:type "image/avif" :srcset "/optimized/browser-debug-panel-800.avif 800w, /optimized/browser-debug-panel-1200.avif 1200w, /optimized/browser-debug-panel-1600.avif 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Source(:type "image/webp" :srcset "/optimized/browser-debug-panel-800.webp 800w, /optimized/browser-debug-panel-1200.webp 1200w, /optimized/browser-debug-panel-1600.webp 1600w" :sizes "(max-width: 768px) 100vw, 50vw")
+                    Img(:src "/optimized/browser-debug-panel.png" :alt "Browser Debug Panel" :class "w-full h-auto" :loading "lazy")
+                  )
+                )
+              )
             )
           )
         )
@@ -296,7 +777,7 @@
     {R ToggleButton
       {:project ToggleButton}
       Button(:class "flex gap-2 bg-gray-900 p-1.5 rounded-lg border border-gray-800 shadow-lg hover:shadow-xl hover:shadow-cyan-500/20 hover:border-gray-700 inline-flex transition-all duration-200"
-        :onClick Toggle
+        :onMouseDown Toggle
         Div(
           :key left
           :class {If {Eq d_ HTML} "bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg py-2.5 px-6 rounded-md transition-all duration-200" "bg-transparent text-gray-400 hover:text-gray-200 hover:bg-gray-800 font-medium py-2.5 px-6 rounded-md transition-all duration-200"}
@@ -340,7 +821,7 @@
               Span(:class "text-cyan-400 font-mono text-2xl font-bold" c_)
               Button(
                 :class "px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-md shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-                :onClick Inc
+                :onMouseDown Inc
                 "Increment"
               )
             )

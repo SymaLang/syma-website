@@ -553,7 +553,7 @@ The `/!` operator prevents variable substitution in replacements, allowing you t
 ; The {/!} becomes an empty splice, removing the 0
 ```
 
-3. **Code-as-data** (combine with Frozen for full control):
+3. **Code-as-data** (combine with Inert for full control):
 ```syma
 ; Store pattern without evaluation
 {PatternLibrary {/! {Match x_ y_}}}
@@ -567,7 +567,7 @@ The `/!` operator prevents variable substitution in replacements, allowing you t
 
 **Important Notes:**
 - `/!` is primarily useful in RuleRules and meta-programming contexts
-- For preventing normalization of values, use `{Frozen ...}` instead
+- For preventing normalization of values, use `{Inert ...}` instead
 - Empty `/!` creates a splice that removes the element from its parent
 - `/!` only affects substitution, not pattern matching
 
@@ -902,31 +902,31 @@ R("IsPositive", Check(n_), "positive", Gt(n_, 0))
 R("GuardedRule", pattern, replacement, IsNum(n_), 50)
 ```
 
-### The Frozen Wrapper
+### The Inert Wrapper
 
-The `Frozen` wrapper prevents normalization (rule matching and primitive folding) of its contents. Any expression wrapped in `{Frozen ...}` will not be transformed during normalization, regardless of where it appears in the program.
+The `Inert` wrapper prevents normalization (rule matching and primitive folding) of its contents. Any expression wrapped in `{Inert ...}` will not be transformed during normalization, regardless of where it appears in the program.
 
 **Syntax:**
 ```syma
-{Frozen expr}
+{Inert expr}
 ```
 
 **Behavior:**
-- The Frozen wrapper itself is preserved in the AST
-- No rules are matched against expressions inside Frozen
-- No primitive operations are folded inside Frozen
-- If a node has a `{Frozen}` parent anywhere in its ancestor chain, rules will not match on it
-- Frozen can appear anywhere: in programs, guards, replacements, or data structures
+- The Inert wrapper itself is preserved in the AST
+- No rules are matched against expressions inside Inert
+- No primitive operations are folded inside Inert
+- If a node has a `{Inert}` parent anywhere in its ancestor chain, rules will not match on it
+- Inert can appear anywhere: in programs, guards, replacements, or data structures
 
 **Use Cases:**
 
 1. **Prevent premature evaluation:**
 ```syma
 ; Keep Add unevaluated until later
-{Store {Frozen {Add 1 2}}}  ; Stores the symbolic structure, not 3
+{Store {Inert {Add 1 2}}}  ; Stores the symbolic structure, not 3
 
 ; Preserve code as data
-{Template {Frozen {If cond_ then_ else_}}}
+{Template {Inert {If cond_ then_ else_}}}
 ```
 
 2. **Guard evaluation - check matched values before normalization:**
@@ -935,28 +935,28 @@ The `Frozen` wrapper prevents normalization (rule matching and primitive folding
 {R "Rule1" {Process x_} result {IsNum x_}}
 
 ; Check if x_ is a number AS-IS, without any transformation
-{R "Rule2" {Process x_} result {IsNum {Frozen x_}}}
+{R "Rule2" {Process x_} result {IsNum {Inert x_}}}
 
-; Type checking in guards (Frozen prevents normalization):
-{R "JSONNum" {ToJSON x_} {Str x_} {IsNum {Frozen x_}}}
-{R "JSONStr" {ToJSON x_} {Quote x_} {IsStr {Frozen x_}}}
+; Type checking in guards (Inert prevents normalization):
+{R "JSONNum" {ToJSON x_} {Str x_} {IsNum {Inert x_}}}
+{R "JSONStr" {ToJSON x_} {Quote x_} {IsStr {Inert x_}}}
 
-; Note: Eq now does structural comparison, so Frozen is less often needed:
-{R "EmptyCheck" {Process x_} "empty" {Eq Empty x_}}        ; Works without Frozen!
+; Note: Eq now does structural comparison, so Inert is less often needed:
+{R "EmptyCheck" {Process x_} "empty" {Eq Empty x_}}        ; Works without Inert!
 {R "BoolCheck" {Process x_} "true" {Eq True x_}}           ; Eq compares structure
 
-; But Frozen is still useful when you want to prevent rule matching:
-{R "CheckBeforeRules" {Process x_} result {Eq {Frozen {Add 1 2}} x_}}
+; But Inert is still useful when you want to prevent rule matching:
+{R "CheckBeforeRules" {Process x_} result {Eq {Inert {Add 1 2}} x_}}
 ; This checks if x_ is literally the structure {Add 1 2}, not the value 3
 ```
 
 3. **Metaprogramming - build code templates:**
 ```syma
 ; Generate rules without evaluating them
-{DefineRule {Frozen {R "Generated" {Match x_} {Result x_}}}}
+{DefineRule {Inert {R "Generated" {Match x_} {Result x_}}}}
 
 ; Store unevaluated patterns
-{PatternLibrary {Frozen {Tuple a_ b_ c_}}}
+{PatternLibrary {Inert {Tuple a_ b_ c_}}}
 ```
 
 4. **Conditional evaluation:**
@@ -964,14 +964,14 @@ The `Frozen` wrapper prevents normalization (rule matching and primitive folding
 ; Delay evaluation until condition is met
 {R "LazyEval"
    {Eval {Lazy cond_ expr_}}
-   {If cond_ expr_ {Frozen expr_}}}  ; Keep frozen if condition not met
+   {If cond_ expr_ {Inert expr_}}}  ; Keep Inert if condition not met
 ```
 
 5. **File operations - code as data:**
 ```syma
-; ReadSymaFile returns Frozen to prevent eval-on-read
+; ReadSymaFile returns Inert to prevent eval-on-read
 {R "LoadModule"
-   {Program app_ {Effects pending_ {Inbox {ReadSymaFileComplete id_ {Frozen code_}} rest..}}}
+   {Program app_ {Effects pending_ {Inbox {ReadSymaFileComplete id_ {Inert code_}} rest..}}}
    {Program
      {Apply {ModuleLoaded code_} app_}  ; Store code without evaluating
      {Effects pending_ {Inbox rest..}}}}
@@ -983,16 +983,16 @@ The `Frozen` wrapper prevents normalization (rule matching and primitive folding
 ```
 
 **Important Notes:**
-- Frozen is structural - it remains in the AST and must be explicitly unwrapped to evaluate contents
-- Frozen does not prevent pattern matching in the pattern position of rules - patterns are matched, not normalized
-- Guards are fully normalized with all rules (allows user-defined predicates), so use `{Frozen x_}` to check matched values before rule application
-- **Structural comparison operators** (`Eq`, `Neq`, `Is`, `Are`, etc.) compare without evaluating, so Frozen is less often needed for equality checks
-- Frozen is still essential for preventing rule-based normalization (not just primitive folding)
-- To evaluate Frozen contents, extract and normalize them explicitly outside the Frozen wrapper
+- Inert is structural - it remains in the AST and must be explicitly unwrapped to evaluate contents
+- Inert does not prevent pattern matching in the pattern position of rules - patterns are matched, not normalized
+- Guards are fully normalized with all rules (allows user-defined predicates), so use `{Inert x_}` to check matched values before rule application
+- **Structural comparison operators** (`Eq`, `Neq`, `Is`, `Are`, etc.) compare without evaluating, so Inert is less often needed for equality checks
+- Inert is still essential for preventing rule-based normalization (not just primitive folding)
+- To evaluate Inert contents, extract and normalize them explicitly outside the Inert wrapper
 
 ### The MetaSafe Wrapper
 
-The `MetaSafe` wrapper enables controlled normalization during meta-programming. Unlike `Frozen` which prevents all normalization, `MetaSafe` normalizes its contents but **only evaluates meta-safe primitives**, preserving non-meta-safe operations and pattern variables in symbolic form.
+The `MetaSafe` wrapper enables controlled normalization during meta-programming. Unlike `Inert` which prevents all normalization, `MetaSafe` normalizes its contents but **only evaluates meta-safe primitives**, preserving non-meta-safe operations and pattern variables in symbolic form.
 
 **Syntax:**
 ```syma
@@ -1070,9 +1070,9 @@ The `MetaSafe` wrapper enables controlled normalization during meta-programming.
 ; And, Eq, IsNum stay symbolic (non-meta-safe)
 ```
 
-**Comparison with Frozen:**
+**Comparison with Inert:**
 
-| Feature | Frozen | MetaSafe |
+| Feature | Inert | MetaSafe |
 |---------|--------|----------|
 | Rules applied? | No | Yes |
 | Meta-safe primitives? | No | Yes (evaluated) |
@@ -1108,7 +1108,7 @@ The `MetaSafe` wrapper enables controlled normalization during meta-programming.
 **Important Notes:**
 - MetaSafe is essential for RuleRules and code generation patterns
 - Use MetaSafe when you need to compute names/strings but preserve patterns
-- Use Frozen when you want to prevent ALL normalization
+- Use Inert when you want to prevent ALL normalization
 - MetaSafe wrappers nest properly - inner MetaSafe contexts inherit the restrictions
 - Non-meta-safe primitives like `Eq` are preserved at any depth inside MetaSafe
 
@@ -1739,13 +1739,13 @@ Programs can include an Effects node alongside the main application:
 
 - **File Read**: `{FileRead id {Path "file.txt"}}` → `{FileReadComplete id {Content "data"}}`
 - **File Write**: `{FileWrite id {Path "file.txt"} {Content "data"}}` → `{FileWriteComplete id Ok}`
-- **Read Syma File**: `{ReadSymaFile id {Path "file.syma"}}` → `{ReadSymaFileComplete id {Frozen expression}}`
+- **Read Syma File**: `{ReadSymaFile id {Path "file.syma"}}` → `{ReadSymaFileComplete id {Inert expression}}`
 - **Write Syma File**: `{WriteSymaFile id {Path "file.syma"} {Ast expr} {Pretty True}}` → `{WriteSymaFileComplete id Ok}`
 
 **Note on Syma File Operations:**
-- `ReadSymaFile` reads and parses Syma source code into AST, wrapping it in `{Frozen ...}` to prevent eval-on-read (code-as-data)
-- To evaluate loaded code, extract it from the Frozen wrapper and normalize explicitly
-- `WriteSymaFile` serializes Syma AST to source code (unwrap Frozen before writing if needed)
+- `ReadSymaFile` reads and parses Syma source code into AST, wrapping it in `{Inert ...}` to prevent eval-on-read (code-as-data)
+- To evaluate loaded code, extract it from the Inert wrapper and normalize explicitly
+- `WriteSymaFile` serializes Syma AST to source code (unwrap Inert before writing if needed)
 - `{Pretty True}` enables formatted output, `{Pretty False}` for compact
 - Available in Node.js and REPL only (browser returns error responses)
 
@@ -2220,7 +2220,7 @@ Module definitions become rules with high priority (1000):
 8. **Meta-pattern matching** - `{/^ pat_}` dequotes bound variables and uses them as patterns, enabling pattern-as-data metaprogramming
 9. **Rewrite rules** for computation and transformation
 10. **Two-pass normalization** - innermost-first for `:innermost` rules, then outermost-first for regular rules
-11. **Frozen wrapper** - `{Frozen expr}` prevents normalization of contents, enabling code-as-data and lazy evaluation
+11. **Inert wrapper** - `{Inert expr}` prevents normalization of contents, enabling code-as-data and lazy evaluation
 12. **MetaSafe wrapper** - `{MetaSafe expr}` normalizes contents but only evaluates meta-safe primitives (arithmetic, strings) while preserving non-meta-safe operations (comparisons, type checks) and pattern variables, essential for RuleRules and code generation
 13. **Symbol qualification** - two-stage process:
    - **Source**: Write unqualified with `open` or `{Open ...}` for clean code

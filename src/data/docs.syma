@@ -14,23 +14,23 @@
 
   {Defs
     {InitialDocs
-      Frozen(
+      Inert(
         {Docs
           {Category "Getting Started"
             {Doc
               {Slug "introduction"}
               {Title "Introduction"}
-              {Content Frozen({IntroductionDoc})}
+              {Content Inert({IntroductionDoc})}
             }
             {Doc
               {Slug "installation"}
               {Title "Installation"}
-              {Content Frozen({InstallationDoc})}
+              {Content Inert({InstallationDoc})}
             }
             {Doc
               {Slug "term-rewriting"}
               {Title "Term Rewriting"}
-              {Content Frozen({TermRewritingDoc})}
+              {Content Inert({TermRewritingDoc})}
             }
           }
 
@@ -38,17 +38,17 @@
             {Doc
               {Slug "syntax"}
               {Title "Syntax Guide"}
-              {Content Frozen({SyntaxDoc})}
+              {Content Inert({SyntaxDoc})}
             }
             {Doc
               {Slug "pattern-matching"}
               {Title "Pattern Matching"}
-              {Content Frozen({PatternMatchingDoc})}
+              {Content Inert({PatternMatchingDoc})}
             }
             {Doc
               {Slug "modules"}
               {Title "Module System"}
-              {Content Frozen({ModulesDoc})}
+              {Content Inert({ModulesDoc})}
             }
           }
 
@@ -56,12 +56,12 @@
             {Doc
               {Slug "ui-basics"}
               {Title "UI Development"}
-              {Content Frozen({UIBasicsDoc})}
+              {Content Inert({UIBasicsDoc})}
             }
             {Doc
               {Slug "effects"}
               {Title "Effects System"}
-              {Content Frozen({EffectsDoc})}
+              {Content Inert({EffectsDoc})}
             }
           }
 
@@ -69,12 +69,12 @@
             {Doc
               {Slug "examples"}
               {Title "Examples"}
-              {Content Frozen({ExamplesDoc})}
+              {Content Inert({ExamplesDoc})}
             }
             {Doc
               {Slug "api"}
               {Title "API Reference"}
-              {Content Frozen({APIDoc})}
+              {Content Inert({APIDoc})}
             }
           }
         }

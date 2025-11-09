@@ -48,38 +48,19 @@
             )
           )
 
-          ; Create New Project
+          ; Create Console Project
           Div(:class "space-y-4"
-            H2(:class "text-3xl font-bold text-gray-200" "Create a New Project")
+            H2(:class "text-3xl font-bold text-gray-200" "Create a Console Project")
             P(:class "text-gray-300 leading-relaxed"
-              "Use the project scaffolding tool to create a new Syma project:"
+              "Initialize a new console-based Syma project:"
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm text-cyan-400"
-                Code("npm create syma@latest my-project")
+                Code("mkdir my-project && cd my-project\nsyma init")
               )
             )
             P(:class "text-gray-300 leading-relaxed"
-              "This will create a new directory with a basic Syma project structure:"
-            )
-            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
-              Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-cyan-500" "my-project/\n")
-                  Span(:class "text-cyan-500" "├── ")
-                  Span(:class "text-green-500" "src/\n")
-                  Span(:class "text-cyan-500" "│   ├── ")
-                  Span(:class "text-yellow-600" "main.syma")
-                  Span(:class "text-gray-500" "       # Entry point\n")
-                  Span(:class "text-cyan-500" "│   └── ")
-                  Span(:class "text-green-500" "modules/")
-                  Span(:class "text-gray-500" "       # Your modules\n")
-                  Span(:class "text-cyan-500" "├── ")
-                  Span(:class "text-yellow-600" "package.json\n")
-                  Span(:class "text-cyan-500" "└── ")
-                  Span(:class "text-yellow-600" "README.md")
-                )
-              )
+              "This will create a basic Syma project structure for console applications."
             )
           )
 
@@ -90,15 +71,15 @@
               "You can run Syma programs in several ways:"
             )
 
-            ; Direct Execution
+            ; Run a Program
             Div(:class "space-y-3"
-              H3(:class "text-xl font-semibold text-cyan-400" "Direct Execution")
+              H3(:class "text-xl font-semibold text-cyan-400" "Run a Program")
               P(:class "text-gray-300 leading-relaxed"
-                "Run a Syma file directly:"
+                "Run a Syma file:"
               )
               Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
                 Pre(:class "font-mono text-sm text-cyan-400"
-                  Code("syma src/main.syma")
+                  Code("syma run src/main.syma")
                 )
               )
             )
@@ -107,24 +88,37 @@
             Div(:class "space-y-3"
               H3(:class "text-xl font-semibold text-cyan-400" "Interactive REPL")
               P(:class "text-gray-300 leading-relaxed"
-                "Start an interactive session:"
+                "Start an interactive REPL session:"
               )
               Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
                 Pre(:class "font-mono text-sm text-cyan-400"
-                  Code("syma")
+                  Code("syma repl")
                 )
               )
             )
 
-            ; Evaluate Expression
+            ; Debugger
             Div(:class "space-y-3"
-              H3(:class "text-xl font-semibold text-cyan-400" "Evaluate Expression")
+              H3(:class "text-xl font-semibold text-cyan-400" "Debugger")
               P(:class "text-gray-300 leading-relaxed"
-                "Evaluate a single expression:"
+                "Start the debugger for a program:"
               )
               Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
                 Pre(:class "font-mono text-sm text-cyan-400"
-                  Code("syma -e '{Add 2 3}'")
+                  Code("syma debug src/main.syma")
+                )
+              )
+            )
+
+            ; Syma Notebook
+            Div(:class "space-y-3"
+              H3(:class "text-xl font-semibold text-cyan-400" "Syma Notebook")
+              P(:class "text-gray-300 leading-relaxed"
+                "Start an interactive notebook environment:"
+              )
+              Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
+                Pre(:class "font-mono text-sm text-cyan-400"
+                  Code("syma-notebook")
                 )
               )
             )
@@ -134,40 +128,23 @@
           Div(:class "space-y-4"
             H2(:class "text-3xl font-bold text-gray-200" "Web Development Setup")
             P(:class "text-gray-300 leading-relaxed"
-              "For web applications, use the Vite plugin:"
+              "For web applications, use the project scaffolding tool:"
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm text-cyan-400"
-                Code("npm install -D vite vite-plugin-syma")
+                Code("npm create syma@latest my-web-app")
               )
             )
             P(:class "text-gray-300 leading-relaxed"
-              "Create a "
-              Span(:class "text-cyan-400 font-mono" "vite.config.js")
-              ":"
+              "You can also specify a template, such as the Tailwind template:"
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
-              Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-yellow-400" "import ")
-                  Span(:class "text-cyan-500" "{ defineConfig } ")
-                  Span(:class "text-yellow-400" "from ")
-                  Span(:class "text-yellow-600" "'vite'")
-                  Span(:class "text-cyan-500" ";\n")
-                  Span(:class "text-yellow-400" "import ")
-                  Span(:class "text-cyan-500" "syma ")
-                  Span(:class "text-yellow-400" "from ")
-                  Span(:class "text-yellow-600" "'vite-plugin-syma'")
-                  Span(:class "text-cyan-500" ";\n\n")
-                  Span(:class "text-yellow-400" "export default ")
-                  Span(:class "text-cyan-500" "defineConfig")
-                  Span(:class "text-cyan-500" "({\n")
-                  Span(:class "text-cyan-500" "  plugins: [")
-                  Span(:class "text-cyan-500" "syma")
-                  Span(:class "text-cyan-500" "()],\n")
-                  Span(:class "text-cyan-500" "});")
-                )
+              Pre(:class "font-mono text-sm text-cyan-400"
+                Code("npm create syma@latest my-web-app -- --template tailwind")
               )
+            )
+            P(:class "text-gray-300 leading-relaxed"
+              "This creates a web project with Vite and the Syma plugin pre-configured, ready for development."
             )
           )
 

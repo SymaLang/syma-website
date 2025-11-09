@@ -6,244 +6,813 @@
         Div(:class "space-y-8"
           Div(:class "space-y-4"
             H1(:class "text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
-              "API Reference"
+              "Built-In Reference"
             )
             P(:class "text-xl text-gray-400 leading-relaxed"
-              "Complete reference for Syma's built-in primitives and functions."
+              "Complete reference for all Syma primitives with examples."
             )
           )
 
           Div(:class "bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-6"
             Div(:class "flex gap-3"
-              Div(:class "text-2xl" "📚")
+              Div(:class "text-2xl" "ℹ️")
               Div(:class "space-y-2"
-                P(:class "font-semibold text-cyan-400" "Complete Documentation")
+                P(:class "font-semibold text-cyan-400" "About Primitives")
                 P(:class "text-gray-300 leading-relaxed"
-                  "For the complete, detailed API reference including all primitives, their signatures, and examples, please refer to the official "
-                  A(:href "https://github.com/SymaLang/syma/blob/main/docs/LANGUAGE.md" :class "text-cyan-400 hover:text-cyan-300 underline font-semibold"
-                    "Language Documentation"
+                  "Primitives are built-in terms that fold during normalization. When their arguments are fully computed values, they automatically normalize. If arguments are invalid or incomplete, they remain symbolic."
+                )
+              )
+            )
+          )
+
+          Div(:class "bg-blue-900/20 border border-blue-700/50 rounded-lg p-4 mt-4"
+            Div(:class "flex gap-2 items-center"
+              Div(:class "text-lg" "💡")
+              P(:class "text-gray-300 text-sm"
+                Span(:class "font-semibold text-blue-400" "Booleans: ")
+                "Booleans are the symbols "
+                Code(:class "text-purple-400" "True")
+                " and "
+                Code(:class "text-purple-400" "False")
+                "."
+              )
+            )
+          )
+
+          Div(:class "space-y-8"
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "🔢 Arithmetic Operations")
+              P(:class "text-gray-400 text-sm mb-4" "Mathematical operations on numbers")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Add")
+                    Span(:class "text-gray-500 text-sm" "(+)")
                   )
-                  "."
+                  Div(:class "text-sm text-gray-300 mb-2" "Sum of two numbers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Add 2 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "5")
+                  )
                 )
-              )
-            )
-          )
 
-          Div(:class "space-y-4"
-            H2(:class "text-3xl font-bold text-gray-200" "Primitive Categories")
-            P(:class "text-gray-300 leading-relaxed"
-              "Syma provides a comprehensive standard library of primitive operations:"
-            )
-          )
-
-          Div(:class "grid md:grid-cols-2 gap-4"
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Arithmetic")
-              P(:class "text-gray-400 text-sm mb-3" "Mathematical operations on numbers")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "Add, Sub, Mul, Div, Mod")
-                Br()
-                Code(:class "text-cyan-500" "Pow, Sqrt, Abs")
-                Br()
-                Code(:class "text-cyan-500" "Min, Max, Floor, Ceil, Round")
-              )
-            )
-
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "String Operations")
-              P(:class "text-gray-400 text-sm mb-3" "Text manipulation and transformation")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "Concat, Trim, ToUpper, ToLower")
-                Br()
-                Code(:class "text-cyan-500" "StrLen, Substring, IndexOf")
-                Br()
-                Code(:class "text-cyan-500" "Replace, SplitBy, Join")
-              )
-            )
-
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Comparisons")
-              P(:class "text-gray-400 text-sm mb-3" "Equality and ordering checks")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "Eq (==, Is) - structural")
-                Br()
-                Code(:class "text-cyan-500" "NormalEq - normalized")
-                Br()
-                Code(:class "text-cyan-500" "Lt, Gt, Lte, Gte - numeric")
-              )
-            )
-
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Boolean Logic")
-              P(:class "text-gray-400 text-sm mb-3" "Logical operations")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "And, Or, Not")
-                Br()
-                Code(:class "text-cyan-500" "True, False")
-              )
-            )
-
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Type Checking")
-              P(:class "text-gray-400 text-sm mb-3" "Runtime type inspection")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "IsNum, IsStr, IsSym")
-                Br()
-                Code(:class "text-cyan-500" "IsTrue, IsFalse")
-                Br()
-                Code(:class "text-cyan-500" "AreNums, AreStrings, AreSyms")
-              )
-            )
-
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Utilities")
-              P(:class "text-gray-400 text-sm mb-3" "Helper functions and tools")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "FreshId, Random, ParseNum")
-                Br()
-                Code(:class "text-cyan-500" "Debug, Splat (...!)")
-                Br()
-                Code(:class "text-cyan-500" "Serialize, Deserialize")
-              )
-            )
-
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Bitwise")
-              P(:class "text-gray-400 text-sm mb-3" "Binary operations on integers")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "BitAnd (&), BitOr (|), BitXor")
-                Br()
-                Code(:class "text-cyan-500" "BitNot (~)")
-                Br()
-                Code(:class "text-cyan-500" "<<, >>, >>> (shifts)")
-              )
-            )
-
-            Div(:class "p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
-              H3(:class "text-xl font-semibold text-cyan-400 mb-3" "Projection")
-              P(:class "text-gray-400 text-sm mb-3" "UI rendering utilities")
-              Div(:class "space-y-1 text-sm"
-                Code(:class "text-cyan-500" "ProjectToString")
-                Br()
-                Span(:class "text-gray-500 text-xs" "Server-side HTML rendering")
-              )
-            )
-          )
-
-          Div(:class "space-y-4"
-            H2(:class "text-3xl font-bold text-gray-200" "Quick Reference")
-            P(:class "text-gray-300 leading-relaxed"
-              "Here are some commonly used primitives:"
-            )
-          )
-
-          Div(:class "space-y-4"
-            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
-              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "Structural vs Value Comparison")
-              Div(:class "space-y-2 text-sm"
-                Div(
-                  Code(:class "text-cyan-500" "Eq(Add(1, 2), 3)")
-                  Span(:class "text-gray-400" " → ")
-                  Code(:class "text-red-400" "False")
-                  Span(:class "text-gray-500" " (different structures)")
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Sub")
+                    Span(:class "text-gray-500 text-sm" "(-)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Difference of two numbers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Sub 10 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "7")
+                  )
                 )
-                Div(
-                  Code(:class "text-cyan-500" "NormalEq(Add(1, 2), 3)")
-                  Span(:class "text-gray-400" " → ")
-                  Code(:class "text-green-400" "True")
-                  Span(:class "text-gray-500" " (both normalize to 3)")
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Mul")
+                    Span(:class "text-gray-500 text-sm" "(*)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Product of two numbers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Mul 4 5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "20")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Div")
+                    Span(:class "text-gray-500 text-sm" "(/)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Quotient (returns null for division by zero)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Div 15 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "5")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Mod")
+                    Span(:class "text-gray-500 text-sm" "(%)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Remainder (modulo)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Mod 10 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "1")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Pow")
+                    Span(:class "text-gray-500 text-sm" "(^)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Exponentiation (a^b)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Pow 2 8}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "256")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Sqrt")
+                  Div(:class "text-sm text-gray-300 mb-2" "Square root (returns null for negative numbers)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Sqrt 16}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "4")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Abs")
+                  Div(:class "text-sm text-gray-300 mb-2" "Absolute value")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Abs -5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "5")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Min")
+                  Div(:class "text-sm text-gray-300 mb-2" "Minimum of all arguments")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Min 3 7 2 9 1}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "1")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Max")
+                  Div(:class "text-sm text-gray-300 mb-2" "Maximum of all arguments")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Max 3 7 2 9 1}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "9")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Floor")
+                  Div(:class "text-sm text-gray-300 mb-2" "Round down to nearest integer")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Floor 3.7}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "3")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Ceil")
+                  Div(:class "text-sm text-gray-300 mb-2" "Round up to nearest integer")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Ceil 3.2}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "4")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Round")
+                  Div(:class "text-sm text-gray-300 mb-2" "Round to nearest integer")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Round 3.5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "4")
+                  )
                 )
               )
             )
 
-            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
-              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "Serialization")
-              Div(:class "space-y-2 text-sm"
-                P(:class "text-gray-400" "Convert any Syma expression to/from JSON:")
-                Div(
-                  Code(:class "text-cyan-500" "Serialize({Add 1 2})")
-                  Span(:class "text-gray-400" " → JSON string")
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "⚡ Bitwise Operations")
+              P(:class "text-gray-400 text-sm mb-4" "Binary operations on 32-bit integers")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "BitAnd")
+                    Span(:class "text-gray-500 text-sm" "(&)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Bitwise AND of two 32-bit integers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{BitAnd 12 10}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "8") " " Span(:class "text-gray-600" "; 0b1100 & 0b1010")
+                  )
                 )
-                Div(
-                  Code(:class "text-cyan-500" "Deserialize(jsonString)")
-                  Span(:class "text-gray-400" " → Original expression")
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "BitOr")
+                    Span(:class "text-gray-500 text-sm" "(|)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Bitwise OR of two 32-bit integers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{BitOr 12 10}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "14")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "BitXor")
+                  Div(:class "text-sm text-gray-300 mb-2" "Bitwise XOR of two 32-bit integers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{BitXor 12 10}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "6")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "BitNot")
+                    Span(:class "text-gray-500 text-sm" "(~)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Bitwise NOT of 32-bit integer")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{BitNot 5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "-6")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "BitShiftLeft")
+                    Span(:class "text-gray-500 text-sm" "(<<)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Left shift by specified number of bits")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{BitShiftLeft 1 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "8")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "BitShiftRight")
+                    Span(:class "text-gray-500 text-sm" "(>>)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Arithmetic right shift (sign-preserving)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{BitShiftRight -8 2}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "-2")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "BitShiftRightUnsigned")
+                    Span(:class "text-gray-500 text-sm" "(>>>)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Logical right shift (zero-fill)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{BitShiftRightUnsigned -8 2}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "1073741822")
+                  )
                 )
               )
             )
 
-            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
-              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "String Operations")
-              Div(:class "space-y-2 text-sm"
-                Div(
-                  Code(:class "text-cyan-500" "Concat(\"Hello\", \" \", \"World\")")
-                  Span(:class "text-gray-400" " → ")
-                  Code(:class "text-yellow-600" "\"Hello World\"")
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "📝 String Operations")
+              P(:class "text-gray-400 text-sm mb-4" "Text manipulation and transformation")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Concat")
+                  Div(:class "text-sm text-gray-300 mb-2" "Concatenate strings/numbers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Concat \"Hello\" \" \" \"World\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"Hello World\"")
+                  )
                 )
-                Div(
-                  Code(:class "text-cyan-500" "SplitBy(\"a,b,c\", \",\")")
-                  Span(:class "text-gray-400" " → ")
-                  Code(:class "text-cyan-500" "Strings(\"a\", \"b\", \"c\")")
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "ToString")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert any value to string (S-expression format)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{ToString 42}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"42\"")
+                  )
                 )
-                Div(
-                  Code(:class "text-cyan-500" "Join(\"-\", \"a\", \"b\", \"c\")")
-                  Span(:class "text-gray-400" " → ")
-                  Code(:class "text-yellow-600" "\"a-b-c\"")
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "ToNormalString")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert normalized term to string")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{ToNormalString {Add 1 2}}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"3\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "ToUpper")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert to uppercase")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{ToUpper \"hello\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"HELLO\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "ToLower")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert to lowercase")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{ToLower \"HELLO\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"hello\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Trim")
+                  Div(:class "text-sm text-gray-300 mb-2" "Remove leading/trailing whitespace")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Trim \"  hello  \"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"hello\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "StrLen")
+                  Div(:class "text-sm text-gray-300 mb-2" "String length")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{StrLen \"test\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "4")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Substring")
+                  Div(:class "text-sm text-gray-300 mb-2" "Extract substring (start, optional end)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Substring \"hello\" 1 4}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"ell\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "IndexOf")
+                  Div(:class "text-sm text-gray-300 mb-2" "Find index of substring (-1 if not found)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IndexOf \"hello\" \"ll\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "2")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Replace")
+                  Div(:class "text-sm text-gray-300 mb-2" "Replace first occurrence")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Replace \"hello world\" \"o\" \"0\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"hell0 world\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "ReplaceAll")
+                  Div(:class "text-sm text-gray-300 mb-2" "Replace all occurrences")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{ReplaceAll \"hello world\" \"o\" \"0\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"hell0 w0rld\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "SplitToChars")
+                  Div(:class "text-sm text-gray-300 mb-2" "Split string into individual characters")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{SplitToChars \"ABC\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "{Chars \"A\" \"B\" \"C\"}")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "SplitBy")
+                  Div(:class "text-sm text-gray-300 mb-2" "Split string by separator")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{SplitBy \"-\" \"a-b-c\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "{Strings \"a\" \"b\" \"c\"}")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Join")
+                  Div(:class "text-sm text-gray-300 mb-2" "Join items with separator")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Join \" \" \"Hello\" \"World\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"Hello World\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Escape")
+                  Div(:class "text-sm text-gray-300 mb-2" "Escape special characters (\\, \", \\n, \\r, \\t, \\f)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Escape \"hello\\nworld\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"hello\\\\nworld\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Unescape")
+                  Div(:class "text-sm text-gray-300 mb-2" "Unescape escape sequences")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Unescape \"hello\\\\nworld\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"hello\\nworld\"")
+                  )
                 )
               )
             )
 
-            Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
-              H3(:class "text-lg font-semibold text-cyan-400 mb-3" "Utilities")
-              Div(:class "space-y-2 text-sm"
-                Div(
-                  Code(:class "text-cyan-500" "FreshId()")
-                  Span(:class "text-gray-400" " → Unique identifier string")
-                )
-                Div(
-                  Code(:class "text-cyan-500" "Debug(\"label\", value)")
-                  Span(:class "text-gray-400" " → Logs and returns value")
-                )
-                Div(
-                  Code(:class "text-cyan-500" "Splat(a, b, c)")
-                  Span(:class "text-gray-400" " → Expands in context")
-                )
-              )
-            )
-          )
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "⚖️ Comparison Operations")
+              P(:class "text-gray-400 text-sm mb-4" "Equality and ordering checks")
 
-          Div(:class "space-y-4 pt-8 border-t border-gray-800"
-            H2(:class "text-3xl font-bold text-gray-200" "Learn More")
-            P(:class "text-gray-300 leading-relaxed"
-              "This is a high-level overview. For complete documentation including:"
-            )
-            Ul(:class "text-gray-300 space-y-2 ml-6"
-              Li("Detailed signatures for every primitive")
-              Li("Comprehensive examples")
-              Li("Edge cases and behavior notes")
-              Li("Meta-safe vs non-meta-safe primitives")
-              Li("Effect types and their request/response formats")
-            )
-            P(:class "text-gray-300 leading-relaxed mt-4"
-              "Please refer to the "
-              A(:href "https://github.com/SymaLang/syma/blob/main/docs/LANGUAGE.md" :class "text-cyan-400 hover:text-cyan-300 underline font-semibold"
-                "official Language Documentation"
-              )
-              "."
-            )
-          )
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Is")
+                    Span(:class "text-gray-500 text-sm" "(==, Eq)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Structural equality check (compares as-is)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Is {Add 1 2} 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "False")
+                    Br()
+                    Code(:class "text-cyan-400" "{Is 3 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
 
-          Div(:class "space-y-4 pt-8 border-t border-gray-800"
-            H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
-            Div(:class "grid md:grid-cols-2 gap-4"
-              A(:href "/docs/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
-                Div(:class "text-3xl mb-3" "💡")
-                H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "See Examples")
-                P(:class "text-gray-400 text-sm" "Learn by seeing these primitives in action")
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "IsNot")
+                    Span(:class "text-gray-500 text-sm" "(!=, Neq)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Structural inequality check")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IsNot 5 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "NormalEq")
+                  Div(:class "text-sm text-gray-300 mb-2" "Normalized equality (normalizes both args first)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{NormalEq {Add 1 2} 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Are")
+                  Div(:class "text-sm text-gray-300 mb-2" "Returns True if ALL items equal the first value")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Are 5 5 5 5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "AreNot")
+                  Div(:class "text-sm text-gray-300 mb-2" "Returns True if ALL items do NOT equal the first value")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{AreNot 5 1 2 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "AreAny")
+                  Div(:class "text-sm text-gray-300 mb-2" "Returns True if ANY item equals the first value")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{AreAny 3 1 2 3 4}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "AreAnyNot")
+                  Div(:class "text-sm text-gray-300 mb-2" "Returns True if ANY item does NOT equal the first value")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{AreAnyNot 3 3 3 5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "IsAny")
+                  Div(:class "text-sm text-gray-300 mb-2" "Returns True if exactly ONE item equals the first")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IsAny 3 3 3 5 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "AreIn")
+                  Div(:class "text-sm text-gray-300 mb-2" "Returns True if ALL remaining args are in the set (first arg)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{AreIn {a b c} a b}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Lt")
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Span(:class "text-gray-500 text-sm" "(<)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Less than")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Lt 3 7}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Gt")
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Span(:class "text-gray-500 text-sm" "(>)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Greater than")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Gt 10 5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Lte")
+                    Span(:class "text-gray-500 text-sm" "(<=)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Less than or equal")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Lte 5 5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Gte")
+                    Span(:class "text-gray-500 text-sm" "(>=)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Greater than or equal")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Gte 10 5}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
               )
-              A(:href "https://github.com/SymaLang/syma/blob/main/docs/LANGUAGE.md" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
-                Div(:class "text-3xl mb-3" "📖")
-                H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Full Documentation")
-                P(:class "text-gray-400 text-sm" "Complete reference with all details")
+            )
+
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "🔀 Boolean Operations")
+              P(:class "text-gray-400 text-sm mb-4" "Logical operations")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "And")
+                  Div(:class "text-sm text-gray-300 mb-2" "Logical AND (true if all are True)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{And True True False}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "False")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Or")
+                  Div(:class "text-sm text-gray-300 mb-2" "Logical OR (true if any is True)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Or False False True}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Not")
+                  Div(:class "text-sm text-gray-300 mb-2" "Logical NOT")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Not True}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "False")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "If")
+                  Div(:class "text-sm text-gray-300 mb-2" "Conditional term (returns 2nd arg if True, 3rd if False)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{If True \"yes\" \"no\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"yes\"")
+                  )
+                )
+              )
+            )
+
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "🏷️ Type Checking")
+              P(:class "text-gray-400 text-sm mb-4" "Runtime type inspection")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "IsNum")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if value is a number")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IsNum 42}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "IsStr")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if value is a string")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IsStr \"hello\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "IsSym")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if value is a symbol")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IsSym Hello}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "IsTrue")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if value is True symbol")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IsTrue True}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "IsFalse")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if value is False symbol")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{IsFalse False}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "AreNums")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if all elements are numbers")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{AreNums 1 2 3}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "AreStrings")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if all elements are strings")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{AreStrings \"a\" \"b\" \"c\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "AreSyms")
+                  Div(:class "text-sm text-gray-300 mb-2" "Check if all elements are symbols")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{AreSyms a b c}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "True")
+                  )
+                )
+              )
+            )
+
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "🛠️ Utilities")
+              P(:class "text-gray-400 text-sm mb-4" "Helper functions and tools")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "FreshId")
+                  Div(:class "text-sm text-gray-300 mb-2" "Generate unique identifier")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{FreshId}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"id-12345\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Random")
+                  Div(:class "text-sm text-gray-300 mb-2" "Random number (0-1, or min-max range)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Random 1 10}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "7.3")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "ParseNum")
+                  Div(:class "text-sm text-gray-300 mb-2" "Parse string to number (returns null if invalid)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{ParseNum \"42\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "42")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Debug")
+                  Div(:class "text-sm text-gray-300 mb-2" "Log value to console and pass through (optional label)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Debug \"x\" {Add 2 3}}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "5")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "CharFromCode")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert ASCII/Unicode code to character")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{CharFromCode 65}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"A\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Sym")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert string to symbol (returns null for invalid names)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Sym \"Hello\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "Hello")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Str")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert atom to string (symbols and numbers only)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Str Hello}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"Hello\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Div(:class "flex items-baseline gap-2 mb-2"
+                    Code(:class "text-cyan-400 font-bold" "Splat")
+                    Span(:class "text-gray-500 text-sm" "(...!)")
+                  )
+                  Div(:class "text-sm text-gray-300 mb-2" "Create splice object for spreading arguments")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Splat a b c}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "{Splice a b c}")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Reverse")
+                  Div(:class "text-sm text-gray-300 mb-2" "Reverse order of arguments (returns Splice)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Reverse \"a\" \"b\" \"c\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "{Splice \"c\" \"b\" \"a\"}")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Serialize")
+                  Div(:class "text-sm text-gray-300 mb-2" "Convert term to JSON string")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Serialize {Add 1 2}}") " " Span(:class "text-gray-500" "→") " " Span(:class "text-gray-400" "JSON string")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Deserialize")
+                  Div(:class "text-sm text-gray-300 mb-2" "Parse JSON string back to term")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Deserialize jsonStr}") " " Span(:class "text-gray-500" "→") " " Span(:class "text-gray-400" "term")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Length")
+                  Div(:class "text-sm text-gray-300 mb-2" "String length (alias for StrLen)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Length \"test\"}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "4")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Slice")
+                  Div(:class "text-sm text-gray-300 mb-2" "Extract substring (alias for Substring)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Slice \"hello\" 1 4}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-yellow-500" "\"ell\"")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Size")
+                  Div(:class "text-sm text-gray-300 mb-2" "Size of term (1 for atoms, 1 + args.length for calls)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Size {Add 2 3}}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-green-400" "3")
+                  )
+                )
+              )
+            )
+
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "🎭 Meta-programming Operations")
+              P(:class "text-gray-400 text-sm mb-4" "Control normalization and enable code-as-data patterns")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "Inert")
+                  Div(:class "text-sm text-gray-300 mb-2" "Stop normalization engine from traversing into contents (no rules checked inside)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{Inert {Add 1 2}}") " " Span(:class "text-gray-500" "→") " " Code(:class "text-purple-400" "{Inert {Add 1 2}}")
+                    Br()
+                    Span(:class "text-gray-600" "; Keeps content symbolic, doesn't normalize to 3")
+                  )
+                  Div(:class "text-sm text-gray-400 mt-3 space-y-1"
+                    Div("Important: Inert only prevents traversal inside. Patterns can still match the outer structure:")
+                    Pre(:class "bg-gray-900 p-2 rounded text-xs overflow-x-auto font-mono ml-4 mt-1"
+                      Code(:class "text-cyan-400" "{DoThings {Inert something_}}")
+                      Br()
+                      Span(:class "text-gray-600" "; ✓ Matches and binds something_")
+                    )
+                  )
+                  Div(:class "text-sm text-gray-400 mt-3 space-y-1"
+                    Div("Use cases:")
+                    Div(:class "ml-4" "• Code-as-data (store unnormalized terms)")
+                    Div(:class "ml-4" "• Guards (check matched values before normalization)")
+                    Div(:class "ml-4" "• Delayed normalization (normalize only when explicitly unwrapped)")
+                  )
+                )
+
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "MetaSafe")
+                  Div(:class "text-sm text-gray-300 mb-2" "Normalize with meta-safe primitives only (preserves non-meta-safe ops and patterns)")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{MetaSafe {Concat \"test\" (ToString 42)}}")
+                    Br()
+                    Span(:class "text-gray-500" "→ ")
+                    Code(:class "text-purple-400" "{MetaSafe \"test42\"}")
+                  )
+                  Div(:class "text-sm text-gray-400 mt-3 space-y-1"
+                    Div("Meta-safe (normalized): Add, Mul, Concat, ToString, etc.")
+                    Div("Non-meta-safe (preserved): Eq, IsNum, Lt, And, Or, etc.")
+                    Div(:class "mt-2" "Use cases:")
+                    Div(:class "ml-4" "• RuleRules (compute names while preserving patterns)")
+                    Div(:class "ml-4" "• Code generation (mixed normalization)")
+                    Div(:class "ml-4" "• Dynamic rule name generation")
+                  )
+                )
+              )
+            )
+
+            Div(:class "space-y-4"
+              H3(:class "text-2xl font-bold text-gray-200 mb-4" "🎨 Projection Operations")
+              P(:class "text-gray-400 text-sm mb-4" "UI rendering utilities")
+
+              Div(:class "grid gap-3"
+                Div(:class "bg-gray-900/50 border border-gray-800 rounded-lg p-4"
+                  Code(:class "text-cyan-400 font-bold mb-2 block" "ProjectToString")
+                  Div(:class "text-sm text-gray-300 mb-2" "Render UI node to HTML string")
+                  Pre(:class "bg-gray-950 p-3 rounded text-sm overflow-x-auto font-mono"
+                    Code(:class "text-cyan-400" "{ProjectToString {Div :class \"card\" {H1 \"Hello\"}}}")
+                    Br()
+                    Span(:class "text-gray-500" "→ ")
+                    Code(:class "text-yellow-500" "\"<div...>...</div>\"")
+                  )
+                )
               )
             )
           )
