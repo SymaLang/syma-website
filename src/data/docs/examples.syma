@@ -1,5 +1,5 @@
 {Module Data/Docs/Examples
-  {Exports ExamplesDoc}
+  {Export ExamplesDoc}
   {Defs
     {ExamplesDoc
       Div(:class "prose prose-invert max-w-none"

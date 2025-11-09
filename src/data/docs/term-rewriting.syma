@@ -1,5 +1,6 @@
 {Module Data/Docs/TermRewriting
-  {Exports TermRewritingDoc}
+  {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Export TermRewritingDoc}
   {Defs
     {TermRewritingDoc
       Div(:class "prose prose-invert max-w-none"
@@ -278,12 +279,12 @@
           Div(:class "space-y-4"
             H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
             Div(:class "grid md:grid-cols-2 gap-4"
-              A(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+              RouterLink(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
                 Div(:class "text-3xl mb-3" "📖")
                 H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Learn the Syntax")
                 P(:class "text-gray-400 text-sm" "Master atoms, compounds, and dual syntax")
               )
-              A(:href "/docs/pattern-matching" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+              RouterLink(:href "/docs/pattern-matching" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
                 Div(:class "text-3xl mb-3" "🎯")
                 H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Pattern Matching")
                 P(:class "text-gray-400 text-sm" "Explore Syma's powerful pattern matching features")

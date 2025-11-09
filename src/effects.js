@@ -1,5 +1,5 @@
 export const customEffects = {
-    'CustomEffects/PageTitle': async (req, helpers) => {
+    'Syma/SimpleUIRouter/PageTitle': async (req, helpers) => {
         const { Call, Sym, isSym, isStr, Str, Num, jsToSymbolic, symbolicToJs, platform } =
             helpers;
 
@@ -15,6 +15,6 @@ export const customEffects = {
         }
         titleTag.textContent = title;
 
-        return Call(Sym('PageTitleComplete'), Str(title));
+        return Call(Sym('Syma/SimpleUIRouter/PageTitleComplete'), id, Str(title));
     }
 };

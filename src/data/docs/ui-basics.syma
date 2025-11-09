@@ -1,5 +1,6 @@
 {Module Data/Docs/UIBasics
-  {Exports UIBasicsDoc}
+  {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Export UIBasicsDoc}
   {Defs
     {UIBasicsDoc
       Div(:class "prose prose-invert max-w-none"
@@ -348,12 +349,12 @@
           Div(:class "space-y-4"
             H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
             Div(:class "grid md:grid-cols-2 gap-4"
-              A(:href "/docs/effects" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+              RouterLink(:href "/docs/effects" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
                 Div(:class "text-3xl mb-3" "🎭")
                 H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Effects System")
                 P(:class "text-gray-400 text-sm" "Handle I/O with symbolic effects")
               )
-              A(:href "/docs/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+              RouterLink(:href "/docs/examples" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
                 Div(:class "text-3xl mb-3" "💡")
                 H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Examples")
                 P(:class "text-gray-400 text-sm" "See complete applications in action")

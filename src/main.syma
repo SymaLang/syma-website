@@ -1,6 +1,6 @@
 {Module App/Main
   {Import Core/Lift as Lift open}
-  {Import Syma/SimpleUIRouter as Router macro {Open CurrentRoute Router Route Slot Navigate}}
+  {Import Syma/SimpleUIRouter as Router macro {Open CurrentRoute Router Route Slot Navigate CurrentPageTitle}}
 
   {Import Data/Docs from "./data/docs.syma" {Open InitialDocs}}
   {Import Symbols/Docs from "./symbols/docs.syma" {Open Docs Category Doc Slug Title Content}}
@@ -29,16 +29,21 @@
 
   {Rules
     ; Home Page Route
-    {Route main {Path} {MainLayout main} {IndexPage}}
+    {Route main {Path} "Syma — Symbolic Term-Rewriting Programming Language" {MainLayout main} {IndexPage}}
 
     ; Docs Routes
-    {Route docs {Path / "docs"} {DocsLayout docs} {DocsPage}}
-    {Route doc  {Path / "docs" / doc_} {DocsLayout doc} {Project CurrentDoc}
+    {Route docs {Path / "docs"} "Documentation — Syma" {DocsLayout docs} {DocsPage}}
+    {Route doc {Path / "docs" / doc_} {DocsLayout doc} {Project CurrentDoc}
       :select
       :guard IsDocExists
     }
 
-    // {Route docNotFound {Path / "docs" / notfound_} Div({Slot docNotFound}) Div("Document not found.")}
+    {R CurrentPageTitle
+      {CurrentPageTitle {Path / "docs" / doc_}}
+      Concat(title_ " — Syma Documentation")
+      :with {Program .. {App .. {State .. Inert({Docs .. {Category _ .. {Doc {Slug doc_} {Title title_} ..} ..} ..}) ..} ..} ..}
+    }
+
     {Route 404 {Path p..} {MainLayout 404} {NotFoundPage}}
 
     {R IsDocExists {IsDocExists {Path / "docs" / doc_} {State .. Inert({Docs .. {Category _ .. {Doc {Slug doc_} ..} ..} ..}) ..}} True}
@@ -51,8 +56,14 @@
 
     {R ProjectDoc
       {:project {Doc doc_}}
-      Div(Eff({PageTitle id Concat(title_ " - Syma Documentation")}) content_)
+      Div(content_)
       :with {Program .. {App .. {State .. Inert({Docs .. {Category _ .. {Doc {Slug doc_} {Title title_} {Content Inert(content_)} .. } ..} ..}) ..} ..} ..}
+    }
+
+    {R DocTitle
+      {DocTitle doc_}
+      title_
+      :with {Program .. {App .. {State .. Inert({Docs .. {Category _ .. {Doc {Slug doc_} {Title title_} ..} ..} ..}) ..} ..} ..}
     }
   }
 }

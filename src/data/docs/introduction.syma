@@ -1,5 +1,6 @@
 {Module Data/Docs/Introduction
-  {Exports IntroductionDoc}
+  {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Export IntroductionDoc}
   {Defs
     {IntroductionDoc
       Div(:class "prose prose-invert max-w-none"
@@ -141,17 +142,17 @@
           Div(:class "space-y-4"
             H2(:class "text-3xl font-bold text-gray-200" "Next Steps")
             Div(:class "grid md:grid-cols-3 gap-4"
-              A(:href "/docs/installation" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
+              RouterLink(:href "/docs/installation" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-cyan-700 rounded-lg transition-all"
                 Div(:class "text-3xl mb-3" "📦")
                 H3(:class "text-xl font-semibold text-cyan-400 group-hover:text-cyan-300 mb-2" "Installation")
                 P(:class "text-gray-400 text-sm" "Get Syma installed on your system")
               )
-              A(:href "/docs/term-rewriting" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
+              RouterLink(:href "/docs/term-rewriting" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-blue-700 rounded-lg transition-all"
                 Div(:class "text-3xl mb-3" "🔄")
                 H3(:class "text-xl font-semibold text-blue-400 group-hover:text-blue-300 mb-2" "Term Rewriting")
                 P(:class "text-gray-400 text-sm" "Learn the core concept behind Syma")
               )
-              A(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-purple-700 rounded-lg transition-all"
+              RouterLink(:href "/docs/syntax" :class "group block p-6 bg-gray-900/50 border border-gray-800 hover:border-purple-700 rounded-lg transition-all"
                 Div(:class "text-3xl mb-3" "📖")
                 H3(:class "text-xl font-semibold text-purple-400 group-hover:text-purple-300 mb-2" "Syntax Guide")
                 P(:class "text-gray-400 text-sm" "Master Syma's syntax and structure")
