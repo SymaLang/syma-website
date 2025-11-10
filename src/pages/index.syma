@@ -3,6 +3,7 @@
   {Import Tokenize from "../tokenize.syma" {Open Tokenize}}
   {Import Core/Effect as Eff open}
   {Import CustomEffects from "../symbols/custom-effects.syma" {Open PageTitle}}
+  {Import syma-code}
 
   {Export DisplayMode HTML SYMA UiDemoCard Inc}
   {Defs
@@ -19,7 +20,7 @@
             "Syma is a rewriting runtime and a general-purpose programming language. It rewrites trees outside-in by default, uses flat compounds (no distinguished head), and lets you freeze subtrees without hiding them. Build UI, effects, and metaprograms on the same substrate."
           )
           Div(:class "flex flex-wrap gap-4 justify-center"
-            RouterLink(:href "/playground" :class "px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/50 transition-all transform hover:scale-105"
+            A(:href "https://notebook.syma-lang.org" :class "px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-lg shadow-lg shadow-cyan-500/50 transition-all transform hover:scale-105"
               "Try in Browser"
             )
             A(:href "#mental-model" :class "px-8 py-4 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-lg border border-gray-700 transition-all"
@@ -64,12 +65,10 @@
             Div(:class "p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border border-purple-800/50 rounded-xl"
               Div(:class "flex items-start gap-3 mb-3"
                 Span(:class "text-2xl font-bold text-purple-400" "3")
-                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "Order is automatic, but you can steer it")
+                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "Big things first, small things later")
               )
               P(:class "text-gray-400 text-sm leading-relaxed ml-8"
-                "By default Syma rewrites from the outside-in, but you can tag a rule with "
-                Code(:class "text-purple-400" ":innermost")
-                " to make it run inside-out first."
+                "Syma rewrites large structures before the smaller ones inside them. You don't tell it what to do step by step — it naturally reduces the outer shapes first, then works its way inward until everything settles."
               )
             )
 
@@ -77,10 +76,10 @@
             Div(:class "p-6 bg-gradient-to-br from-pink-900/20 to-red-900/20 border border-pink-800/50 rounded-xl"
               Div(:class "flex items-start gap-3 mb-3"
                 Span(:class "text-2xl font-bold text-pink-400" "4")
-                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "Even the rules are data")
+                H3(:class "text-lg font-semibold text-gray-200 mt-0.5" "The rules are made of the same stuff")
               )
               P(:class "text-gray-400 text-sm leading-relaxed ml-8"
-                "You can build, store, and reuse patterns as regular values. Some rules (RuleRules) can generate new rules."
+                "A rule isn't magic syntax — it's just another tree that happens to describe how other trees change. The engine recognizes these special patterns as instructions, which means you can inspect, store, or even generate new rules while running."
               )
             )
           )
@@ -101,13 +100,11 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-cyan-500" "Add  Multiply  True  False\n")
-                  Span(:class "text-cyan-500" "🎯  🔄  ✨\n")
-                  Span(:class "text-cyan-500" "+  -  λ  α  β\n")
-                  Span(:class "text-cyan-500" "%^&*   G#   Cdim7/Eb    This/Is/One/Symbol   :symbol:\n")
-                  Span(:class "text-cyan-500" "<hello>    *thing*   #FF0000   ")
-                )
+                syma-code(r"Add  Multiply  True  False
+🎯  🔄  ✨
++  -  λ  α  β
+%^&*   G#   Cdim7/Eb    This/Is/One/Symbol   :symbol:
+<hello>    *thing*   #FF0000   ")
               )
             )
             Div(:class "bg-blue-900/20 border border-blue-700/50 rounded-lg p-6"
@@ -132,41 +129,17 @@
           H2(:class "text-4xl font-bold text-center text-gray-200" "No calls. Just a tree becoming a different tree.")
           Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-8 overflow-x-auto max-w-4xl mx-auto"
             Pre(:class "font-mono text-sm leading-relaxed"
-              Code(
-                Span(:class "text-gray-500" "; Define a rule for unary addition\n")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "R ")
-                Span(:class "text-yellow-600" "\"AddUnary\"\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Add ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "a..")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "b..")
-                Span(:class "text-yellow-400" "}}\n")
-                Span(:class "text-yellow-400" "  {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-purple-400" "a.. b..")
-                Span(:class "text-yellow-400" "}\n")
-                Span(:class "text-yellow-400" "}\n\n")
-                Span(:class "text-gray-500" "; With this rule, the term:\n")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Add ")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-white" "| | |")
-                Span(:class "text-yellow-400" "} {")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-white" "| |")
-                Span(:class "text-yellow-400" "}}\n\n")
-                Span(:class "text-gray-500" "; Rewrites to this:\n")
-                Span(:class "text-yellow-400" "{")
-                Span(:class "text-cyan-500" "Unary ")
-                Span(:class "text-white" "| | | | |")
-                Span(:class "text-yellow-400" "}")
-              )
+              syma-code(r"; Define a rule for unary addition
+{R \"AddUnary\"
+  {Add {Unary a..} {Unary b..}}
+  {Unary a.. b..}
+}
+
+; With this rule, the term:
+{Add {Unary | | |} {Unary | |}}
+
+; Rewrites to this:
+{Unary | | | | |}")
             )
           )
           P(:class "text-center text-gray-400"
@@ -267,26 +240,11 @@
               )
               Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
                 Pre(:class "font-mono text-xs leading-relaxed"
-                  Code(
-                    Span(:class "text-cyan-500" "Fold")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-cyan-500" "Add")
-                    Span(:class "text-white" ", ")
-                    Span(:class "text-green-500" "0")
-                    Span(:class "text-white" ",\n  ")
-                    Span(:class "text-cyan-500" "Filter")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-cyan-500" "IsEven")
-                    Span(:class "text-white" ",\n    ")
-                    Span(:class "text-cyan-500" "Map")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-cyan-500" "Inc")
-                    Span(:class "text-white" ", ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-green-500" "1 2 3 4")
-                    Span(:class "text-yellow-400" "}")
-                    Span(:class "text-white" ")\n  )\n)")
-                  )
+                  syma-code(r"Fold(Add, 0,
+  Filter(IsEven,
+    Map(Inc, {1 2 3 4})
+  )
+)")
                 )
               )
             )
@@ -300,22 +258,11 @@
               )
               Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
                 Pre(:class "font-mono text-xs leading-relaxed"
-                  Code(
-                    Span(:class "text-gray-500" "; Facts\n")
-                    Span(:class "text-cyan-500" "Human")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-cyan-500" "Socrates")
-                    Span(:class "text-white" ")\n\n")
-                    Span(:class "text-gray-500" "; Inference\n")
-                    Span(:class "text-cyan-500" "Human")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-purple-400" "x_")
-                    Span(:class "text-white" ") → ")
-                    Span(:class "text-cyan-500" "Mortal")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-purple-400" "x_")
-                    Span(:class "text-white" ")")
-                  )
+                  syma-code(r"; Facts
+Human(Socrates)
+
+; Inference
+Human(x_) → Mortal(x_)")
                 )
               )
             )
@@ -329,24 +276,9 @@
               )
               Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
                 Pre(:class "font-mono text-xs leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Val ")
-                    Span(:class "text-white" "a ")
-                    Span(:class "text-cyan-500" "= ")
-                    Span(:class "text-green-500" "5")
-                    Span(:class "text-yellow-400" "}\n{")
-                    Span(:class "text-cyan-500" "Val ")
-                    Span(:class "text-white" "b ")
-                    Span(:class "text-cyan-500" "= ")
-                    Span(:class "text-green-500" "2")
-                    Span(:class "text-yellow-400" "}\n{")
-                    Span(:class "text-cyan-500" "Return ")
-                    Span(:class "text-white" "a ")
-                    Span(:class "text-cyan-500" "+ ")
-                    Span(:class "text-white" "b")
-                    Span(:class "text-yellow-400" "}")
-                  )
+                  syma-code(r"{Val a = 5}
+{Val b = 2}
+{Return a + b}")
                 )
               )
             )
@@ -360,18 +292,9 @@
               )
               Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
                 Pre(:class "font-mono text-xs leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" ":class ")
-                    Span(:class "text-cyan-500" "Dog ")
-                    Span(:class "text-yellow-400" ":extends ")
-                    Span(:class "text-cyan-500" "Animal ")
-                    Span(:class "text-yellow-400" "{\n  ")
-                    Span(:class "text-cyan-500" "bark")
-                    Span(:class "text-white" "() ")
-                    Span(:class "text-cyan-500" "=> ")
-                    Span(:class "text-yellow-600" "\"woof\"")
-                    Span(:class "text-yellow-400" "\n}")
-                  )
+                  syma-code(r":class Dog :extends Animal {
+  bark() => \"woof\"
+}")
                 )
               )
             )
@@ -385,24 +308,11 @@
               )
               Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
                 Pre(:class "font-mono text-xs leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-cyan-500" "Counter\n  ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-yellow-400" ":project ")
-                    Span(:class "text-cyan-500" "Counter")
-                    Span(:class "text-yellow-400" "}\n  ")
-                    Span(:class "text-cyan-500" "Div")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-purple-400" "c_")
-                    Span(:class "text-white" ")\n  ")
-                    Span(:class "text-yellow-400" ":with ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "State ")
-                    Span(:class "text-purple-400" "c_")
-                    Span(:class "text-yellow-400" "}\n}")
-                  )
+                  syma-code(r"{R Counter
+  {:project Counter}
+  Div(c_)
+  :with {State c_}
+}")
                 )
               )
             )
@@ -416,15 +326,9 @@
               )
               Div(:class "bg-gray-950/50 border border-gray-800 rounded p-3"
                 Pre(:class "font-mono text-xs leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Print ")
-                    Span(:class "text-white" "id ")
-                    Span(:class "text-yellow-400" "{\n  ")
-                    Span(:class "text-cyan-500" "Message ")
-                    Span(:class "text-yellow-600" "\"Hello!\"")
-                    Span(:class "text-yellow-400" "\n}}")
-                  )
+                  syma-code(r"{Print id {
+  Message \"Hello!\"
+}}")
                 )
               )
             )
@@ -465,63 +369,20 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; The rule that renders the demo card\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-cyan-500" "UiDemoCard\n")
-                  Span(:class "text-yellow-400" "  :project")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-cyan-500" "UiDemoCard")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-cyan-500" "  If")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-cyan-500" "Is")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" "d_ ")
-                  Span(:class "text-cyan-500" "HTML")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-gray-500" "    ; then\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "CodeDisplay")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-gray-500" "    ; else\n")
-                  Span(:class "text-cyan-500" "    Div")
-                  Span(:class "text-yellow-400" "(\n")
-                  Span(:class "text-yellow-400" "      :class ")
-                  Span(:class "text-yellow-600" "\"bg-gray-950 rounded-xl .....\"\n")
-                  Span(:class "text-cyan-500" "      Tokenize")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "UI ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "CodeDisplay")
-                  Span(:class "text-yellow-400" "}}")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-yellow-400" "    )\n")
-                  Span(:class "text-yellow-400" "  )\n")
-                  Span(:class "text-yellow-400" "  :with ")
-                  Span(:class "text-cyan-500" "Program")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-cyan-500" "App")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-cyan-500" "State")
-                  Span(:class "text-yellow-400" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "DisplayMode ")
-                  Span(:class "text-purple-400" "d_")
-                  Span(:class "text-yellow-400" "} ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-yellow-400" ") ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-yellow-400" ") ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-yellow-400" ")\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; The rule that renders the demo card
+{R UiDemoCard
+  :project(UiDemoCard)
+  If(Is(d_ HTML)
+    ; then
+    {CodeDisplay}
+    ; else
+    Div(
+      :class \"bg-gray-950 rounded-xl .....\"
+      Tokenize({UI {CodeDisplay}})
+    )
+  )
+  :with Program(.. App(.. State(.. {DisplayMode d_} ..) ..) ..)
+}")
               )
             )
             P(:class "text-center text-gray-400 text-sm"

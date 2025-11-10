@@ -40,12 +40,12 @@
               :class "text-gray-300 hover:text-cyan-400 transition-colors"
               "Docs"
             }
-            {RouterLink
-              :href "/playground"
+            {A
+              :href "https://notebook.syma-lang.org"
               :class "text-gray-300 hover:text-cyan-400 transition-colors"
-              "Playground"
+              "Try Online"
             }
-            {RouterLink
+            {A
               :href "https://github.com/SymaLang/syma"
               :class "text-gray-300 hover:text-cyan-400 transition-colors"
               "GitHub"

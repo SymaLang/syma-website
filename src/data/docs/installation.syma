@@ -141,7 +141,7 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm text-cyan-400"
-                Code("npm create syma@latest my-web-app -- --template tailwind")
+                Code("npm create syma@latest my-web-app -- tailwind")
               )
             )
             P(:class "text-gray-300 leading-relaxed"

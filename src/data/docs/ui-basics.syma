@@ -1,5 +1,6 @@
 {Module Data/Docs/UIBasics
   {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Import syma-code}
   {Export UIBasicsDoc}
   {Defs
     {UIBasicsDoc
@@ -62,42 +63,16 @@
 
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Define a projection rule\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"CounterView\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-yellow-400" ":project ")
-                  Span(:class "text-cyan-500" "CounterView")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-cyan-500" "  Div")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-yellow-400" ":class ")
-                  Span(:class "text-yellow-600" "\"counter\"\n")
-                  Span(:class "text-yellow-600" "    \"Count: \" ")
-                  Span(:class "text-purple-400" "count_")
-                  Span(:class "text-white" ")\n")
-                  Span(:class "text-yellow-400" "  :with ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Program ")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "State ")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Counter ")
-                  Span(:class "text-purple-400" "count_")
-                  Span(:class "text-yellow-400" "} ..} ..}\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; Use it in your UI\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Div ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Project ")
-                  Span(:class "text-cyan-500" "CounterView")
-                  Span(:class "text-yellow-400" "}}")
-                )
+                syma-code(r"; Define a projection rule
+{R \"CounterView\"
+  {:project CounterView}
+  Div(:class \"counter\"
+    \"Count: \" count_)
+  :with {Program .. {State .. {Counter count_} ..} ..}
+}
+
+; Use it in your UI
+{Div {Project CounterView}}")
               )
             )
           )
@@ -110,31 +85,14 @@
 
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-cyan-500" "Div")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-yellow-400" ":class ")
-                  Span(:class "text-yellow-600" "\"container\"\n")
-                  Span(:class "text-cyan-500" "  H1")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-yellow-600" "\"Title\"")
-                  Span(:class "text-white" ")\n")
-                  Span(:class "text-cyan-500" "  P")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-yellow-400" ":class ")
-                  Span(:class "text-yellow-600" "\"text-gray-400\" ")
-                  Span(:class "text-yellow-600" "\"Content\"")
-                  Span(:class "text-white" ")\n")
-                  Span(:class "text-cyan-500" "  Button")
-                  Span(:class "text-white" "(\n")
-                  Span(:class "text-yellow-400" "    :onClick ")
-                  Span(:class "text-cyan-500" "Increment\n")
-                  Span(:class "text-yellow-400" "    :class ")
-                  Span(:class "text-yellow-600" "\"btn\"\n")
-                  Span(:class "text-yellow-600" "    \"Click Me\"")
-                  Span(:class "text-white" ")\n")
-                  Span(:class "text-white" ")")
-                )
+                syma-code(r"Div(:class \"container\"
+  H1(\"Title\")
+  P(:class \"text-gray-400\" \"Content\")
+  Button(
+    :onClick Increment
+    :class \"btn\"
+    \"Click Me\")
+)")
               )
             )
 
@@ -159,61 +117,18 @@
 
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Handle increment action\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"Inc\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-cyan-500" "Inc ")
-                  Span(:class "text-cyan-500" "State")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Counter ")
-                  Span(:class "text-purple-400" "c_")
-                  Span(:class "text-yellow-400" "} ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-white" ")}\n")
-                  Span(:class "text-cyan-500" "  State")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Counter ")
-                  Span(:class "text-cyan-500" "Add")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-purple-400" "c_ ")
-                  Span(:class "text-green-500" "1")
-                  Span(:class "text-white" ")} ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-white" ")\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; Lift Apply through nested structures\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"LiftApplyThroughApp\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-purple-400" "act_ ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "App ")
-                  Span(:class "text-purple-400" "st_ ")
-                  Span(:class "text-purple-400" "ui_")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "App ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-purple-400" "act_ ")
-                  Span(:class "text-purple-400" "st_")
-                  Span(:class "text-yellow-400" "} ")
-                  Span(:class "text-purple-400" "ui_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-green-500" "  100  ")
-                  Span(:class "text-gray-500" "; High priority for lifters\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; Handle increment action
+{R \"Inc\"
+  {Apply Inc State(.. {Counter c_} ..)}
+  State(.. {Counter Add(c_ 1)} ..)
+}
+
+; Lift Apply through nested structures
+{R \"LiftApplyThroughApp\"
+  {Apply act_ {App st_ ui_}}
+  {App {Apply act_ st_} ui_}
+  100  ; High priority for lifters
+}")
               )
             )
           )
@@ -226,122 +141,34 @@
 
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Module ")
-                  Span(:class "text-cyan-500" "App/Counter\n\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Program\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "App\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "State ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Counter ")
-                  Span(:class "text-green-500" "0")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "UI ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Project ")
-                  Span(:class "text-cyan-500" "CounterView")
-                  Span(:class "text-yellow-400" "}}}\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Effects ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Pending")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Inbox")
-                  Span(:class "text-yellow-400" "}}}\n\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Rules\n")
-                  Span(:class "text-gray-500" "    ; Projection\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"CounterView\"\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-yellow-400" ":project ")
-                  Span(:class "text-cyan-500" "CounterView")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-cyan-500" "      Div")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-yellow-400" ":class ")
-                  Span(:class "text-yellow-600" "\"space-y-4\"\n")
-                  Span(:class "text-cyan-500" "        H1")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-yellow-600" "\"Counter: \" ")
-                  Span(:class "text-purple-400" "count_")
-                  Span(:class "text-white" ")\n")
-                  Span(:class "text-cyan-500" "        Button")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-yellow-400" ":onClick ")
-                  Span(:class "text-cyan-500" "Inc ")
-                  Span(:class "text-yellow-600" "\"+\"")
-                  Span(:class "text-white" "))\n")
-                  Span(:class "text-yellow-400" "      :with ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Program ")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "State ")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Counter ")
-                  Span(:class "text-purple-400" "count_")
-                  Span(:class "text-yellow-400" "} ..} ..}}\n\n")
-                  Span(:class "text-gray-500" "    ; Action handler\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"Inc\"\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-cyan-500" "Inc ")
-                  Span(:class "text-cyan-500" "State")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Counter ")
-                  Span(:class "text-purple-400" "c_")
-                  Span(:class "text-yellow-400" "} ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-white" ")}\n")
-                  Span(:class "text-cyan-500" "      State")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-purple-400" ".. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Counter ")
-                  Span(:class "text-cyan-500" "Add")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-purple-400" "c_ ")
-                  Span(:class "text-green-500" "1")
-                  Span(:class "text-white" ")} ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-white" ")}\n\n")
-                  Span(:class "text-gray-500" "    ; Lifter\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"LiftApply\"\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-purple-400" "act_ ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "App ")
-                  Span(:class "text-purple-400" "st_ ")
-                  Span(:class "text-purple-400" "ui_")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "App ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-purple-400" "act_ ")
-                  Span(:class "text-purple-400" "st_")
-                  Span(:class "text-yellow-400" "} ")
-                  Span(:class "text-purple-400" "ui_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-green-500" "      100")
-                  Span(:class "text-yellow-400" "}}}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"{Module App/Counter
+
+  {Program
+    {App
+      {State {Counter 0}}
+      {UI {Project CounterView}}}
+    {Effects {Pending} {Inbox}}}
+
+  {Rules
+    ; Projection
+    {R \"CounterView\"
+      {:project CounterView}
+      Div(:class \"space-y-4\"
+        H1(\"Counter: \" count_)
+        Button(:onClick Inc \"+\"))
+      :with {Program .. {State .. {Counter count_} ..} ..}}
+
+    ; Action handler
+    {R \"Inc\"
+      {Apply Inc State(.. {Counter c_} ..)}
+      State(.. {Counter Add(c_ 1)} ..)}
+
+    ; Lifter
+    {R \"LiftApply\"
+      {Apply act_ {App st_ ui_}}
+      {App {Apply act_ st_} ui_}
+      100}}}
+}")
               )
             )
           )

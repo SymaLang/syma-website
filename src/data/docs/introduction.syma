@@ -1,5 +1,6 @@
 {Module Data/Docs/Introduction
   {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Import syma-code}
   {Export IntroductionDoc}
   {Defs
     {IntroductionDoc
@@ -93,37 +94,15 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Define a rule to add unary numbers\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"AddUnary\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Add ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "a..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "b..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "a.. b..")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; Use it\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Add ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-white" "| | |")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-white" "| |")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-gray-500" "; → {Unary | | | | |}")
-                )
+                syma-code(r"; Define a rule to add unary numbers
+{R \"AddUnary\"
+  {Add {Unary a..} {Unary b..}}
+  {Unary a.. b..}
+}
+
+; Use it
+{Add {Unary | | |} {Unary | |}}
+; → {Unary | | | | |}")
               )
             )
             P(:class "text-gray-300 leading-relaxed"

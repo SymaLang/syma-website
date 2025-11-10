@@ -1,5 +1,6 @@
 {Module Data/Docs/Modules
   {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Import syma-code}
   {Export ModulesDoc}
   {Defs
     {ModulesDoc
@@ -21,37 +22,18 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Module ")
-                  Span(:class "text-cyan-500" "My/Module\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Export ")
-                  Span(:class "text-cyan-500" "Symbol1 Symbol2")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Import ")
-                  Span(:class "text-cyan-500" "Other/Module ")
-                  Span(:class "text-yellow-400" "as ")
-                  Span(:class "text-cyan-500" "Other")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Defs\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Constant ")
-                  Span(:class "text-green-500" "42")
-                  Span(:class "text-yellow-400" "}")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Rules\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"MyRule\" ")
-                  Span(:class "text-cyan-500" "pattern replacement")
-                  Span(:class "text-yellow-400" "}")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"{Module My/Module
+  {Export Symbol1 Symbol2}
+  {Import Other/Module as Other}
+
+  {Defs
+    {Constant 42}
+  }
+
+  {Rules
+    {R \"MyRule\" pattern replacement}
+  }
+}")
               )
             )
           )
@@ -67,15 +49,8 @@
                 H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Standard Import")
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-4"
                   Pre(:class "font-mono text-sm"
-                    Code(
-                      Span(:class "text-yellow-400" "{")
-                      Span(:class "text-cyan-500" "Import ")
-                      Span(:class "text-cyan-500" "Core/KV ")
-                      Span(:class "text-yellow-400" "as ")
-                      Span(:class "text-cyan-500" "KV")
-                      Span(:class "text-yellow-400" "}\n")
-                      Span(:class "text-gray-500" "; Use as: KV/Get, KV/Set")
-                    )
+                    syma-code(r"{Import Core/KV as KV}
+; Use as: KV/Get, KV/Set")
                   )
                 )
               )
@@ -84,15 +59,9 @@
                 H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Open Import")
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-4"
                   Pre(:class "font-mono text-sm"
-                    Code(
-                      Span(:class "text-yellow-400" "{")
-                      Span(:class "text-cyan-500" "Import ")
-                      Span(:class "text-cyan-500" "Core/KV ")
-                      Span(:class "text-yellow-400" "open")
-                      Span(:class "text-yellow-400" "}\n")
-                      Span(:class "text-gray-500" "; Use unqualified: Get, Set\n")
-                      Span(:class "text-gray-500" "; (Compiled to fully qualified)")
-                    )
+                    syma-code(r"{Import Core/KV open}
+; Use unqualified: Get, Set
+; (Compiled to fully qualified)")
                   )
                 )
               )
@@ -101,16 +70,8 @@
                 H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Selective Import")
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-4"
                   Pre(:class "font-mono text-sm"
-                    Code(
-                      Span(:class "text-yellow-400" "{")
-                      Span(:class "text-cyan-500" "Import ")
-                      Span(:class "text-cyan-500" "Router ")
-                      Span(:class "text-yellow-400" "{")
-                      Span(:class "text-yellow-400" "Open ")
-                      Span(:class "text-cyan-500" "Navigate CurrentRoute")
-                      Span(:class "text-yellow-400" "}}\n")
-                      Span(:class "text-gray-500" "; Only these are unqualified")
-                    )
+                    syma-code(r"{Import Router {Open Navigate CurrentRoute}}
+; Only these are unqualified")
                   )
                 )
               )
@@ -143,33 +104,12 @@
 
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 mt-4"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Source code (what you write)\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Import ")
-                  Span(:class "text-cyan-500" "Core/KV ")
-                  Span(:class "text-yellow-400" "open")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"GetValue\" ")
-                  Span(:class "text-cyan-500" "pattern ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Get ")
-                  Span(:class "text-purple-400" "key_ ")
-                  Span(:class "text-purple-400" "state_")
-                  Span(:class "text-yellow-400" "}}\n\n")
-                  Span(:class "text-gray-500" "; Compiled output (runtime)\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"MyModule/GetValue\" ")
-                  Span(:class "text-cyan-500" "pattern ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Core/KV/Get ")
-                  Span(:class "text-purple-400" "key_ ")
-                  Span(:class "text-purple-400" "state_")
-                  Span(:class "text-yellow-400" "}}")
-                )
+                syma-code(r"; Source code (what you write)
+{Import Core/KV open}
+{R \"GetValue\" pattern {Get key_ state_}}
+
+; Compiled output (runtime)
+{R \"MyModule/GetValue\" pattern {Core/KV/Get key_ state_}}")
               )
             )
           )
@@ -181,14 +121,8 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Import ")
-                  Span(:class "text-cyan-500" "Sugar ")
-                  Span(:class "text-yellow-400" "macro")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-gray-500" "; Apply Sugar's RuleRules to this module's rules")
-                )
+                syma-code(r"{Import Sugar macro}
+; Apply Sugar's RuleRules to this module's rules")
               )
             )
             P(:class "text-gray-300 leading-relaxed mt-2"

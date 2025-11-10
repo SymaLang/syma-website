@@ -1,5 +1,6 @@
 {Module Data/Docs/PatternMatching
   {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Import syma-code}
   {Export PatternMatchingDoc}
   {Defs
     {PatternMatchingDoc
@@ -21,27 +22,14 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-purple-400" "x_           ")
-                  Span(:class "text-gray-500" "; Matches exactly one thing, binds to 'x'\n")
-                  Span(:class "text-purple-400" "_            ")
-                  Span(:class "text-gray-500" "; Wildcard: matches one thing, discards value\n\n")
-                  Span(:class "text-gray-500" "; Example rule\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"Double\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Double ")
-                  Span(:class "text-purple-400" "x_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-cyan-500" "  Mul")
-                  Span(:class "text-white" "(")
-                  Span(:class "text-purple-400" "x_")
-                  Span(:class "text-white" ", ")
-                  Span(:class "text-green-500" "2")
-                  Span(:class "text-white" ")\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"x_           ; Matches exactly one thing, binds to 'x'
+_            ; Wildcard: matches one thing, discards value
+
+; Example rule
+{R \"Double\"
+  {Double x_}
+  Mul(x_, 2)
+}")
               )
             )
           )
@@ -55,28 +43,14 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-purple-400" "items..      ")
-                  Span(:class "text-gray-500" "; Matches 0+ elements, binds to 'items'\n")
-                  Span(:class "text-purple-400" "..           ")
-                  Span(:class "text-gray-500" "; Wildcard rest: matches 0+ elements, discards\n\n")
-                  Span(:class "text-gray-500" "; Example: match first, rest, and last\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"Extract\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "List ")
-                  Span(:class "text-purple-400" "first_ ")
-                  Span(:class "text-purple-400" "middle.. ")
-                  Span(:class "text-purple-400" "last_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Result ")
-                  Span(:class "text-purple-400" "first_ ")
-                  Span(:class "text-purple-400" "last_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"items..      ; Matches 0+ elements, binds to 'items'
+..           ; Wildcard rest: matches 0+ elements, discards
+
+; Example: match first, rest, and last
+{R \"Extract\"
+  {List first_ middle.. last_}
+  {Result first_ last_}
+}")
               )
             )
           )
@@ -90,23 +64,11 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Match non-empty lists\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"NonEmpty\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "List ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-yellow-400" "/+ ")
-                  Span(:class "text-purple-400" "items..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "NonEmpty ")
-                  Span(:class "text-purple-400" "items..")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; Match non-empty lists
+{R \"NonEmpty\"
+  {List {/+ items..}}
+  {NonEmpty items..}
+}")
               )
             )
           )
@@ -120,36 +82,17 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Match different colors\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"ValidColor\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Color ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-yellow-400" "/| ")
-                  Span(:class "text-cyan-500" "Red Green Blue")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-cyan-500" "  Valid\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; Capture which alternative matched\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"CaptureColor\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Color ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-yellow-400" "/| ")
-                  Span(:class "text-purple-400" "color_ ")
-                  Span(:class "text-cyan-500" "Red Green Blue")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Got ")
-                  Span(:class "text-purple-400" "color_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; Match different colors
+{R \"ValidColor\"
+  {Color {/| Red Green Blue}}
+  Valid
+}
+
+; Capture which alternative matched
+{R \"CaptureColor\"
+  {Color {/| color_ Red Green Blue}}
+  {Got color_}
+}")
               )
             )
           )
@@ -163,41 +106,17 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Match email addresses\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"ParseEmail\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Email ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-yellow-400" "/r/ ")
-                  Span(:class "text-yellow-600" "\"^[a-z]+@[a-z]+\\\\.com\" ")
-                  Span(:class "text-purple-400" "email_")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Valid ")
-                  Span(:class "text-purple-400" "email_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; With capture groups\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"ParseWord\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Text ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-yellow-400" "/r/ ")
-                  Span(:class "text-yellow-600" "\"^([a-z]+)(\\\\d+)\" ")
-                  Span(:class "text-purple-400" "full_ word_ num_")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Result ")
-                  Span(:class "text-purple-400" "word_ ")
-                  Span(:class "text-purple-400" "num_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; Match email addresses
+{R \"ParseEmail\"
+  {Email {/r/ \"^[a-z]+@[a-z]+\\.com\" email_}}
+  {Valid email_}
+}
+
+; With capture groups
+{R \"ParseWord\"
+  {Text {/r/ \"^([a-z]+)(\\d+)\" full_ word_ num_}}
+  {Result word_ num_}
+}")
               )
             )
           )
@@ -209,19 +128,11 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Match when both sides are equal\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"IsPalindrome\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Pair ")
-                  Span(:class "text-purple-400" "x_ ")
-                  Span(:class "text-purple-400" "x_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-cyan-500" "  True\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; Match when both sides are equal
+{R \"IsPalindrome\"
+  {Pair x_ x_}
+  True
+}")
               )
             )
             P(:class "text-gray-300 leading-relaxed"

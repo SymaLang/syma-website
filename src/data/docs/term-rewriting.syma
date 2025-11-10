@@ -1,5 +1,6 @@
 {Module Data/Docs/TermRewriting
   {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Import syma-code}
   {Export TermRewritingDoc}
   {Defs
     {TermRewritingDoc
@@ -50,41 +51,17 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; The rule\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"AddUnary\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Add ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "a..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "b..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "a.. b..")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; The term\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Add ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-white" "| | |")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-white" "| |")
-                  Span(:class "text-yellow-400" "}}\n\n")
-                  Span(:class "text-gray-500" "; After rewriting\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-white" "| | | | |")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; The rule
+{R \"AddUnary\"
+  {Add {Unary a..} {Unary b..}}
+  {Unary a.. b..}
+}
+
+; The term
+{Add {Unary | | |} {Unary | |}}
+
+; After rewriting
+{Unary | | | | |}")
               )
             )
             P(:class "text-gray-300 leading-relaxed"
@@ -155,83 +132,23 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6 overflow-x-auto"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Step 1: Add a {Result} accumulator\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"MultiplyUnary/Start\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Mul ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "a..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "b..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Mul ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Result")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "a..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "b..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; Step 2: For each stick, add b.. to result\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"MultiplyUnary/Step\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Mul ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Result ")
-                  Span(:class "text-purple-400" "res..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "stick_ ")
-                  Span(:class "text-purple-400" "a..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "b..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Mul ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Result ")
-                  Span(:class "text-purple-400" "res.. b..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "a..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "b..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; Step 3: When no sticks left, return result\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"MultiplyUnary/End\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Mul ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Result ")
-                  Span(:class "text-purple-400" "res..")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "..")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Unary ")
-                  Span(:class "text-purple-400" "res..")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; Step 1: Add a {Result} accumulator
+{R \"MultiplyUnary/Start\"
+  {Mul {Unary a..} {Unary b..}}
+  {Mul {Result} {Unary a..} {Unary b..}}
+}
+
+; Step 2: For each stick, add b.. to result
+{R \"MultiplyUnary/Step\"
+  {Mul {Result res..} {Unary stick_ a..} {Unary b..}}
+  {Mul {Result res.. b..} {Unary a..} {Unary b..}}
+}
+
+; Step 3: When no sticks left, return result
+{R \"MultiplyUnary/End\"
+  {Mul {Result res..} {Unary} {Unary ..}}
+  {Unary res..}
+}")
               )
             )
             P(:class "text-gray-300 leading-relaxed"

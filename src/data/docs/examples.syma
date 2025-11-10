@@ -1,4 +1,5 @@
 {Module Data/Docs/Examples
+  {Import syma-code}
   {Export ExamplesDoc}
   {Defs
     {ExamplesDoc
@@ -49,54 +50,19 @@
               )
               Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
                 Pre(:class "font-mono text-sm leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"Map\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-purple-400" ".. ")
-                    Span(:class "text-cyan-500" "Map ")
-                    Span(:class "text-purple-400" "fn_ ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-purple-400" "item_ ..")
-                    Span(:class "text-yellow-400" "}}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-purple-400" ".. ")
-                    Span(:class "text-purple-400" "fn_")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-purple-400" "item_")
-                    Span(:class "text-white" ") ")
-                    Span(:class "text-cyan-500" "Map ")
-                    Span(:class "text-purple-400" "fn_ ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-purple-400" "..")
-                    Span(:class "text-yellow-400" "}}\n")
-                    Span(:class "text-yellow-400" "  :innermost\n")
-                    Span(:class "text-yellow-400" "}\n\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"Map/End\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-purple-400" ".. ")
-                    Span(:class "text-cyan-500" "Map ")
-                    Span(:class "text-purple-400" "fn_ ")
-                    Span(:class "text-yellow-400" "{}}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-purple-400" "..")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "}\n\n")
-                    Span(:class "text-gray-500" "; Usage\n")
-                    Span(:class "text-cyan-500" "Map")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-cyan-500" "Inc")
-                    Span(:class "text-white" ", ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-green-500" "1 ")
-                    Span(:class "text-green-500" "2 ")
-                    Span(:class "text-green-500" "3")
-                    Span(:class "text-yellow-400" "}")
-                    Span(:class "text-white" ")")
-                  )
+                  syma-code(r"{R \"Map\"
+  {.. Map fn_ {item_ ..}}
+  {.. fn_(item_) Map fn_ {..}}
+  :innermost
+}
+
+{R \"Map/End\"
+  {.. Map fn_ {}}
+  {..}
+}
+
+; Usage
+Map(Inc, {1 2 3})")
                 )
               )
             )
@@ -108,44 +74,20 @@
               )
               Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
                 Pre(:class "font-mono text-sm leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"FilterCompleted\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Filter ")
-                    Span(:class "text-cyan-500" "Completed\n")
-                    Span(:class "text-yellow-400" "    {")
-                    Span(:class "text-cyan-500" "Todos\n")
-                    Span(:class "text-purple-400" "      before..\n")
-                    Span(:class "text-yellow-400" "      {")
-                    Span(:class "text-cyan-500" "Todo ")
-                    Span(:class "text-purple-400" "id_ ")
-                    Span(:class "text-purple-400" "text_ ")
-                    Span(:class "text-cyan-500" "False")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-purple-400" "      after..")
-                    Span(:class "text-yellow-400" "}}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Filter ")
-                    Span(:class "text-cyan-500" "Completed\n")
-                    Span(:class "text-yellow-400" "    {")
-                    Span(:class "text-cyan-500" "Todos ")
-                    Span(:class "text-purple-400" "before.. ")
-                    Span(:class "text-purple-400" "after..")
-                    Span(:class "text-yellow-400" "}}\n")
-                    Span(:class "text-yellow-400" "}\n\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"FilterCompleted/End\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Filter ")
-                    Span(:class "text-cyan-500" "Completed ")
-                    Span(:class "text-purple-400" "todos_")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-purple-400" "  todos_\n")
-                    Span(:class "text-yellow-400" "}")
-                  )
+                  syma-code(r"{R \"FilterCompleted\"
+  {Filter Completed
+    {Todos
+      before..
+      {Todo id_ text_ False}
+      after..}}
+  {Filter Completed
+    {Todos before.. after..}}
+}
+
+{R \"FilterCompleted/End\"
+  {Filter Completed todos_}
+  todos_
+}")
                 )
               )
             )
@@ -157,44 +99,20 @@
               )
               Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
                 Pre(:class "font-mono text-sm leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"Red→Green\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Light ")
-                    Span(:class "text-cyan-500" "Red")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Light ")
-                    Span(:class "text-cyan-500" "Green")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "}\n\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"Green→Yellow\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Light ")
-                    Span(:class "text-cyan-500" "Green")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Light ")
-                    Span(:class "text-cyan-500" "Yellow")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "}\n\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"Yellow→Red\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Light ")
-                    Span(:class "text-cyan-500" "Yellow")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Light ")
-                    Span(:class "text-cyan-500" "Red")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "}")
-                  )
+                  syma-code(r"{R \"Red→Green\"
+  {Light Red}
+  {Light Green}
+}
+
+{R \"Green→Yellow\"
+  {Light Green}
+  {Light Yellow}
+}
+
+{R \"Yellow→Red\"
+  {Light Yellow}
+  {Light Red}
+}")
                 )
               )
             )
@@ -206,46 +124,16 @@
               )
               Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
                 Pre(:class "font-mono text-sm leading-relaxed"
-                  Code(
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"CountNodes/Leaf\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Count ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Leaf ")
-                    Span(:class "text-purple-400" "_")
-                    Span(:class "text-yellow-400" "}}\n")
-                    Span(:class "text-green-500" "  1\n")
-                    Span(:class "text-yellow-400" "}\n\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "R ")
-                    Span(:class "text-yellow-600" "\"CountNodes/Branch\"\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Count ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Branch ")
-                    Span(:class "text-purple-400" "_ ")
-                    Span(:class "text-purple-400" "left_ ")
-                    Span(:class "text-purple-400" "right_")
-                    Span(:class "text-yellow-400" "}}\n")
-                    Span(:class "text-cyan-500" "  Add")
-                    Span(:class "text-white" "(")
-                    Span(:class "text-green-500" "1")
-                    Span(:class "text-white" ", ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Count ")
-                    Span(:class "text-purple-400" "left_")
-                    Span(:class "text-yellow-400" "}")
-                    Span(:class "text-white" ", ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Count ")
-                    Span(:class "text-purple-400" "right_")
-                    Span(:class "text-yellow-400" "}")
-                    Span(:class "text-white" ")\n")
-                    Span(:class "text-yellow-400" "  :innermost\n")
-                    Span(:class "text-yellow-400" "}")
-                  )
+                  syma-code(r"{R \"CountNodes/Leaf\"
+  {Count {Leaf _}}
+  1
+}
+
+{R \"CountNodes/Branch\"
+  {Count {Branch _ left_ right_}}
+  Add(1, {Count left_}, {Count right_})
+  :innermost
+}")
                 )
               )
             )

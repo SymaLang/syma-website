@@ -46,9 +46,9 @@
         Div(:class "pt-8 space-y-3"
           P(:class "text-sm text-gray-500" "Looking for something specific?")
           Div(:class "flex flex-wrap gap-4 justify-center text-sm"
-            RouterLink(:href "/playground" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "Try the Playground")
+            A(:href "https://notebook.syma-lang.org" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "Try Syma Online")
             Span(:class "text-gray-700" "•")
-            RouterLink(:href "https://github.com/SymaLang/syma" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "View on GitHub")
+            A(:href "https://github.com/SymaLang/syma" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "View on GitHub")
             Span(:class "text-gray-700" "•")
             RouterLink(:href "/docs/examples" :class "text-cyan-400 hover:text-cyan-300 transition-colors" "See Examples")
           )

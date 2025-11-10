@@ -2,6 +2,7 @@ import { boot } from '@syma/platform-browser/runtime';
 import universe from 'virtual:syma-universe';
 import './styles.css';
 import { customEffects } from './effects.js';
+import './syma-code.js';
 
 // Boot the Syma application
 boot(universe, '#app', 'dom', { 

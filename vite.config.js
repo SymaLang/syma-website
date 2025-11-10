@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { imagetools } from 'vite-imagetools';
 
 export default defineConfig({
+  // Explicitly specify public directory (files here are copied to dist root)
+  publicDir: 'public',
   plugins: [
     tailwindcss(),
     imagetools({

@@ -1,5 +1,6 @@
 {Module Data/Docs/Effects
   {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Import syma-code}
   {Export EffectsDoc}
   {Defs
     {EffectsDoc
@@ -48,28 +49,13 @@
 
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Program\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "App ")
-                  Span(:class "text-purple-400" "...")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Effects\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Pending ")
-                  Span(:class "text-purple-400" "...")
-                  Span(:class "text-yellow-400" "}  ")
-                  Span(:class "text-gray-500" "; Outbound effect requests\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Inbox ")
-                  Span(:class "text-purple-400" "...")
-                  Span(:class "text-yellow-400" "}     ")
-                  Span(:class "text-gray-500" "; Inbound effect responses\n")
-                  Span(:class "text-yellow-400" "  }\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"{Program
+  {App ...}
+  {Effects
+    {Pending ...}  ; Outbound effect requests
+    {Inbox ...}     ; Inbound effect responses
+  }
+}")
               )
             )
           )
@@ -116,23 +102,12 @@
                 H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Timer")
                 P(:class "text-gray-400 text-sm mb-2" "Execute code after a delay")
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
-                  Code(:class "text-sm leading-relaxed"
-                    Span(:class "text-gray-500" "; Request\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Timer ")
-                    Span(:class "text-purple-400" "id ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Delay ")
-                    Span(:class "text-green-500" "2000")
-                    Span(:class "text-yellow-400" "}}\n\n")
-                    Span(:class "text-gray-500" "; Response\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "TimerComplete ")
-                    Span(:class "text-purple-400" "id ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Now ")
-                    Span(:class "text-purple-400" "timestamp")
-                    Span(:class "text-yellow-400" "}}")
+                  Pre(:class "text-sm leading-relaxed"
+                    syma-code(r"; Request
+{Timer id {Delay 2000}}
+
+; Response
+{TimerComplete id {Now timestamp}}")
                   )
                 )
               )
@@ -141,35 +116,17 @@
                 H3(:class "text-lg font-semibold text-cyan-400 mb-2" "HTTP Request")
                 P(:class "text-gray-400 text-sm mb-2" "Fetch data from APIs")
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
-                  Code(:class "text-sm leading-relaxed"
-                    Span(:class "text-gray-500" "; Request\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "HttpReq ")
-                    Span(:class "text-purple-400" "id\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Method ")
-                    Span(:class "text-yellow-600" "\"POST\"")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Url ")
-                    Span(:class "text-yellow-600" "\"/api/data\"")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Body ")
-                    Span(:class "text-purple-400" "data")
-                    Span(:class "text-yellow-400" "}}\n\n")
-                    Span(:class "text-gray-500" "; Response\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "HttpRes ")
-                    Span(:class "text-purple-400" "id\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Status ")
-                    Span(:class "text-green-500" "200")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Json ")
-                    Span(:class "text-purple-400" "result")
-                    Span(:class "text-yellow-400" "}}")
+                  Pre(:class "text-sm leading-relaxed"
+                    syma-code(r"; Request
+{HttpReq id
+  {Method \"POST\"}
+  {Url \"/api/data\"}
+  {Body data}}
+
+; Response
+{HttpRes id
+  {Status 200}
+  {Json result}}")
                   )
                 )
               )
@@ -178,43 +135,20 @@
                 H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Storage")
                 P(:class "text-gray-400 text-sm mb-2" "Persist data to localStorage or sessionStorage")
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
-                  Code(:class "text-sm leading-relaxed"
-                    Span(:class "text-gray-500" "; Set\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "StorageSet ")
-                    Span(:class "text-purple-400" "id\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Store ")
-                    Span(:class "text-cyan-500" "Local")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Key ")
-                    Span(:class "text-yellow-600" "\"user\"")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Value ")
-                    Span(:class "text-purple-400" "userData")
-                    Span(:class "text-yellow-400" "}}\n\n")
-                    Span(:class "text-gray-500" "; Get\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "StorageGet ")
-                    Span(:class "text-purple-400" "id\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Store ")
-                    Span(:class "text-cyan-500" "Local")
-                    Span(:class "text-yellow-400" "}\n")
-                    Span(:class "text-yellow-400" "  {")
-                    Span(:class "text-cyan-500" "Key ")
-                    Span(:class "text-yellow-600" "\"user\"")
-                    Span(:class "text-yellow-400" "}}\n\n")
-                    Span(:class "text-gray-500" "; Response\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "StorageGetComplete ")
-                    Span(:class "text-purple-400" "id ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Found ")
-                    Span(:class "text-purple-400" "userData")
-                    Span(:class "text-yellow-400" "}}")
+                  Pre(:class "text-sm leading-relaxed"
+                    syma-code(r"; Set
+{StorageSet id
+  {Store Local}
+  {Key \"user\"}
+  {Value userData}}
+
+; Get
+{StorageGet id
+  {Store Local}
+  {Key \"user\"}}
+
+; Response
+{StorageGetComplete id {Found userData}}")
                   )
                 )
               )
@@ -223,28 +157,15 @@
                 H3(:class "text-lg font-semibold text-cyan-400 mb-2" "Console I/O (Node.js)")
                 P(:class "text-gray-400 text-sm mb-2" "Print output and read input")
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
-                  Code(:class "text-sm leading-relaxed"
-                    Span(:class "text-gray-500" "; Print\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Print ")
-                    Span(:class "text-purple-400" "id ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Message ")
-                    Span(:class "text-yellow-600" "\"Hello!\"")
-                    Span(:class "text-yellow-400" "}}\n\n")
-                    Span(:class "text-gray-500" "; Read line\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "ReadLine ")
-                    Span(:class "text-purple-400" "id")
-                    Span(:class "text-yellow-400" "}\n\n")
-                    Span(:class "text-gray-500" "; Response\n")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "ReadLineComplete ")
-                    Span(:class "text-purple-400" "id ")
-                    Span(:class "text-yellow-400" "{")
-                    Span(:class "text-cyan-500" "Text ")
-                    Span(:class "text-yellow-600" "\"input\"")
-                    Span(:class "text-yellow-400" "}}")
+                  Pre(:class "text-sm leading-relaxed"
+                    syma-code(r"; Print
+{Print id {Message \"Hello!\"}}
+
+; Read line
+{ReadLine id}
+
+; Response
+{ReadLineComplete id {Text \"input\"}}")
                   )
                 )
               )
@@ -255,80 +176,29 @@
             H2(:class "text-3xl font-bold text-gray-200" "Example: Timer with State Update")
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Enqueue a timer effect\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"StartTimer\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-cyan-500" "StartTimer\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Program ")
-                  Span(:class "text-purple-400" "app_\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "Effects ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Pending ")
-                  Span(:class "text-purple-400" "p..")
-                  Span(:class "text-yellow-400" "} ")
-                  Span(:class "text-purple-400" "inbox_")
-                  Span(:class "text-yellow-400" "}}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Program ")
-                  Span(:class "text-purple-400" "app_\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Effects\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "Pending ")
-                  Span(:class "text-purple-400" "p.. ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Timer ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "FreshId")
-                  Span(:class "text-yellow-400" "} {")
-                  Span(:class "text-cyan-500" "Delay ")
-                  Span(:class "text-green-500" "2000")
-                  Span(:class "text-yellow-400" "}}}\n")
-                  Span(:class "text-purple-400" "      inbox_")
-                  Span(:class "text-yellow-400" "}}\n")
-                  Span(:class "text-green-500" "  10")
-                  Span(:class "text-yellow-400" "}\n\n")
-                  Span(:class "text-gray-500" "; Process timer completion\n")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"TimerComplete\"\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Program ")
-                  Span(:class "text-purple-400" "app_\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Effects ")
-                  Span(:class "text-purple-400" "pending_\n")
-                  Span(:class "text-yellow-400" "      {")
-                  Span(:class "text-cyan-500" "Inbox\n")
-                  Span(:class "text-yellow-400" "        {")
-                  Span(:class "text-cyan-500" "TimerComplete ")
-                  Span(:class "text-purple-400" "id_ ")
-                  Span(:class "text-purple-400" "now_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-purple-400" "        rest..")
-                  Span(:class "text-yellow-400" "}}}\n")
-                  Span(:class "text-yellow-400" "  {")
-                  Span(:class "text-cyan-500" "Program\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Apply ")
-                  Span(:class "text-cyan-500" "DoSomething ")
-                  Span(:class "text-purple-400" "app_")
-                  Span(:class "text-yellow-400" "}\n")
-                  Span(:class "text-yellow-400" "    {")
-                  Span(:class "text-cyan-500" "Effects ")
-                  Span(:class "text-purple-400" "pending_ ")
-                  Span(:class "text-yellow-400" "{")
-                  Span(:class "text-cyan-500" "Inbox ")
-                  Span(:class "text-purple-400" "rest..")
-                  Span(:class "text-yellow-400" "}}}\n")
-                  Span(:class "text-yellow-400" "}")
-                )
+                syma-code(r"; Enqueue a timer effect
+{R \"StartTimer\"
+  {Apply StartTimer
+    {Program app_
+      {Effects {Pending p..} inbox_}}}
+  {Program app_
+    {Effects
+      {Pending p.. {Timer {FreshId} {Delay 2000}}}
+      inbox_}}
+  10
+}
+
+; Process timer completion
+{R \"TimerComplete\"
+  {Program app_
+    {Effects pending_
+      {Inbox
+        {TimerComplete id_ now_}
+        rest..}}}
+  {Program
+    {Apply DoSomething app_}
+    {Effects pending_ {Inbox rest..}}}
+}")
               )
             )
           )

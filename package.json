@@ -10,7 +10,8 @@
     "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
-    "@syma/platform-browser": "file:../syma-fe/packages/platform-browser"
+    "@syma/platform-browser": "file:../syma-fe/packages/platform-browser",
+    "lit": "^3.3.1"
   },
   "devDependencies": {
     "@syma/cli": "file:../syma-fe/packages/cli",

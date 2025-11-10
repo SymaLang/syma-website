@@ -1,5 +1,6 @@
 {Module Data/Docs/Syntax
   {Import Syma/SimpleUIRouter as Router macro {Open RouterLink}}
+  {Import syma-code}
   {Export SyntaxDoc}
   {Defs
     {SyntaxDoc
@@ -38,16 +39,10 @@
                 )
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
                   Pre(:class "font-mono text-sm leading-relaxed"
-                    Code(
-                      Span(:class "text-yellow-600" "r\"\\n\\t\\r\"")
-                      Span(:class "text-gray-500" "     ; Literal backslashes preserved\n")
-                      Span(:class "text-yellow-600" "r\"C:\\Users\\Name\"")
-                      Span(:class "text-gray-500" " ; Windows paths without doubling\n")
-                      Span(:class "text-yellow-600" "r\"\\d+\"")
-                      Span(:class "text-gray-500" "         ; Regex patterns\n")
-                      Span(:class "text-yellow-600" "r\"Say \\\"hi\\\"\"")
-                      Span(:class "text-gray-500" "   ; Escaped quotes still work")
-                    )
+                    syma-code(r"r\"\n\t\r\"     ; Literal backslashes preserved
+r\"C:\Users\Name\" ; Windows paths without doubling
+r\"\d+\"         ; Regex patterns
+r\"Say \\"hi\\"\"   ; Escaped quotes still work")
                   )
                 )
               )
@@ -62,16 +57,10 @@
                 )
                 Div(:class "bg-gray-950 border border-gray-800 rounded p-3"
                   Pre(:class "font-mono text-sm leading-relaxed"
-                    Code(
-                      Span(:class "text-cyan-500" "🎯")
-                      Span(:class "text-gray-500" "           ; Emoji symbols\n")
-                      Span(:class "text-cyan-500" "$%^&")
-                      Span(:class "text-gray-500" "         ; Special characters\n")
-                      Span(:class "text-cyan-500" "+")
-                      Span(:class "text-gray-500" "            ; Operators are symbols too\n")
-                      Span(:class "text-cyan-500" "λ")
-                      Span(:class "text-gray-500" "            ; Unicode characters")
-                    )
+                    syma-code(r"🎯           ; Emoji symbols
+$%^&         ; Special characters
++            ; Operators are symbols too
+λ            ; Unicode characters")
                   )
                 )
               )
@@ -102,22 +91,9 @@
                 P(:class "text-gray-400 text-sm" "Space-separated elements within curly braces")
                 Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-4"
                   Pre(:class "font-mono text-sm"
-                    Code(
-                      Span(:class "text-cyan-500" "{")
-                      Span(:class "text-cyan-500" "Add ")
-                      Span(:class "text-green-500" "1 ")
-                      Span(:class "text-green-500" "2")
-                      Span(:class "text-cyan-500" "}\n\n")
-                      Span(:class "text-cyan-500" "{")
-                      Span(:class "text-cyan-500" "Mul ")
-                      Span(:class "text-cyan-500" "{")
-                      Span(:class "text-cyan-500" "Add ")
-                      Span(:class "text-green-500" "1 ")
-                      Span(:class "text-green-500" "2")
-                      Span(:class "text-cyan-500" "} ")
-                      Span(:class "text-green-500" "3")
-                      Span(:class "text-cyan-500" "}")
-                    )
+                    syma-code(r"{Add 1 2}
+
+{Mul {Add 1 2} 3}")
                   )
                 )
               )
@@ -126,24 +102,9 @@
                 P(:class "text-gray-400 text-sm" "Comma-separated within parentheses")
                 Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-4"
                   Pre(:class "font-mono text-sm"
-                    Code(
-                      Span(:class "text-cyan-500" "Add")
-                      Span(:class "text-cyan-500" "(")
-                      Span(:class "text-green-500" "1")
-                      Span(:class "text-cyan-500" ", ")
-                      Span(:class "text-green-500" "2")
-                      Span(:class "text-cyan-500" ")\n\n")
-                      Span(:class "text-cyan-500" "Mul")
-                      Span(:class "text-cyan-500" "(")
-                      Span(:class "text-cyan-500" "Add")
-                      Span(:class "text-cyan-500" "(")
-                      Span(:class "text-green-500" "1")
-                      Span(:class "text-cyan-500" ", ")
-                      Span(:class "text-green-500" "2")
-                      Span(:class "text-cyan-500" "), ")
-                      Span(:class "text-green-500" "3")
-                      Span(:class "text-cyan-500" ")")
-                    )
+                    syma-code(r"Add(1, 2)
+
+Mul(Add(1, 2), 3)")
                   )
                 )
               )
@@ -156,19 +117,7 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-4"
               Pre(:class "font-mono text-sm"
-                Code(
-                  Span(:class "text-cyan-500" "Mul")
-                  Span(:class "text-cyan-500" "(")
-                  Span(:class "text-cyan-500" "{")
-                  Span(:class "text-cyan-500" "Add ")
-                  Span(:class "text-green-500" "1 ")
-                  Span(:class "text-green-500" "2")
-                  Span(:class "text-cyan-500" "}")
-                  Span(:class "text-cyan-500" ", ")
-                  Span(:class "text-green-500" "3")
-                  Span(:class "text-cyan-500" ")")
-                  Span(:class "text-gray-500" "  ; Mix and match!")
-                )
+                syma-code(r"Mul({Add 1 2}, 3)  ; Mix and match!")
               )
             )
           )
@@ -180,14 +129,7 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-cyan-500" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"RuleName\" ")
-                  Span(:class "text-gray-500" "pattern ")
-                  Span(:class "text-gray-500" "replacement")
-                  Span(:class "text-cyan-500" "}")
-                )
+                syma-code(r"{R \"RuleName\" pattern replacement}")
               )
             )
 
@@ -197,28 +139,16 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-6"
               Pre(:class "font-mono text-sm leading-relaxed"
-                Code(
-                  Span(:class "text-gray-500" "; Basic rule\n")
-                  Span(:class "text-cyan-500" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"Name\" ")
-                  Span(:class "text-cyan-500" "pattern replacement")
-                  Span(:class "text-cyan-500" "}\n\n")
+                syma-code(r"; Basic rule
+{R \"Name\" pattern replacement}
 
-                  Span(:class "text-gray-500" "; With optional modifiers (any order)\n")
-                  Span(:class "text-cyan-500" "{")
-                  Span(:class "text-cyan-500" "R ")
-                  Span(:class "text-yellow-600" "\"Name\" ")
-                  Span(:class "text-cyan-500" "pattern replacement\n  ")
-                  Span(:class "text-yellow-400" ":guard ")
-                  Span(:class "text-cyan-500" "condition\n  ")
-                  Span(:class "text-yellow-400" ":scope ")
-                  Span(:class "text-cyan-500" "Parent\n  ")
-                  Span(:class "text-yellow-400" ":with ")
-                  Span(:class "text-cyan-500" "contextPattern\n  ")
-                  Span(:class "text-yellow-400" ":innermost")
-                  Span(:class "text-cyan-500" "}")
-                )
+; With optional modifiers (any order)
+{R \"Name\" pattern replacement
+  :guard condition
+  :scope Parent
+  :with contextPattern
+  :innermost
+}")
               )
             )
 
@@ -257,15 +187,8 @@
             )
             Div(:class "bg-gray-950 border border-gray-800 rounded-xl p-4"
               Pre(:class "font-mono text-sm"
-                Code(
-                  Span(:class "text-gray-500" "; This is a comment\n")
-                  Span(:class "text-cyan-500" "{")
-                  Span(:class "text-cyan-500" "Add ")
-                  Span(:class "text-green-500" "1 ")
-                  Span(:class "text-green-500" "2")
-                  Span(:class "text-cyan-500" "}  ")
-                  Span(:class "text-gray-500" "; Inline comment")
-                )
+                syma-code(r"; This is a comment
+{Add 1 2}  ; Inline comment")
               )
             )
           )
