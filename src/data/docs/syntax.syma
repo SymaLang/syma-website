@@ -146,6 +146,7 @@ Mul(Add(1, 2), 3)")
 {R \"Name\" pattern replacement
   :guard condition
   :scope Parent
+  :let contextPattern
   :with contextPattern
   :innermost
 }")
@@ -167,8 +168,14 @@ Mul(Add(1, 2), 3)")
               )
               Div(:class "p-3 bg-gray-900/50 border border-gray-800 rounded"
                 P(:class "text-sm text-gray-300"
+                  Span(:class "text-cyan-400 font-semibold" ":let")
+                  " — Bind additional variables from context BEFORE pattern"
+                )
+              )
+              Div(:class "p-3 bg-gray-900/50 border border-gray-800 rounded"
+                P(:class "text-sm text-gray-300"
                   Span(:class "text-cyan-400 font-semibold" ":with")
-                  " — Bind additional variables from context"
+                  " — Bind additional variables from context AFTER pattern"
                 )
               )
               Div(:class "p-3 bg-gray-900/50 border border-gray-800 rounded"

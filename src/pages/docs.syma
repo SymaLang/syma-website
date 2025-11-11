@@ -39,6 +39,21 @@
           )
         )
 
+        ; Relation to ρ-Calculus
+        Div(:class "p-4 bg-purple-900/20 border border-purple-800/50 rounded-lg"
+          Div(:class "flex items-start gap-3"
+            Div(:class "text-2xl flex-shrink-0" "📘")
+            Div(:class "space-y-2 flex-1"
+              P(:class "text-purple-300 font-semibold"
+                "Relation to ρ-Calculus"
+              )
+              P(:class "text-gray-300 text-sm leading-relaxed"
+                "Syma was designed independently from first principles, but it turns out to coincide closely with the rewriting calculus (ρ-calculus) introduced by Horatiu Cirstea and Claude Kirchner in the late 1990s. Both systems treat computation as rule-based rewriting where abstraction applies not only to variables (as in λ-calculus) but also to patterns."
+              )
+            )
+          )
+        )
+
         ; Quick Links Grid
         Div(:class "grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           ; Getting Started Card
